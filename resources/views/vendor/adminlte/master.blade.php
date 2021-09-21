@@ -80,12 +80,10 @@
 
     {{-- Base Scripts --}}
     @if(!config('adminlte.enabled_laravel_mix'))
-        <!-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> -->
-        <script src="https://kit.fontawesome.com/05541ae56c.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/book_js/jquery.min.js') }}"></script>
+        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-
+        <script src="https://kit.fontawesome.com/05541ae56c.js" crossorigin="anonymous"></script>
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
 
