@@ -33,7 +33,7 @@ use App\Http\Requests\UpdateUserInfosRequest;class UserController extends Contro
         $user->update();
     }
 
-    public function updateAccount(ChangePasswordRequest $request,){
+    public function updateAccount(ChangePasswordRequest $request){
         $currentUser = User::find(auth()->user()->id);
         if(Hash::check($request->password,$currentUser->password))
         {
