@@ -17,16 +17,9 @@ class ProfileController extends Controller
     public function changePassword(){
         return view('admin.change_password');
     }
-    public function update(UpdateUserInfosRequest $request){
-        $user = User::find(auth()->user()->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->province_id = $request->province_id;
-        $user->district_id = $request->district_id;
-        $user->ward_id = $request->ward_id;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->update();
+    public function update(UpdateUserInfosRequest $request,User $user){
+            $user->fill($request->all());
+            $user->update();
     }
     public function updatePassword(ChangePasswordRequest $request,){
         $currentUser = User::find(auth()->user()->id);

@@ -15,8 +15,8 @@ class ArticleCategory extends Migration
     {
         Schema::create('article_category', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained();
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('article_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

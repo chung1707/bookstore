@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 
-class UserManagementController extends Controller
+class UserManageController extends Controller
 {
     public function adminAccounts()
     {
@@ -22,5 +22,21 @@ class UserManagementController extends Controller
             $query->where('name', '!=', 'admin');
         })->orderBy('created_at', 'desc')->with('province', 'ward', 'district',)->paginate(10);
         return view('admin.userManagement.list_user')->with('users', $users);
+    }
+    public function blockUser(User $user){
+        $user->blocked =true;
+        $user->save();
+    }
+    public function unBlockUser(User $user){
+        $user->blocked =false;
+        $user->save();
+    }
+    public function deleteUser(User $user){
+        $user->delete();
+        return redirect()->back();
+    }
+    public function showUser(User $user){
+        $user->load('role');
+        return view('admin.userManagement.account_details')->with('user', $user);
     }
 }
