@@ -85,7 +85,6 @@
         <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <script src="https://kit.fontawesome.com/05541ae56c.js" crossorigin="anonymous"></script>
 
-
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
 
