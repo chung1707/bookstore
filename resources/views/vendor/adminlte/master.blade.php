@@ -84,6 +84,8 @@
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <script src="https://kit.fontawesome.com/05541ae56c.js" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
+
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
 
