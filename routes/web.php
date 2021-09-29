@@ -10,8 +10,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserManageController;
 use App\Http\Controllers\Auth\SocialLoginController;
-use App\Http\Controllers\Admin\UserManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,16 +47,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::get('/dashboard',[DashboardController::class,'index'])->name('admin.dashboard');
     Route::get('/personal_page',[ProfileController::class,'index'])->name('admin.personal_page');
     Route::get('/change_password',[ProfileController::class,'changePassword'])->name('admin.change_password');
-    Route::post('change_infos',[ProfileController::class,'update']);
+    Route::put('change_infos/{user}',[ProfileController::class,'update']);
     Route::post('/update_password',[ProfileController::class,'updatePassword']);
 
     //admin lists
-    Route::get('/admin_accounts',[UserManagementController::class,'adminAccounts'])->name('admin.admin_accounts');
-    Route::get('/get_admin_accounts',[UserManagementController::class,'getAdminAccounts']);
+    Route::get('/admin_accounts',[UserManageController::class,'adminAccounts'])->name('admin.admin_accounts');
     //user lists
-    Route::get('/user_accounts',[UserManagementController::class,'userAccounts'])->name('admin.user_accounts');
-    Route::get('/get_user_accounts',[UserManagementController::class,'getUserAccounts']);
-
+    Route::get('/user_accounts',[UserManageController::class,'userAccounts'])->name('admin.user_accounts');
+    //block
+    Route::post('/users/block/{user}', [UserManageController::class, 'blockUser']);
+    Route::post('/users/unblock/{user}', [UserManageController::class, 'unBlockUser']);
+    //delete
+    Route::delete('/user_delete/{user}',[UserManageController::class, 'deleteUser'])->name('admin.deleteUser');
+    //account details
+    Route::get('/user/{user}',[UserManageController::class, 'showUser'])->name('admin.showUser');
 
 });
 
