@@ -8913,7 +8913,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-40aa5b4a] {\n    color: red;\n    display: block;\n}\n.success[data-v-40aa5b4a] {\n    color: green;\n    padding: 20px;\n    background-color: rgba(0, 255, 0, 0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-40aa5b4a] {\n    border-color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-40aa5b4a] {\r\n    color: red;\r\n    display: block;\n}\n.success[data-v-40aa5b4a] {\r\n    color: green;\r\n    padding: 20px;\r\n    background-color: rgba(0, 255, 0, 0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-40aa5b4a] {\r\n    border-color: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42665,7 +42665,8 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [
                     _vm._v(
-                      _vm._s(admin.name) + "/td>\n                            "
+                      _vm._s(admin.name) +
+                        "/td>\r\n                            "
                     )
                   ]),
                   _c("td", [_vm._v(_vm._s(admin.email))]),
