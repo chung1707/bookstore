@@ -40,9 +40,8 @@ Vue.component('categories-menu', require('./components/header/categoriesMenu.vue
 Vue.component('admin-icon', require('./components/admin/adminIcon.vue').default);
 Vue.component('account-infos', require('./components/admin/infos.vue').default);
 Vue.component('admin-change-password', require('./components/admin/changePassword.vue').default);
-
-Vue.component('admin-accounts', require('./components/admin/user_management/admin_accounts.vue').default);
-Vue.component('user-accounts', require('./components/admin/user_management/user_accounts.vue').default);
+//block user
+Vue.component('block-user', require('./components/admin/user_management/blockUser.vue').default);
 
 
 

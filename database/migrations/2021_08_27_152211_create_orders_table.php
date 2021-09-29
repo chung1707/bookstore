@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             $table->boolean('processing')->default(false);
             $table->boolean('complete')->default(false);
             $table->boolean('Canceled')->default(false);
-            $table->foreignId('transporter_id')->constrained();
+            $table->foreignId('transporter_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->integer('discount_code_id')->nullable();
             $table->string('dispatch');
             $table->integer('province_id');
