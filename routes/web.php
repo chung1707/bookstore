@@ -65,7 +65,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
 });
 
 // user route
-Route::group(['middleware' => ['auth', 'role:user']], function () {
+Route::group(['middleware' => ['auth', 'role:user,author']], function () {
     Route::get('/profile',[UserController::class,'index']);
     Route::post('/update_info',[UserController::class,'updateInfos'])->name('update_infos');
     Route::post('/update_account',[UserController::class,'updateAccount']);
