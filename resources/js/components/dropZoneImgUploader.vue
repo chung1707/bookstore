@@ -38,6 +38,7 @@ export default {
                 data.forEach(file=>{
                     this.thumbnails.push(file);
                 });
+                //  console.log(this.thumbnails);
         },
     }
 }

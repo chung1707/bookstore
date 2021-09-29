@@ -15,7 +15,7 @@ class BookOrder extends Migration
     {
         Schema::create('book_order', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('order_id')->constrained();
             $table->integer('book_id');
             $table->integer('quantity')->default(1);
             $table->float('price');

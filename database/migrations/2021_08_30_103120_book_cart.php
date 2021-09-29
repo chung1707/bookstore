@@ -15,8 +15,8 @@ class BookCart extends Migration
     {
         Schema::create('book_cart', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cart_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('book_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('cart_id')->constrained();
+            $table->foreignId('book_id')->constrained();
             $table->integer('quantity')->default(1);
             $table->timestamps();
         });

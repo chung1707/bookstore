@@ -1,21 +1,11 @@
-@extends('adminlte::page', ['iFrameEnabled' => true])
-
-@section('title', 'Dashboard')
-
-@section('content_header')
-<h1>Danh sách người dùng</h1>
-@stop
-
-@section('content')
-<div class="row">
+<template>
+    <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Danh sách tài khoản admin --</h3>
                     <h4 class="card-title">
-
-                        Trang: {{ $users->currentPage() }} / {{$users->lastPage()}}
-                        <span> -- Tổng tài khoản người dùng: {{ ($users->perPage()* $users->lastPage()) }}</span>
+                        Trang: {{ users.current_page }}/ {{ users.last_page }}
                     </h4>
                     <div class="card-tools">
                         <div
@@ -49,11 +39,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                            <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
+                            <tr v-for="user in users.data" :key="user.id">
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
                                 <td>
                                     <span class="tag tag-success"
                                         >Hoạt động</span
@@ -62,13 +51,23 @@
                                 <td>Xem chi tiết</td>
                                 <td>Xóa</td>
                             </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div style="padding-top: 20px;
-                            margin: 0px auto;">
-                    {{ $users->links() }}
+                <div id="card">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#">Previous</a>
+                            </li>
+                            <li class="page-item" v-for="(link, index) in links" :key="index">
+                                <a class="page-link" href="#">{{ link.label }}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
 
                 <!-- /.card-body -->
@@ -76,12 +75,32 @@
             <!-- /.card -->
         </div>
     </div>
-@stop
+</template>
 
-@section('css')
+<script>
+import { mapGetters, mapActions } from "vuex";
+export default {
+    data() {
+        return {
+            totalPage: null,
+            page: 1
+        };
+    },
+    computed: {
+        ...mapGetters(["users",'links'])
+    },
+    methods: {
+        ...mapActions(["getUsers"])
+    },
+    mounted() {
+        this.getUsers(this.page);
+    },
+    watch: {
+        page() {
+            this.getUsers(this.page);
+        }
+    }
+};
+</script>
 
-@stop
-
-@section('js')
-<script src="{{ asset('js/app.js') }}"></script>
-@stop
+<style scoped></style>
