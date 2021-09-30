@@ -30,6 +30,14 @@ class User extends Authenticatable
         'facebook_id',
         'google_id',
         'role_id',
+        'vip_user',
+        'province_id',
+        "district_id",
+        "ward_id",
+        'address',
+        "phone",
+        "avatar",
+        "blocked",
     ];
     protected $guarded = [];
 
