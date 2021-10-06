@@ -29,7 +29,7 @@ class SocialLoginController extends Controller
         );
         Auth::login($systemUser);
         Cart::firstOrCreate(['user_id' => $systemUser->id]);
-        return redirect('/user/profile');
+        return redirect('/profile');
     }
 
     public function redirectFacebook(){
@@ -51,6 +51,6 @@ class SocialLoginController extends Controller
         );
         Auth::login($systemUser);
         Cart::firstOrCreate(['user_id' => $systemUser->id]);
-        return redirect('/user/profile');
+        return redirect('/profile');
     }
 }

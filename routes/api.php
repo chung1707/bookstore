@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\ThumbnailController;
 use App\Http\Controllers\Admin\CategoryController;
 
 /*
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\CategoryController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('uploads',[ThumbnailController::class,'uploads']);
 
 //location route
 Route::get('/location/provinces', [LocationController::class, 'getProvinces'])->name('getProvinces');

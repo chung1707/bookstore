@@ -15,7 +15,7 @@ class BookSaleBill extends Migration
     {
         Schema::create('book_sale_bill', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_bill_id')->constrained();
+            $table->foreignId('sale_bill_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->integer('book_id');
             $table->integer('quantity')->default(1);
             $table->float('price');

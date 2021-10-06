@@ -30,4 +30,11 @@ class ProfileController extends Controller
         }
         return response()->json(['result'=>'Mật khẩu hiện tại của bạn không chính xác!', 'success' => false]);
     }
+    public function updateAvatar(Request $request,User $user){
+        if($request->avatar){
+            $user->avatar = $request->avatar;
+            $user->update();
+        }
+        return response()->json(['avatar'=>$request->avatar]);
+    }
 }

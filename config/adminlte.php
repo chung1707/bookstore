@@ -304,6 +304,14 @@ return [
                     'text'    => 'Nhập sách',
                     'url'     => '#',
                 ],
+                [
+                    'text'    => 'Xuất sách',
+                    'url'     => '#',
+                ],
+                [
+                    'text'    => 'Lịch sử',
+                    'url'     => '#',
+                ],
             ],
         ],
         [
@@ -321,6 +329,52 @@ return [
                 [
                     'text' => 'thêm tài khoản',
                     'url'  => '#',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Quản lý danh mục',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Danh mục sách',
+                    'url'  => '',
+                ],
+                [
+                    'text'    =>'Danh mục bài viết',
+                    'url'     => '',
+                ],
+                [
+                    'text' => 'Thêm Danh mục',
+                    'url'  => '',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Quản lý nhà cung cấp',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Danh sách nhà cung cấp',
+                    'url'  => '',
+                ],
+                [
+                    'text'    =>'Thêm nhà cung cấp',
+                    'url'     => '',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Quản lý bài viết',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Danh sách bài viết',
+                    'url'  => '',
+                ],
+                [
+                    'text'    =>'Bài viết đang chờ duyệt',
+                    'url'     => '',
                 ],
             ],
         ],

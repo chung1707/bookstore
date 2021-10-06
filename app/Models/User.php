@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Role;
 use App\Models\Order;
 use App\Models\Comment;
+use App\Models\ImportBills;
 use HoangPhi\VietnamMap\Models\Ward;
 use HoangPhi\VietnamMap\Models\District;
 use HoangPhi\VietnamMap\Models\Province;
@@ -80,5 +81,8 @@ class User extends Authenticatable
     }
     public function ward(){
         return $this->belongsTo(Ward::class);
+    }
+    public function import_bills(){
+        return $this->hasMany(ImportBills::class);
     }
 }

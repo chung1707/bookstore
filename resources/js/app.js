@@ -43,6 +43,9 @@ Vue.component('admin-change-password', require('./components/admin/changePasswor
 //block user
 Vue.component('block-user', require('./components/admin/user_management/blockUser.vue').default);
 
+//import
+Vue.component('import', require('./components/import/import.vue').default);
+
 
 
 import Vue from 'vue';
@@ -59,6 +62,15 @@ Vue.config.productionTip = false;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// vee validate 3
+import { ValidationObserver } from 'vee-validate';
+import { ValidationProvider } from 'vee-validate';
+
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
+
+import { extend } from './vee_rules';
+
 const app = new Vue({
-    el: '#app',store,
+    el: '#app',store,extend,
 });

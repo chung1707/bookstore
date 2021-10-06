@@ -13,31 +13,39 @@
 <script>
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+
+import {mapGetters, mapActions} from 'vuex'
 export default {
+    computed:{
+        ...mapGetters(['thumbnails']),
+    },
     data(){
       return {
         dropzoneOptions: {
-            url: 'http://localhost:8000/api/uploads',
+            url: '/api/uploads',
             thumbnailWidth: 150,
             acceptedFiles: ".jpeg,.jpg,.png,.gif,.jfif",
             addRemoveLinks: true,
-            maxFilesize: 3,
+            maxFilesize: 2,
             paralleUploaded: 5,
-            maxFiles: 5,
+            maxFiles: 2 ,
             uploadMultiple: true,
         },
-        thumbnails: [],
+        fileNames: [],
       }
     },
     components: {
         vueDropzone: vue2Dropzone,
     },
     methods: {
+        ...mapActions(['setThumbnails']),
         getDataResponse: function (file, response) {
                 let data = response.fileNames;
                 data.forEach(file=>{
-                    this.thumbnails.push(file);
+                    this.fileNames.push(file);
                 });
+                this.setThumbnails(this.fileNames);
+                this.fileNames = [];
         },
     }
 }

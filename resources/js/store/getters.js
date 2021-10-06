@@ -25,4 +25,7 @@ export default {
     authUser(state){
         return state.authUser;
     },
+    thumbnails(state){
+        return state.thumbnails;
+    },
 }

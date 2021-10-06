@@ -6,14 +6,21 @@
                 <!-- Profile Image -->
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
-                        <div class="text-center">
+                        <div class="text-center" v-if="this.user.avatar !=null">
+                            <img class="profile-user-img img-fluid img-circle" :src="
+                                    '/storage/thumbnails/' +
+                                        user.avatar
+                                " alt="User profile picture">
+                        </div>
+                        <div class="text-center" v-else>
                             <img class="profile-user-img img-fluid img-circle" src="/storage/bookstore_img/products/product1.jpg" alt="User profile picture">
                         </div>
 
                         <h3 class="profile-username text-center">{{user.name}}</h3>
 
                         <p class="text-muted text-center">{{ user.role.name}}</p>
-                        <a href="#" class="btn btn-primary btn-block"><b>Cập nhập ảnh đại diện</b></a>
+                        <dropzone-uploader></dropzone-uploader>
+                        <a @click.prevent="updateAvatar()" class="btn btn-primary btn-block"><b>Cập nhập ảnh đại diện</b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -99,7 +106,6 @@
                                     </div>
                                     <button @click.prevent="updateInfos()" class="btn btn-info">Cập nhập thông tin</button>
                                 </div>
-
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -115,7 +121,11 @@
 
 <script>
 import axios from "axios";
+import {mapGetters,mapActions} from "vuex";
 export default {
+    computed: {
+        ...mapGetters(['thumbnails']),
+    },
     data() {
         return {
             provinces: [],
@@ -135,6 +145,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['setThumbnails']),
         updateInfos(){
             var formData = new FormData();
             formData.append("_method", "put");
@@ -185,6 +196,28 @@ export default {
                     this.wards = response.data;
                 })
                 .catch(error => {});
+        },
+        updateAvatar(){
+            if(this.thumbnails[0]){
+                let avatar = this.thumbnails[0];
+                let formData = new FormData();
+                formData.append("avatar", avatar);
+                axios
+                    .post("/admin/update_avatar/"+this.user.id, formData)
+                    .then(() => {
+                        this.success = true;
+                        this.error = {};
+                        this.user.avatar = this.thumbnails[0];
+                        this.setThumbnails([]);
+                    })
+                    .catch(error => {
+                        this.error = error.response.data.errors;
+                        this.success = false;
+                    });
+            }
+            else{
+                return;
+            }
         }
     },
     watch: {

@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Thumbnail;
+use App\Models\ImportBills;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -34,5 +35,8 @@ class Book extends Model
     }
     public function orders(){
         return $this->belongsToMany(Order::class);
+    }
+    public function import_bills(){
+        return $this->belongsToMany(ImportBills::class);
     }
 }

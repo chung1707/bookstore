@@ -59,8 +59,14 @@
                                         >Hoạt động</span
                                     >
                                 </td>
-                                <td>Xem chi tiết</td>
-                                <td>Xóa</td>
+                                <td><a href="{{ route('admin.showUser',['user' =>$admin]) }}" class="btn btn-default btn-sm">Xem chi tiết</a></td>
+                                <td class="table__content">
+                                    <form action="{{ route('admin.deleteUser',['user' => $admin]) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button class="btn btn-default btn-sm" type='submit'>Xóa</button>
+                                    </form>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

@@ -16,7 +16,7 @@ class CreateSaleBillsTable extends Migration
         Schema::create('sale_bills', function (Blueprint $table) {
             $table->id();
             $table->float('totalPrice')->default(0);
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('transaction_id');
             $table->text('note')->nullable();
             $table->integer('discount_code_id')->nullable();

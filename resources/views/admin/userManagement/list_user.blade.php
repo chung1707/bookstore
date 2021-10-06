@@ -47,7 +47,7 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td><a href="{{ route('admin.showUser',['user' =>$user]) }}">Xem chi tiết</a></td>
+                            <td><a href="{{ route('admin.showUser',['user' =>$user]) }}" class="btn btn-default btn-sm">Xem chi tiết</a></td>
                             <td>
                                 <block-user :user="{{ json_encode($user) }}"></block-user>
                             </td>

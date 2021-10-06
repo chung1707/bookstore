@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('transaction_id');
             $table->text('note')->nullable();
             $table->float('totalPrice')->default(0);
@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('transporter_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->integer('discount_code_id')->nullable();
             $table->string('dispatch');
+            $table->string('phone_number')->nullable();
             $table->integer('province_id');
             $table->integer('district_id');
             $table->integer('ward_id');

@@ -61,7 +61,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::delete('/user_delete/{user}',[UserManageController::class, 'deleteUser'])->name('admin.deleteUser');
     //account details
     Route::get('/user/{user}',[UserManageController::class, 'showUser'])->name('admin.showUser');
-
+    Route::post('/update_avatar/{user}',[ProfileController::class, 'updateAvatar']);
+    // import
+    Route::get('/import/create',[ImportController::class,'create'])->name('import.create');
 });
 
 // user route

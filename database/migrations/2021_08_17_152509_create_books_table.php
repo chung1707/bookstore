@@ -17,6 +17,7 @@ class CreateBooksTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('author');
+            $table->string('book_code');
             $table->text('description')->nullable();
             $table->float('price')->default(0);
             $table->integer('sold')->default(0);

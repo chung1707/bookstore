@@ -25,5 +25,8 @@ export default {
     setAuthUser(state,user){
         state.authUser = user;
     },
+    setThumbnailNames(state, thumbnails){
+        state.thumbnails = thumbnails;
+    },
 
 }

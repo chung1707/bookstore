@@ -27,6 +27,7 @@ class OrderFactory extends Factory
             'created_at' => now(),
             'updated_at' => now(),
             'transaction_id'=> Str::random(10),
+            'phone_number' => $this->faker->numerify('###-###-####'),
             'dispatch' => $this->faker->address(),
             'note' => $this->faker->paragraphs(6, true),
             'totalPrice' =>$this->faker->numberBetween($min = 90000, $max = 500000),
