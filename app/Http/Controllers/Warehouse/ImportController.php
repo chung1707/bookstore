@@ -25,7 +25,7 @@ class ImportController extends Controller
      */
     public function create()
     {
-        return view('import.create_import');
+        return view('warehouse.create_import');
     }
 
     /**

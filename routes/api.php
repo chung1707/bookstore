@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\Api\InfoController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\ThumbnailController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -31,3 +32,5 @@ Route::get('/location/province/district/{district}/wards', [LocationController::
 Route::get('/get_hot_categories',[CategoryController::class,'getHotCategories']);
 Route::get('/get_hot_books',[BookController::class, 'getHeaderBooks']);
 
+Route::get('suppliers',[InfoController::class,'getSuppliers']);
+Route::get('/select_categories', [InfoController::class, 'getSelectCategories']);

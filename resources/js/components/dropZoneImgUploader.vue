@@ -45,7 +45,6 @@ export default {
                     this.fileNames.push(file);
                 });
                 this.setThumbnails(this.fileNames);
-                this.fileNames = [];
         },
     }
 }

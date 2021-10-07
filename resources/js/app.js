@@ -20,6 +20,7 @@ require('./bootstrap');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('dropzone-uploader', require('./components/dropZoneImgUploader.vue').default);
 Vue.component('location-select', require('./components/location_select.vue').default);
+Vue.component('categories-select', require('./components/categories_select.vue').default);
 //cart
 Vue.component('add-to-cart', require('./components/cart/addToCart.vue').default);
 Vue.component('add-to-cart-details', require('./components/cart/addToCartDetails.vue').default);
@@ -69,8 +70,8 @@ import { ValidationProvider } from 'vee-validate';
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 
-import { extend } from './vee_rules';
+import { } from './vee_rules';
 
 const app = new Vue({
-    el: '#app',store,extend,
+    el: '#app',store,
 });

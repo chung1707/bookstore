@@ -12,6 +12,7 @@ use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserManageController;
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\Warehouse\ImportController;
 
 /*
 |--------------------------------------------------------------------------

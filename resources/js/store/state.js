@@ -3,4 +3,5 @@ export default {
     books: [],
     discountCode: 0,
     thumbnails: [],
+    importBooks: [],
 }

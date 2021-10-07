@@ -1,9 +1,9 @@
-@extends('adminlte::page', ['iFrameEnabled' => true])
+@extends('adminlte::page')
 
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Thông tin tài khoản</h1>
+<h1>Nhập kho</h1>
 @stop
 
 @section('content')
@@ -19,5 +19,5 @@
 @stop
 
 @section('js')
-<script src="{{ asset('js/app.js') }}"></script>
+
 @stop

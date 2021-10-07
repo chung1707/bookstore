@@ -28,4 +28,7 @@ export default {
     thumbnails(state){
         return state.thumbnails;
     },
+    importBooks(state){
+        return state.importBooks;
+    },
 }

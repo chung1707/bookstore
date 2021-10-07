@@ -1,113 +1,121 @@
 <template>
     <div class="container-fluid">
-        <div class="card-body">
-            <div class="table-responsive">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Danh sách sản phẩm chờ nhập kho</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
                 <div
-                    id="dataTable_wrapper"
+                    id="example1_wrapper"
                     class="dataTables_wrapper dt-bootstrap4"
                 >
-                    <h3>Nhập thiết bị</h3>
                     <div class="row">
                         <div class="col-sm-12">
                             <table
-                                class="table table-bordered dataTable"
-                                id="dataTable"
-                                width="100%"
-                                cellspacing="0"
+                                id="example1"
+                                class="table table-bordered table-striped dataTable dtr-inline"
                                 role="grid"
-                                aria-describedby="dataTable_info"
-                                style="width: 100%;"
+                                aria-describedby="example1_info"
                             >
                                 <thead>
                                     <tr role="row">
                                         <th
-                                            class="sorting sorting_asc"
-                                            aria-controls="dataTable"
-                                            aria-sort="ascending"
-                                            aria-label="Name: activate to sort column descending"
-                                            style="width: 194px;"
+                                            class="sorting"
+                                            tabindex="0"
+                                            aria-controls="example1"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Rendering engine: activate to sort column ascending"
                                         >
                                             Ảnh
                                         </th>
                                         <th
-                                            class="sorting"
-                                            aria-controls="dataTable"
-                                            aria-label="Position: activate to sort column ascending"
-                                            style="width: 296px;"
+                                            class="sorting_desc"
+                                            tabindex="0"
+                                            aria-controls="example1"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Browser: activate to sort column ascending"
+                                            aria-sort="descending"
                                         >
-                                            Tên thiết bị
+                                            Tên sản phẩm
                                         </th>
                                         <th
                                             class="sorting"
-                                            aria-controls="dataTable"
+                                            tabindex="0"
+                                            aria-controls="example1"
+                                            rowspan="1"
                                             colspan="1"
-                                            aria-label="Age: activate to sort column ascending"
-                                            style="width: 141x;"
+                                            aria-label="Platform(s): activate to sort column ascending"
+                                        >
+                                            Mã sản phẩm
+                                        </th>
+                                        <th
+                                            class="sorting"
+                                            tabindex="0"
+                                            aria-controls="example1"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Engine version: activate to sort column ascending"
                                         >
                                             Số lượng
                                         </th>
                                         <th
                                             class="sorting"
-                                            aria-controls="dataTable"
+                                            tabindex="0"
+                                            aria-controls="example1"
+                                            rowspan="1"
                                             colspan="1"
-                                            aria-label="Age: activate to sort column ascending"
-                                            style="width: 141px;"
+                                            aria-label="CSS grade: activate to sort column ascending"
                                         >
-                                            Giá trị
+                                            Giá thành
                                         </th>
-
                                         <th
                                             class="sorting"
-                                            aria-controls="dataTable"
+                                            tabindex="0"
+                                            aria-controls="example1"
+                                            rowspan="1"
                                             colspan="1"
-                                            aria-label="Office: activate to sort column ascending"
-                                            style="width: 50px;"
+                                            aria-label="CSS grade: activate to sort column ascending"
                                         >
                                             Thao tác
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr
-                                        class="odd"
-                                        v-for="(item, index) in equipments"
-                                        :key="index"
-                                    >
-                                        <td class="sorting_1">
-                                            <img
-                                                style="max-width: 80px;"
-                                                :src="
-                                                    '/storage/thumbnails/' +
-                                                        item.thumbnails[0]
-                                                "
-                                                alt=""
-                                            />
-                                        </td>
-
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.quantity }}</td>
-                                        <td>{{ item.price }}</td>
-                                        <td class="table__content">
-                                            <button
-                                                class="btn btn-danger btn-sm"
-                                                @click.prevent="
-                                                    removeEquipment(item)
-                                                "
-                                            >
-                                                Xóa
-                                            </button>
-                                        </td>
+                                    <tr role="row" class="odd">
+                                        <td class="" tabindex="0">Gecko</td>
+                                        <td class="sorting_1">Seamonkey 1.1</td>
+                                        <td>Win 98+ / OSX.2+</td>
+                                        <td>1.8</td>
+                                        <td>A</td>
+                                        <td>A</td>
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th rowspan="1" colspan="1">
+                                            Ảnh
+                                        </th>
+                                        <th rowspan="1" colspan="1">
+                                            Tên sản phẩm
+                                        </th>
+                                        <th rowspan="1" colspan="1">
+                                            Mã sản phẩm
+                                        </th>
+                                        <th rowspan="1" colspan="1">
+                                            Số lượng
+                                        </th>
+                                        <th rowspan="1" colspan="1">
+                                            Giá thành
+                                        </th>
+                                        <th rowspan="1" colspan="1">
+                                            Thao tác
+                                        </th>
+                                    </tr>
+                                </tfoot>
                             </table>
-
-                            <div
-                                class="row justify-content-between text-right"
-                                v-if="totalPrice !== null"
-                            >
-                                <h3>{{ totalPrice }} VNĐ</h3>
-                            </div>
-
                             <div class="row justify-content-end">
                                 <div class="form-group col-sm-2">
                                     <button
@@ -119,7 +127,7 @@
                                 </div>
                                 <div
                                     class="form-group col-sm-2"
-                                    v-if="this.equipments.length >= 1"
+                                    v-if="this.importBooks.length >= 1"
                                 >
                                     <button
                                         class="btn btn-block btn-primary"
@@ -133,258 +141,221 @@
                     </div>
                 </div>
             </div>
+            <!-- /.card-body -->
         </div>
 
         <h5 class="success" v-if="success">
             <i class="fas fa-check"></i> Thêm thành công
         </h5>
-
-        <div class="container-fluid px-1 py-5 mx-auto" v-if="active">
-            <div class="row d-flex justify-content-center">
-                <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
-                    <div class="card">
-                        <ValidationObserver v-slot="{ handleSubmit }">
-                            <h5 class="text-center mb-4">Thêm thiết bị nhập</h5>
-                            <form
-                                class="form-card"
-                                @submit.prevent="handleSubmit(onSubmit)"
-                            >
-                                <div
-                                    class="row justify-content-between text-left"
-                                >
-                                    <ValidationProvider
-                                        rules="required|max:255"
-                                        name="name"
-                                        v-slot="{ errors }"
-                                    >
-                                        <div
-                                            class="form-group col-sm-12 flex-column d-flex"
-                                        >
-                                            <span class="inputErrors">{{
-                                                errors[0]
-                                            }}</span>
-                                            <label
-                                                class="form-control-label px-3"
-                                                >Tên thiết bị</label
-                                            >
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                name="name"
-                                                placeholder="Nhập tên thiết bị"
-                                                v-model="equipment.name"
-                                                :class="{
-                                                    errorInput: error.name
-                                                }"
-                                            />
-                                        </div>
-                                    </ValidationProvider>
-                                </div>
-                                <div
-                                    class="row justify-content-between text-left"
-                                >
-                                    <ValidationProvider
-                                        rules="required|max:255|min:7"
-                                        name="device_code"
-                                        v-slot="{ errors }"
-                                    >
-                                        <div
-                                            class="form-group col-sm-12 flex-column d-flex"
-                                        >
-                                            <span class="inputErrors">{{
-                                                errors[0]
-                                            }}</span>
-                                            <label
-                                                class="form-control-label px-3"
-                                                >Mã thiết bị</label
-                                            >
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                name="device_code"
-                                                placeholder="Nhập mã thiết bị"
-                                                v-model="equipment.device_code"
-                                                :class="{
-                                                    errorInput:
-                                                        error.device_code
-                                                }"
-                                            />
-                                        </div>
-                                    </ValidationProvider>
-                                </div>
-                                <div
-                                    class="row justify-content-between text-left"
-                                >
-                                    <div
-                                        class="form-group col-sm-6 flex-column d-flex"
-                                    >
-                                        <ValidationProvider
-                                            rules="required|quantityValid|numeric"
-                                            name="price"
-                                            v-slot="{ errors }"
-                                        >
-                                            <span class="inputErrors">{{
-                                                errors[0]
-                                            }}</span>
-                                            <label
-                                                class="form-control-label px-3"
-                                                >Giá thành</label
-                                            >
-                                            <input
-                                                type="text"
-                                                id="price"
-                                                name="price"
-                                                placeholder="Nhập giá thành (VNĐ)"
-                                                v-model="equipment.price"
-                                                :class="{
-                                                    errorInput: error.price
-                                                }"
-                                            />
-                                        </ValidationProvider>
-                                    </div>
-
-                                    <div
-                                        class="form-group col-sm-6 flex-column d-flex"
-                                    >
-                                        <ValidationProvider
-                                            rules="required|numeric|quantityValid:1"
-                                            name="quantity"
-                                            v-slot="{ errors }"
-                                        >
-                                            <span class="inputErrors">{{
-                                                errors[0]
-                                            }}</span>
-                                            <label
-                                                class="form-control-label px-3"
-                                                >Số lượng</label
-                                            >
-                                            <input
-                                                type="number"
-                                                id="name"
-                                                name="quantity"
-                                                placeholder="Nhập số lượng"
-                                                v-model="equipment.quantity"
-                                                :class="{
-                                                    errorInput: error.name
-                                                }"
-                                            />
-                                        </ValidationProvider>
-                                    </div>
-                                </div>
-                                <div
-                                    class="form-group col-sm-12 flex-column d-flex text-left"
-                                >
-                                    <ValidationProvider
-                                        rules="required"
-                                        name="category"
-                                        v-slot="{ errors }"
-                                    >
-                                        <span class="inputErrors">{{
-                                            errors[0]
-                                        }}</span>
-                                        <div class="form-group">
-                                            <label for="role"
-                                                >Chọn thể loại</label
-                                            >
-                                            <select
-                                                class="form-control"
-                                                name="category_id"
-                                                v-model="equipment.category_id"
-                                                :class="{
-                                                    errorInput:
-                                                        error.category_id
-                                                }"
-                                            >
-                                                <option
-                                                    v-for="category in categories"
-                                                    :key="category.id"
-                                                    :value="category.id"
-                                                    >{{ category.name }}</option
-                                                >
-                                            </select>
-                                        </div>
-                                    </ValidationProvider>
-                                </div>
-                                <div
-                                    class="form-group justify-content-between text-left"
-                                >
-                                    <ValidationProvider
-                                        rules=""
-                                        name="description"
-                                        v-slot="{ errors }"
-                                    >
-                                        <span class="inputErrors">{{
-                                            errors[0]
-                                        }}</span>
-                                        <div
-                                            class="form-group col-sm-12 flex-column d-flex"
-                                        >
-                                            <label
-                                                class="form-control-label px-3"
-                                                >Mô tả</label
-                                            >
-                                            <textarea
-                                                rows="5"
-                                                cols="20"
-                                                type="text"
-                                                id="description"
-                                                name="description"
-                                                v-model="equipment.description"
-                                                :class="{
-                                                    errorInput:
-                                                        error.description
-                                                }"
-                                            ></textarea>
-                                        </div>
-                                    </ValidationProvider>
-                                </div>
-                                <div
-                                    class="form-group justify-content-between text-left"
-                                >
-                                    <ValidationProvider
-                                        rules="image"
-                                        name="description"
-                                        v-slot="{ errors }"
-                                    >
-                                        <span class="inputErrors">{{
-                                            errors[0]
-                                        }}</span>
-                                        <div
-                                            class="form-group col-sm-12 flex-column d-flex"
-                                        >
-                                            <label
-                                                class="form-control-label px-3"
-                                                >Tải 1 ảnh thiết bị</label
-                                            >
-                                            <dropzone-uploader></dropzone-uploader>
-                                        </div>
-                                    </ValidationProvider>
-                                </div>
-                                <div class="row justify-content-end">
-                                    <div
-                                        class="form-group col-sm-6"
-                                        style="margin-top: 5px;"
-                                    >
-                                        <a
-                                            @click.prevent="cancel"
-                                            class="btn btn-block btn-primary"
-                                            style="line-height: 30px;"
-                                            >Hủy</a
-                                        >
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <button
-                                            class="btn btn-block btn-primary"
-                                        >
-                                            Thêm thiết bị
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </ValidationObserver>
-                    </div>
-                </div>
+        <div
+            class="card card-info"
+            style="width: max-content;
+                margin: 0px auto;"
+        >
+            <div class="card-header">
+                <h3 class="card-title">Thêm sản phẩm vào hàng chờ nhập</h3>
             </div>
+            <ValidationObserver v-slot="{ handleSubmit }">
+                <form
+                    class="form-card"
+                    @submit.prevent="handleSubmit(onSubmit)"
+                >
+                    <div class="card-body">
+                        <ValidationProvider
+                            rules="required|max:255"
+                            name="name"
+                            v-slot="{ errors }"
+                        >
+                            <span class="inputErrors">{{ errors[0] }}</span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width: 120px"
+                                        >Tên sản phẩm</span
+                                    >
+                                </div>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="name"
+                                    placeholder="Nhập tên sản phẩm"
+                                    v-model="book.name"
+                                    :class="{
+                                        errorInput: error.name
+                                    }"
+                                />
+                            </div>
+                        </ValidationProvider>
+                         <ValidationProvider
+                            rules="required|max:255|min:7"
+                            name="book_code"
+                            v-slot="{ errors }"
+                        >
+                            <span class="inputErrors">{{ errors[0] }}</span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width: 120px"
+                                        >Mã sản phẩm</span
+                                    >
+                                </div>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="name"
+                                    placeholder="Nhập mã sản phẩm"
+                                    v-model="book.book_code"
+                                    :class="{
+                                        errorInput: error.book_code
+                                    }"
+                                />
+                            </div>
+                        </ValidationProvider>
+                        <ValidationProvider
+                            rules="required|max:255"
+                            name="author"
+                            v-slot="{ errors }"
+                        >
+                            <span class="inputErrors">{{ errors[0] }}</span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width: 120px"
+                                        >Tác giả</span
+                                    >
+                                </div>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="author"
+                                    placeholder="Nhập mã sản phẩm"
+                                    v-model="book.author"
+                                    :class="{
+                                        errorInput: error.author
+                                    }"
+                                />
+                            </div>
+                        </ValidationProvider>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ValidationProvider
+                                    rules="required|max:255"
+                                    name="quantity"
+                                    v-slot="{ errors }"
+                                >
+                                    <span class="inputErrors">{{
+                                        errors[0]
+                                    }}</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="width: 120px"
+                                                >Số lượng</span
+                                            >
+                                        </div>
+                                        <input
+                                            type="number"
+                                            :min="1"
+                                            class="form-control"
+                                            name="quantity"
+                                            placeholder="Số lượng"
+                                            v-model="book.quantity"
+                                            :class="{
+                                                errorInput: error.quantity
+                                            }"
+                                        />
+                                    </div>
+                                </ValidationProvider>
+                            </div>
+                            <!-- /.col-lg-6 -->
+                            <div class="col-lg-6">
+                                <ValidationProvider
+                                    rules="required|max:255"
+                                    name="price"
+                                    v-slot="{ errors }"
+                                >
+                                    <span class="inputErrors">{{
+                                        errors[0]
+                                    }}</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="width: 120px"
+                                                >Giá thành</span
+                                            >
+                                        </div>
+                                        <input
+                                            type="number"
+                                            :min="1"
+                                            class="form-control"
+                                            name="price"
+                                            placeholder="Nhập tên sản phẩm"
+                                            v-model="book.price"
+                                            :class="{
+                                                errorInput: error.price
+                                            }"
+                                        />
+                                    </div>
+                                </ValidationProvider>
+                            </div>
+                            <!-- /.col-lg-6 -->
+                        </div>
+                         <ValidationProvider
+                            rules="required|max:255"
+                            name="description"
+                            v-slot="{ errors }"
+                        >
+                            <span class="inputErrors">{{ errors[0] }}</span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width: 120px"
+                                        >Mô tả</span
+                                    >
+                                </div>
+                                <textarea
+                                    rows="5"
+                                    type="text"
+                                    class="form-control"
+                                    name="description"
+                                    placeholder="Nhập tên sản phẩm"
+                                    v-model="book.description"
+                                    :class="{
+                                        errorInput: error.description
+                                    }"
+                                ></textarea>
+                            </div>
+                        </ValidationProvider>
+                        <div class="form-group">
+                            <categories-select></categories-select>
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-text"
+                                        >Chọn 2 ảnh cho sản phẩm</span
+                                    >
+                            <dropzone-uploader></dropzone-uploader>
+                        </div>
+                        <!-- /.row -->
+                        <div class="form-group"
+                            style="
+                            display: flex;
+                            justify-content: center;">
+                            <div class="form-group col-sm-4">
+                                <button
+                                    class="btn btn-block btn-danger"
+                                    @click.prevent="active = true"
+                                >
+                                    Huỷ bỏ
+                                </button>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <button
+                                    class="btn btn-block btn-primary"
+
+                                >
+                                    Thêm thiết bị
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </ValidationObserver>
+            <!-- /.card-body -->
         </div>
         <div class="container-fluid px-1 py-5 mx-auto" v-if="pickSupplier">
             <div class="row d-flex justify-content-center">
@@ -464,18 +435,19 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     computed: {
-        ...mapGetters(["thumbnails", "equipments", "totalPrice"])
+        ...mapGetters(["thumbnails", "importBooks", "totalPrice"])
     },
     data() {
         return {
-            equipment: {
+            book: {
                 name: null,
+                author: null,
                 description: null,
                 supplier_id: null,
-                category_id: 1,
+                category_id: [],
                 price: null,
                 quantity: null,
-                device_code: null
+                book_code: null
             },
             supplier_id: 1,
             suppliers: {},
@@ -487,37 +459,33 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["addEquipment", "removeEquipment", "import"]),
+        ...mapActions(["addBook", "removeBook", "import"]),
         getSuppliers() {
             axios.get("/api/suppliers").then(response => {
                 this.suppliers = response.data.suppliers;
             });
         },
-        getCategories() {
-            axios.get("/api/categories").then(response => {
-                this.categories = response.data.categories;
-            });
-        },
         onSubmit() {
-            this.equipment["thumbnails"] = this.thumbnails;
-            this.addEquipment(this.equipment);
-            this.equipment = {
-                name: null,
-                description: null,
-                supplier_id: 1,
-                category_id: 1,
-                price: null,
-                quantity: null
-            };
-            this.success = true;
-            this.active = false;
+            this.book["thumbnails"] = this.thumbnails;
+            // this.addBook(this.book);
+            // this.book = {
+            //     name: null,
+            //     description: null,
+            //     supplier_id: 1,
+            //     category_id: 1,
+            //     price: null,
+            //     quantity: null
+            // };
+            // this.success = true;
+            // this.active = false;
+            console.log(this.book);
         },
         cancel() {
             this.active = false;
         },
         onImport() {
             let equipments_import = [
-                this.equipments,
+                this.importBooks,
                 this.supplier_id,
                 this.totalPrice
             ];
@@ -532,7 +500,6 @@ export default {
         }
     },
     mounted() {
-        this.getCategories();
         this.getSuppliers();
     }
 };

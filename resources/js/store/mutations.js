@@ -28,5 +28,15 @@ export default {
     setThumbnailNames(state, thumbnails){
         state.thumbnails = thumbnails;
     },
+    addBookImport(state,book){
+        state.importBooks.push(book);
+    },
+    removeImportBook(state,book){
+        let index = state.importBooks.indexOf(book);
+        state.importBooks.splice(index, 1);
+    },
+    setBookImport(state, importBooks){
+        state.importBooks = importBooks;
+    }
 
 }
