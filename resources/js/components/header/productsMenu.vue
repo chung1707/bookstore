@@ -21,7 +21,7 @@
         <div class="col-md-6">
             <div class="banner banner-overlay" style="background-color: white;">
                 <a href="category.html">
-                    <img  :src="'/storage/bookstore_img/products/'+books[0].thumbnails[0].img" alt="Banner" />
+                    <img  :src="'/storage/thumbnails/'+books[0].thumbnails[0].img" alt="Banner" />
 
                     <div class="">
                         <div class="banner-title text-black"

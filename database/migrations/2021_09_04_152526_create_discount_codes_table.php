@@ -19,6 +19,7 @@ class CreateDiscountCodesTable extends Migration
             $table->float('discount')->default(0);
             $table->date('valid_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

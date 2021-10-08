@@ -22,7 +22,7 @@
                                     @endif
                                     @foreach($book->thumbnails as $thumbnail)
                                     <figure class="product-separated-item">
-                                        <img src="{{ asset('storage/bookstore_img/products/'.$thumbnail->img)}}" alt="product image">
+                                        <img src="{{ asset('storage/thumbnails/'.$thumbnail->img)}}" alt="product image">
                                     </figure>
                                     @endforeach
                                 </div><!-- End .product-gallery -->
@@ -245,7 +245,7 @@
                                 <span class="product-label label-top">Top</span>
                                 <span class="product-label label-out">Out of Stock</span>
                                 <a href="{{ route('books.show',['book' =>$relatedBook]) }}">
-                                    <img src="{{ asset('storage/bookstore_img/products/'.$relatedBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                                    <img src="{{ asset('storage/thumbnails/'.$relatedBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
                                 </a>
                                 <div class="product-action">
                                     <add-to-cart :book="{{ $relatedBook }}"></add-to-cart>

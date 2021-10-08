@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::post('/update_avatar/{user}',[ProfileController::class, 'updateAvatar']);
     // import
     Route::get('/import/create',[ImportController::class,'create'])->name('import.create');
+    Route::post('/book',[BookController::class, 'store'])->name('books.store');
 });
 
 // user route
@@ -86,7 +87,9 @@ Route::post('/update_qty_cart',[CartController::class,'updateQty'])->middleware(
 
 Route::resource('/article',ArticleController::class);
 
-Route::resource('/books',BookController::class);
+Route::get('/books',[BookController::class,'index'])->name('books.index');
+Route::get('/books/{book}',[BookController::class,'show'])->name('books.show');
+
 
 
 

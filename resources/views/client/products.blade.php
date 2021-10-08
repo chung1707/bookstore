@@ -50,7 +50,7 @@
                                 <figure class="product-media">
                                     <span class="product-label label-new">Mới</span>
                                     <a href="{{ route('books.show',['book' =>$book]) }}">
-                                        <img style="max-height: 277px;" src="{{ asset('storage/bookstore_img/products/'.$book->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                                        <img style="max-height: 277px;" src="{{ asset('storage/thumbnails/'.$book->thumbnails[0]->img)}}" alt="Product image" class="product-image">
                                     </a>
                                     <div class="product-action">
                                         <add-to-cart :book="{{ $book }}" ></add-to-cart>
@@ -72,7 +72,7 @@
                                     <div class="product-nav product-nav-thumbs">
                                         @foreach ($book->thumbnails as $thumbnail)
                                             <a href="#" class="active">
-                                                <img src="{{ asset('storage/bookstore_img/products/'.$thumbnail->img)}}" alt="product desc">
+                                                <img src="{{ asset('storage/thumbnails/'.$thumbnail->img)}}" alt="product desc">
                                             </a>
                                         @endforeach
                                     </div><!-- End .product-nav -->

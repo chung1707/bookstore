@@ -4,4 +4,6 @@ export default {
     discountCode: 0,
     thumbnails: [],
     importBooks: [],
+    //categories selector
+    category_ids: [],
 }

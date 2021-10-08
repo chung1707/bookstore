@@ -27,9 +27,9 @@ class UpdateUserInfosRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:255|string',
-            'email' => ['required','email','max:255', Rule::unique('users','email')->ignore($this->user)],
+            'email' => ['required','email','max:255', Rule::unique('users','email')->ignore($this->user)->whereNull('deleted_at')],
             'address' => 'required|max:255',
-            'phone' => ['required', 'max:255', 'min:9', 'regex:/[0-9]/', Rule::unique('users','phone')->ignore($this->user)],
+            'phone' => ['required', 'max:255', 'min:9', 'regex:/[0-9]/', Rule::unique('users','phone')->ignore($this->user)->whereNull('deleted_at')],
             'province_id' => ['required', new NotNullRule(),'exists:provinces,id'],
             'district_id' => ['required', new NotNullRule(),'exists:districts,id'],
             'ward_id' => ['required', new NotNullRule(),'exists:wards,id'],

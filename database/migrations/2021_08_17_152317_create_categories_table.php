@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->text('description');
             $table->boolean('for_books')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

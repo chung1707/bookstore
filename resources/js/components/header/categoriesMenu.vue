@@ -19,7 +19,7 @@
         <div class="col-md-6">
             <div class="banner banner-overlay" style="background-color: white;">
                 <a href="category.html">
-                    <img  :src="'/storage/bookstore_img/products/'+this.thumbnail" alt="Banner" />
+                    <img  :src="'/storage/thumbnails/'+this.thumbnail" alt="Banner" />
 
                     <div class="">
                         <div class="banner-title text-black"

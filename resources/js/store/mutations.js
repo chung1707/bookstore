@@ -37,6 +37,9 @@ export default {
     },
     setBookImport(state, importBooks){
         state.importBooks = importBooks;
-    }
+    },
 
+    setCategory_ids(state, category_ids){
+        state.category_ids = category_ids;
+    }
 }

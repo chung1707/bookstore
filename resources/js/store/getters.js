@@ -31,4 +31,15 @@ export default {
     importBooks(state){
         return state.importBooks;
     },
+    //categories selector
+    category_ids(state){
+        return state.category_ids;
+    },
+    sumPrice(state){
+        let total = 0;
+        for(let i = 0; i < state.importBooks.length; i++){
+            total += state.importBooks[i].quantity * state.importBooks[i].price;
+        }
+        return total;
+    }
 }

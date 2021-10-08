@@ -19,8 +19,9 @@ class CreateTransportersTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->text('description')->nullable();
-            $table->float('postage');
+            $table->double('postage');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
