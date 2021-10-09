@@ -6,4 +6,6 @@ export default {
     importBooks: [],
     //categories selector
     category_ids: [],
+    //checkout
+    postage: 0,
 }

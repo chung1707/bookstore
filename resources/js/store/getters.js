@@ -10,7 +10,7 @@ export default {
                     state.books[i].pivot.quantity *
                     ((100 - state.books[i].discount )/ 100);
             }
-        return sum;
+        return sum *((100-state.discountCode) /100 ) + state.postage;
     },
     totalBook(state){
         let total = 0;

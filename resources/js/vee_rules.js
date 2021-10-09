@@ -5,7 +5,8 @@ import {
     email,
     required,
     numeric,
-    image
+    image,
+    alpha_dash
 } from 'vee-validate/dist/rules';
 
 export default {
@@ -50,5 +51,9 @@ export default {
     image: extend('image', {
         ...image,
         message: 'Tệp tải lên phải là 1 hình ảnh'
+    }),
+    alpha_dash: extend('alpha_dash', {
+        ...alpha_dash,
+        message: 'Trường này không được nhập các kí tự đặc biệt'
     }),
 }

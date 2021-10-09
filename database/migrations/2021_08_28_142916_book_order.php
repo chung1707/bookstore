@@ -18,6 +18,7 @@ class BookOrder extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->integer('book_id');
             $table->integer('quantity')->default(1);
+            $table->float('discount')->default(0);
             $table->double('price');
             $table->timestamps();
         });

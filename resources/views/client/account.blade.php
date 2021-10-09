@@ -33,30 +33,20 @@
                         <li class="nav-item">
                             <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Đổi mật khẩu</a>
                         </li>
-                        <li class="nav-item">
-                        <li><a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Đăng xuất') }}
-                            </a></li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-
-                        </li>
                     </ul>
                 </aside><!-- End .col-lg-3 -->
 
                 <div class="col-md-8 col-lg-9 ">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-                            @if(!isset($user->orders))
+                            @if(!isset($orders))
                             <div>
                                 <p>Bạn chưa có đơn hàng nào</p>
                                 <a href="category.html" class="btn btn-outline-primary-2"><span>Tiếp tục mua sắm</span><i class="icon-long-arrow-right"></i></a>
                             </div>
                             @else
                             <div class="col-lg-9 ">
-                                @foreach($user->orders as $order)
+                                @foreach($orders as $order)
                                 <div style=" border-radius: 10px;
                                             background-color: #f9f9f9;
                                             padding: 30px;
@@ -65,11 +55,17 @@
                                     <p>Mã đơn hàng: {{$order->transaction_id}}</p>
                                     @if($order->pending)
                                     <p>Trạng thái đơn hàng: Đang chờ cửa hàng xác nhận</p>
-                                    <a href="category.html" class="btn btn-outline-primary-2"><span>Hủy đơn hàng</span></a>
+                                    <form action="{{route('mark_canceled',['order' => $order])}}" method="post">
+                                        @method('PUT')
+                                        @csrf
+                                        <button class="btn btn-outline-primary-2" type='submit'>Hủy</button>
+                                    </form>
                                     @elseif($order->processing)
                                     <p>Trạng thái đơn hàng: Đang giao hàng</p>
-                                    @else
+                                    @elseif($order->delivered)
                                     <p>Trạng thái đơn hàng: Đã giao hàng</p>
+                                    @else
+                                    <p>Trạng thái đơn hàng: Đơn hàng đã hủy</p>
                                     @endif
                                     <p>thời gian tạo: {{ $order->created_at }}</p>
                                     <table class="table table-summary">
@@ -112,6 +108,7 @@
                                 </div>
                                 @endforeach
                             </div>
+                            {{$orders->links() }}
                             @endif
                         </div><!-- .End .tab-pane -->
 

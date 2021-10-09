@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Danh sách người dùng</h1>
+<h1>Đơn hàng đã hủy</h1>
 @stop
 
 @section('content')
@@ -11,9 +11,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Danh sách tài khoản admin --</h3>
+                <h3 class="card-title">Danh sách đơn đã hủy -- </h3>
                 <h4 class="card-title">
-                    Trang: {{ $users->currentPage() }} / {{$users->lastPage()}}
+                    Trang: {{ $orders->currentPage() }} / {{$orders->lastPage()}}
                 </h4>
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -32,28 +32,25 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Họ tên</th>
-                            <th>email</th>
+                            <th>Thời gian tạo</th>
+                            <th>Mã đơn hàng</th>
+                            <th>Tổng tiền</th>
                             <th>Xem chi tiết</th>
-                            <th>Trạng thái</th>
+                            <th colspan="2">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
+                        @foreach ($orders as $order)
                         <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td><a href="{{ route('admin.showUser',['user' =>$user]) }}" class="btn-flat btn-default btn-sm">Xem chi tiết</a></td>
-                            <td>
-                                <block-user :user="{{ json_encode($user) }}"></block-user>
-                            </td>
+                            <td>{{ $order->created_at }}</td>
+                            <td>{{ $order->transaction_id }}</td>
+                            <td>{{ $order->totalPrice }}</td>
+                            <td><a href="" class="btn-flat btn-info btn-sm">Xem chi tiết</a></td>
                             <td class="table__content">
-                                <form action="{{ route('admin.deleteUser',['user' => $user]) }}" method="post">
+                                <form action="" method="post">
                                     @method('DELETE')
                                     @csrf
-                                    <button class="btn-flat btn-default btn-sm" type='submit'>Xóa</button>
+                                    <button class="btn-flat btn-danger btn-sm" type='submit'>Xóa</button>
                                 </form>
                             </td>
                         </tr>
@@ -63,7 +60,7 @@
             </div>
             <div style="padding-top: 20px;
                             margin: 0px auto;">
-                {{ $users->links() }}
+                {{ $orders->links() }}
             </div>
 
             <!-- /.card-body -->

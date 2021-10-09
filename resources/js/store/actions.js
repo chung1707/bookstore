@@ -63,4 +63,12 @@ export default {
     setCategory_ids(context,category_ids){
         context.commit('setCategory_ids',category_ids);
     },
+    //checkout
+    setPostage(context,postage){
+        context.commit('setPostage',postage);
+    },
+    clearCart(context){
+        axios.post('/clearCart');
+        context.commit('setBooks',[]);
+    }
 }
