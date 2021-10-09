@@ -196,7 +196,7 @@
                 >
                     <div class="card-body">
                         <ValidationProvider
-                            rules="required|max:255"
+                            rules="required|max:255|alpha_dash"
                             name="name"
                             v-slot="{ errors }"
                         >
@@ -248,7 +248,7 @@
                             </div>
                         </ValidationProvider>
                         <ValidationProvider
-                            rules="required|max:255"
+                            rules="required|max:255|alpha_dash"
                             name="author"
                             v-slot="{ errors }"
                         >

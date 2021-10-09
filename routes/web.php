@@ -7,6 +7,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -74,6 +75,7 @@ Route::group(['middleware' => ['auth', 'role:user,author']], function () {
     Route::post('/update_info',[UserController::class,'updateInfos'])->name('update_infos');
     Route::post('/update_account',[UserController::class,'updateAccount']);
     Route::get('/checkout',[CheckoutController::class,'index']);
+    Route::post('/checkout',[OrderController::class,'store']);
 });
 
 // Cart
@@ -82,7 +84,7 @@ Route::get('/get_cart',[CartController::class,'getCart'])->middleware('auth');
 Route::get('/cart',[CartController::class,'index'])->middleware('auth');
 Route::post('/delete_book_in_cart',[CartController::class,'deleteBookInCart'])->middleware('auth');
 Route::post('/update_qty_cart',[CartController::class,'updateQty'])->middleware('auth');
-
+Route::post('/clearCart',[CartController::class,'clearCart'])->middleware('auth');
 //checkout
 
 Route::resource('/article',ArticleController::class);

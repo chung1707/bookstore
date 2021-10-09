@@ -26,7 +26,7 @@ class ValidPhoneRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $user = User::where('phone', '=', $value)->first();
+        $user = User::where('phone', '=', $value)->whereNull('deleted_at')->first();
         if($user === null){
             return true;
         }

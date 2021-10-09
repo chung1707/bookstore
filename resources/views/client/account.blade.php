@@ -33,16 +33,6 @@
                         <li class="nav-item">
                             <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Đổi mật khẩu</a>
                         </li>
-                        <li class="nav-item">
-                        <li><a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Đăng xuất') }}
-                            </a></li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-
-                        </li>
                     </ul>
                 </aside><!-- End .col-lg-3 -->
 

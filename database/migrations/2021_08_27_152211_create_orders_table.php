@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('transaction_id');
+            $table->string('payment_methods');
             $table->text('note')->nullable();
             $table->double('totalPrice')->default(0);
             $table->boolean('pending')->default(true);

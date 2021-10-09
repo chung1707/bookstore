@@ -41,5 +41,12 @@ export default {
 
     setCategory_ids(state, category_ids){
         state.category_ids = category_ids;
-    }
+    },
+    // checkout
+    setPostage(state, postage){
+        state.postage = postage;
+    },
+    setDiscountCode(state, discountCode){
+        state.discountCode = discountCode;
+    },
 }
