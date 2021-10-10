@@ -248,7 +248,7 @@
                             </div>
                         </ValidationProvider>
                         <ValidationProvider
-                            rules="required|max:255"
+                            rules="required|max:255|quantityValid"
                             name="author"
                             v-slot="{ errors }"
                         >

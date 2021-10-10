@@ -19,7 +19,7 @@ export default {
     }),
     min: extend('min', {
         validate(value, args) {
-            return value.length >= args.length;
+            return value.length >= args.length; 
         },
         params: ['length'],
         message: 'Trường này yêu cầu tối thiểu {length} kí tự',

@@ -9880,6 +9880,8 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.CategorySearch[data-v-2fcd3a44] {\r\n    padding: 20px;\n}\n.categoryList[data-v-2fcd3a44] {\r\n    margin: 10px 0px;\n}\n.categoryItem[data-v-2fcd3a44]{\r\n    background-color: #dedede;;\r\n    border-radius: 10px;\r\n    color: black;\r\n    padding: 8px;\r\n    margin-right: 10px;\n}\n.delete[data-v-2fcd3a44] {\r\n    color: red;\r\n    cursor: pointer;\r\n    font-size: 20px;\r\n    font-weight: bold;\n}\n.dropdown[data-v-2fcd3a44] {\r\n    display: inline-block;\n}\r\n", ""]);
+<<<<<<< HEAD
+=======
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9904,6 +9906,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.error {\n    color: red;\n    display: block;\n}\n.success {\n    color: green;\n    padding: 20px;\n    background-color:rgba(0,255,0,0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput {\n    border-color: red;\n}\n.unsuccessful {\n    color: rgb(228, 155, 152);\n    padding: 20px;\n    background-color:rgba(255, 34, 34, 0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n\n", ""]);
+>>>>>>> ef71d1e64c8780c4c38b34ea4637f73f4dc4a16a
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -55666,6 +55669,297 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
+<<<<<<< HEAD
+    _c(
+      "div",
+      {
+        staticClass: "card card-info",
+        staticStyle: { width: "max-content", margin: "0px auto" }
+      },
+      [
+        _vm._m(2),
+        _vm._v(" "),
+        _c("ValidationObserver", {
+          scopedSlots: _vm._u([
+            {
+              key: "default",
+              fn: function(ref) {
+                var handleSubmit = ref.handleSubmit
+                return [
+                  _c(
+                    "form",
+                    {
+                      staticClass: "form-card",
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return handleSubmit(_vm.onSubmit)
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _c("ValidationProvider", {
+                            attrs: { rules: "required|max:255", name: "name" },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "default",
+                                  fn: function(ref) {
+                                    var errors = ref.errors
+                                    return [
+                                      _c(
+                                        "span",
+                                        { staticClass: "inputErrors" },
+                                        [_vm._v(_vm._s(errors[0]))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "input-group mb-3" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "input-group-prepend"
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "input-group-text",
+                                                  staticStyle: {
+                                                    width: "120px"
+                                                  }
+                                                },
+                                                [_vm._v("Tên sản phẩm")]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.book.name,
+                                                expression: "book.name"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              errorInput: _vm.error.name
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              name: "name",
+                                              placeholder: "Nhập tên sản phẩm"
+                                            },
+                                            domProps: { value: _vm.book.name },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.book,
+                                                  "name",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  }
+                                }
+                              ],
+                              null,
+                              true
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c("ValidationProvider", {
+                            attrs: {
+                              rules: "required|max:255|min:7",
+                              name: "book_code"
+                            },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "default",
+                                  fn: function(ref) {
+                                    var errors = ref.errors
+                                    return [
+                                      _c(
+                                        "span",
+                                        { staticClass: "inputErrors" },
+                                        [_vm._v(_vm._s(errors[0]))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "input-group mb-3" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "input-group-prepend"
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "input-group-text",
+                                                  staticStyle: {
+                                                    width: "120px"
+                                                  }
+                                                },
+                                                [_vm._v("Mã sản phẩm")]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.book.book_code,
+                                                expression: "book.book_code"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              errorInput: _vm.error.book_code
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              name: "name",
+                                              placeholder: "Nhập mã sản phẩm"
+                                            },
+                                            domProps: {
+                                              value: _vm.book.book_code
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.book,
+                                                  "book_code",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  }
+                                }
+                              ],
+                              null,
+                              true
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c("ValidationProvider", {
+                            attrs: {
+                              rules: "required|max:255|quantityValid",
+                              name: "author"
+                            },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "default",
+                                  fn: function(ref) {
+                                    var errors = ref.errors
+                                    return [
+                                      _c(
+                                        "span",
+                                        { staticClass: "inputErrors" },
+                                        [_vm._v(_vm._s(errors[0]))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "input-group mb-3" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "input-group-prepend"
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "input-group-text",
+                                                  staticStyle: {
+                                                    width: "120px"
+                                                  }
+                                                },
+                                                [_vm._v("Tác giả")]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.book.author,
+                                                expression: "book.author"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            class: {
+                                              errorInput: _vm.error.author
+                                            },
+                                            attrs: {
+                                              type: "text",
+                                              name: "author",
+                                              placeholder: "Nhập mã sản phẩm"
+                                            },
+                                            domProps: {
+                                              value: _vm.book.author
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  _vm.book,
+                                                  "author",
+                                                  $event.target.value
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  }
+                                }
+                              ],
+                              null,
+                              true
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+=======
     _vm.active
       ? _c(
           "div",
@@ -55696,12 +55990,17 @@ var render = function() {
                             }
                           },
                           [
+>>>>>>> ef71d1e64c8780c4c38b34ea4637f73f4dc4a16a
                             _c(
                               "div",
                               { staticClass: "card-body" },
                               [
                                 _c("ValidationProvider", {
                                   attrs: {
+<<<<<<< HEAD
+                                    rules: "required|max:255|quantityValid",
+                                    name: "quantity"
+=======
                                     rules: "required|max:255",
                                     name: "name"
                                   },
@@ -55797,6 +56096,7 @@ var render = function() {
                                   attrs: {
                                     rules: "required|max:255|min:7",
                                     name: "book_code"
+>>>>>>> ef71d1e64c8780c4c38b34ea4637f73f4dc4a16a
                                   },
                                   scopedSlots: _vm._u(
                                     [

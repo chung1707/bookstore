@@ -338,15 +338,15 @@ return [
             'submenu' => [
                 [
                     'text' => 'Danh mục sách',
-                    'url'  => '',
+                    'url'  => '/admin/category',
                 ],
                 [
                     'text'    =>'Danh mục bài viết',
-                    'url'     => '',
+                    'url'     => 'admin/dmbv',
                 ],
                 [
                     'text' => 'Thêm Danh mục',
-                    'url'  => '',
+                    'url'  => 'admin/category/create ',
                 ],
             ],
         ],

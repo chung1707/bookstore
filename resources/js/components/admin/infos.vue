@@ -9,7 +9,7 @@
                         <div class="text-center" v-if="this.user.avatar !=null">
                             <img class="profile-user-img img-fluid img-circle" :src="
                                     '/storage/thumbnails/' +
-                                        user.avatar
+                                        user.avatar 
                                 " alt="User profile picture">
                         </div>
                         <div class="text-center" v-else>

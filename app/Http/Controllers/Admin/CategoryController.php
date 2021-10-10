@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Http\Requests\UpdateCategoryRequest ;
+
 
 
 class CategoryController extends Controller
@@ -22,9 +24,30 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(isset($request->searchName)){
+            $name=$request->searchName;
+            $categories =  Category::where('name','like','%'.$name.'%')->where('for_books', '=', true)->get();
+            return view('admin.categoryManagement.listDMS')->with('categories',$categories)->with('oldsearch',$name);
+        }else{
+            $categories = Category::paginate(9);
+            $categories = Category::where('for_books', '=', true)->get();
+            return view('admin.categoryManagement.listDMS')->with('categories',$categories);
+        }
+                    
+    }
+    public function listdmbv(Request $request){
+        if(isset($request->searchName)){
+            $name=$request->searchName;
+            $categories =  Category::where('name','like','%'.$name.'%')->where('for_books', '=', false)->get();
+            return view('admin.categoryManagement.listDMBV')->with('categories',$categories)->with('oldsearch',$name);
+        }else{
+            $categories = Category::paginate(9);
+            $categories = Category::where('for_books', '=', false)->get();
+            return view('admin.categoryManagement.listDMBV')->with('categories',$categories);
+        }
+      
     }
 
     /**
@@ -34,7 +57,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categoryManagement.create_category');
     }
 
     /**
@@ -45,7 +68,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        //dd($request);
+        $validated = $request->validate([
+            'name' => 'required|unique:categories|max:255',
+            'description' => 'required|max:1000',
+            
+        ]);
+        $category = new Category;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->for_books = $request->for_books;
+        $category->save();
+        return redirect()->route('category.create');
     }
 
     /**
@@ -57,6 +92,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
+        return view('admin.categoryManagement.show_category')->with('category',$category);
     }
 
     /**
@@ -67,7 +103,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categoryManagement.edit_categorry')->with('category',$category);
     }
 
     /**
@@ -77,9 +113,13 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         //
+        // $category->fill($request->all()); 
+        // $category->update();
+        // return redirect()->route('category.index');
+        dd('$request');
     }
 
     /**
@@ -90,6 +130,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back();
+    }
+    public function updateDM(UpdateCategoryRequest $request, Category $category)
+    {
+         $category->fill($request->all()); 
+        $category->update();
+        return redirect()->route('category.index');
+    // dd('$request');
     }
 }
