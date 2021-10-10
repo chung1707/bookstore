@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Category;
 use App\Models\Supplier;
+use App\Models\Transporters;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -20,5 +21,10 @@ class InfoController extends Controller
         }
         $categories = $categoriesQuery->limit(10)->get();
         return response()->json($categories);
+    }
+    public function getInfoTransporter(){
+        $transporters = Transporters::get();
+        return response()->json(['transporters' => $transporters]);
+
     }
 }

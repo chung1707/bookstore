@@ -134,7 +134,7 @@
                         }'>
             @foreach($suppliers as $supplier)
             <a href="#" class="brand">
-                <img src="{{ asset('storage/bookstore_img/supplier/'.$supplier->logo)}}" alt="Brand Name">
+                <img src="{{ asset('storage/thumbnails/'.$supplier->logo)}}" alt="Brand Name">
             </a>
             @endforeach
         </div><!-- End .owl-carousel -->
@@ -185,13 +185,21 @@
                             }'>
                 @foreach($trendBooks as $trendBook)
                 <div class="product product-11 text-center">
+                    @if($trendBook->thumbnails[0])
                     <figure class="product-media">
                         <a href="{{ route('books.show',['book' =>$trendBook]) }}">
-                            <img src="{{ asset('storage/bookstore_img/products/'.$trendBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
-                            <img src="{{ asset('storage/bookstore_img/products/'.$trendBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
+                            <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                            <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
                         </a>
                     </figure><!-- End .product-media -->
-
+                    @else
+                    <figure class="product-media">
+                        <a href="{{ route('books.show',['book' =>$newBook]) }}">
+                            <img src="{{ asset('storage/thumbnails/product0.jpg')}}" alt="Product image" class="product-image">
+                            <img src="{{ asset('storage/thumbnails/product0.jpg')}}" alt="Product image" class="product-image-hover">
+                        </a>
+                    </figure><!-- End .product-media -->
+                    @endif
                     <div class="product-body">
                         <h3 class="product-title"><a href="{{ route('books.show',['book' =>$trendBook]) }}">{{ $trendBook->name }}</a></h3><!-- End .product-title -->
                         <div class="product-price" style=" color: #e68b7a;">
@@ -215,10 +223,13 @@
         @foreach ($trendCategories as $trendCategory)
         <div class="col-6 col-lg-4">
             <div class="banner banner-display banner-link-anim">
-                <a href="#">
-                    <img src="{{ asset('storage/bookstore_img/products/'.$trendCategory->books[1]->thumbnails[0]->img) }}" alt="Banner">
-                </a>
-
+                @if(isset($trendCategory->books[1]))
+                    @isset($trendCategory->books[1]->thumbnail[0])
+                    <a href="#">
+                        <img src="{{ asset('storage/thumbnails/'.$trendCategory->books[1]->thumbnails[0]->img) }}" alt="Banner">
+                    </a>
+                    @endisset
+                @endif
                 <div class="banner-content banner-content-center">
                     <h3 class="banner-title text-white">
                         <a href="#"
@@ -255,13 +266,21 @@
                     @foreach($newBooks as $newBook)
                     <div class="col-6 col-md-4 col-lg-3">
                         <div class="product product-11 mt-v3 text-center">
+                            @if(isset($newBook->thumbnails[0]))
                             <figure class="product-media">
                                 <a href="{{ route('books.show',['book' =>$newBook]) }}">
-                                    <img src="{{ asset('storage/bookstore_img/products/'.$newBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
-                                    <img src="{{ asset('storage/bookstore_img/products/'.$newBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
+                                    <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                                    <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
                                 </a>
                             </figure><!-- End .product-media -->
-
+                            @else
+                            <figure class="product-media">
+                                <a href="{{ route('books.show',['book' =>$newBook]) }}">
+                                    <img src="{{ asset('storage/thumbnails/product0.jpg')}}" alt="Product image" class="product-image">
+                                    <img src="{{ asset('storage/thumbnails/product0.jpg')}}" alt="Product image" class="product-image-hover">
+                                </a>
+                            </figure><!-- End .product-media -->
+                            @endif
                             <div class="product-body">
                                 <h3 class="product-title"><a href="{{ route('books.show',['book' =>$newBook]) }}">{{ $newBook->name }}</a></h3><!-- End .product-title -->
                                 <div class="product-price" style=" color: #e68b7a;">

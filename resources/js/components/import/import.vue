@@ -84,13 +84,38 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr role="row" class="odd">
-                                        <td class="" tabindex="0">Gecko</td>
-                                        <td class="sorting_1">Seamonkey 1.1</td>
-                                        <td>Win 98+ / OSX.2+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                        <td>A</td>
+                                    <tr
+                                        role="row"
+                                        class="odd"
+                                        v-for="book in importBooks"
+                                        :key="book.id"
+                                    >
+                                        <td class="" tabindex="0">
+                                            <img
+                                                :src="
+                                                    '/storage/thumbnails/' +
+                                                        book.thumbnails[0]
+                                                "
+                                                alt="ảnh sản phẩm"
+                                                style="max-width: 80px;"
+                                            />
+                                        </td>
+
+                                        <td class="sorting_1">
+                                            {{ book.name }}
+                                        </td>
+                                        <td>{{ book.book_code }}</td>
+                                        <td>{{ book.quantity }}</td>
+                                        <td>{{ book.price }}</td>
+                                        <td>
+                                            <a
+                                                class="btn btn-default btn-sm"
+                                                @click.prevent="
+                                                    removeBook(book)
+                                                "
+                                                >Xóa</a
+                                            >
+                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -116,13 +141,21 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            <div>
+                                <div class="row justify-content-end"
+                                v-if="sumPrice">
+                                    <div class="form-group col-sm-6 text-right">
+                                        <h3 style="color: red">{{sumPrice}} VNĐ</h3>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row justify-content-end">
                                 <div class="form-group col-sm-2">
                                     <button
                                         class="btn btn-block btn-primary"
                                         @click.prevent="active = true"
                                     >
-                                        Thêm thiết bị
+                                        Thêm sản phẩm
                                     </button>
                                 </div>
                                 <div
@@ -148,6 +181,7 @@
             <i class="fas fa-check"></i> Thêm thành công
         </h5>
         <div
+            v-if="active"
             class="card card-info"
             style="width: max-content;
                 margin: 0px auto;"
@@ -169,7 +203,9 @@
                             <span class="inputErrors">{{ errors[0] }}</span>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width: 120px"
+                                    <span
+                                        class="input-group-text"
+                                        style="width: 120px"
                                         >Tên sản phẩm</span
                                     >
                                 </div>
@@ -185,7 +221,7 @@
                                 />
                             </div>
                         </ValidationProvider>
-                         <ValidationProvider
+                        <ValidationProvider
                             rules="required|max:255|min:7"
                             name="book_code"
                             v-slot="{ errors }"
@@ -193,7 +229,9 @@
                             <span class="inputErrors">{{ errors[0] }}</span>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width: 120px"
+                                    <span
+                                        class="input-group-text"
+                                        style="width: 120px"
                                         >Mã sản phẩm</span
                                     >
                                 </div>
@@ -217,7 +255,9 @@
                             <span class="inputErrors">{{ errors[0] }}</span>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width: 120px"
+                                    <span
+                                        class="input-group-text"
+                                        style="width: 120px"
                                         >Tác giả</span
                                     >
                                 </div>
@@ -225,7 +265,7 @@
                                     type="text"
                                     class="form-control"
                                     name="author"
-                                    placeholder="Nhập mã sản phẩm"
+                                    placeholder="Tác giả"
                                     v-model="book.author"
                                     :class="{
                                         errorInput: error.author
@@ -236,7 +276,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <ValidationProvider
-                                    rules="required|max:255|quantityValid"
+                                    rules="required|max:255|numeric|quantityValid"
                                     name="quantity"
                                     v-slot="{ errors }"
                                 >
@@ -245,7 +285,9 @@
                                     }}</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" style="width: 120px"
+                                            <span
+                                                class="input-group-text"
+                                                style="width: 120px"
                                                 >Số lượng</span
                                             >
                                         </div>
@@ -266,7 +308,7 @@
                             <!-- /.col-lg-6 -->
                             <div class="col-lg-6">
                                 <ValidationProvider
-                                    rules="required|max:255"
+                                    rules="required|max:255|numeric|quantityValid"
                                     name="price"
                                     v-slot="{ errors }"
                                 >
@@ -275,7 +317,9 @@
                                     }}</span>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" style="width: 120px"
+                                            <span
+                                                class="input-group-text"
+                                                style="width: 120px"
                                                 >Giá thành</span
                                             >
                                         </div>
@@ -284,7 +328,7 @@
                                             :min="1"
                                             class="form-control"
                                             name="price"
-                                            placeholder="Nhập tên sản phẩm"
+                                            placeholder="Giá thành"
                                             v-model="book.price"
                                             :class="{
                                                 errorInput: error.price
@@ -295,15 +339,17 @@
                             </div>
                             <!-- /.col-lg-6 -->
                         </div>
-                         <ValidationProvider
-                            rules="required|max:255"
+                        <ValidationProvider
+                            rules="required"
                             name="description"
                             v-slot="{ errors }"
                         >
                             <span class="inputErrors">{{ errors[0] }}</span>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width: 120px"
+                                    <span
+                                        class="input-group-text"
+                                        style="width: 120px"
                                         >Mô tả</span
                                     >
                                 </div>
@@ -312,7 +358,7 @@
                                     type="text"
                                     class="form-control"
                                     name="description"
-                                    placeholder="Nhập tên sản phẩm"
+                                    placeholder="Mô tả về sản phẩm"
                                     v-model="book.description"
                                     :class="{
                                         errorInput: error.description
@@ -320,112 +366,115 @@
                                 ></textarea>
                             </div>
                         </ValidationProvider>
-                        <div class="form-group">
-                            <categories-select></categories-select>
-                        </div>
+                        <ValidationProvider
+                            rules="required"
+                            name="category_ids"
+                            v-slot="{ errors }"
+                        >
+                            <span class="inputErrors">{{ errors[0] }}</span>
+                            <div class="form-group">
+                                <input
+                                    type="hidden"
+                                    v-model="category_ids"
+                                    name="category_ids"
+                                />
+                                <categories-select></categories-select>
+                            </div>
+                        </ValidationProvider>
                         <div class="form-group">
                             <span class="input-group-text"
-                                        >Chọn 2 ảnh cho sản phẩm</span
-                                    >
+                                >Chọn 2 ảnh cho sản phẩm</span
+                            >
                             <dropzone-uploader></dropzone-uploader>
                         </div>
                         <!-- /.row -->
-                        <div class="form-group"
+                        <div
+                            class="form-group"
                             style="
                             display: flex;
-                            justify-content: center;">
+                            justify-content: center;"
+                        >
                             <div class="form-group col-sm-4">
                                 <button
                                     class="btn btn-block btn-danger"
-                                    @click.prevent="active = true"
+                                    @click.prevent="active = false"
                                 >
                                     Huỷ bỏ
                                 </button>
                             </div>
                             <div class="form-group col-sm-4">
-                                <button
-                                    class="btn btn-block btn-primary"
-
-                                >
-                                    Thêm thiết bị
+                                <button class="btn btn-block btn-primary">
+                                    Thêm sản phẩm
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </form>
             </ValidationObserver>
             <!-- /.card-body -->
         </div>
-        <div class="container-fluid px-1 py-5 mx-auto" v-if="pickSupplier">
-            <div class="row d-flex justify-content-center">
-                <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
-                    <div class="card">
-                        <ValidationObserver v-slot="{ handleSubmit }">
-                            <h5 class="text-center mb-4">Chọn nhà cung cấp</h5>
-                            <form
-                                class="form-card"
-                                @submit.prevent="handleSubmit(onImport)"
-                            >
-                                <div
-                                    class="form-group col-sm-12 flex-column d-flex text-left"
-                                >
-                                    <ValidationProvider
-                                        rules="required"
-                                        name="supplier"
-                                        v-slot="{ errors }"
-                                    >
-                                        <span class="inputErrors">{{
-                                            errors[0]
-                                        }}</span>
-                                        <div class="form-group">
-                                            <label for="role"
-                                                >Nhà cung cấp</label
-                                            >
-                                            <select
-                                                class="form-control"
-                                                name="supplier_id"
-                                                :class="{
-                                                    errorInput:
-                                                        error.supplier_id
-                                                }"
-                                                v-model="supplier_id"
-                                            >
-                                                <option
-                                                    v-for="supplier in suppliers"
-                                                    :key="supplier.id"
-                                                    :value="supplier.id"
-                                                >
-                                                    {{ supplier.name }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </ValidationProvider>
-                                </div>
-                                <div class="row justify-content-end">
-                                    <div class="form-group col-sm-6">
-                                        <button
-                                            class="btn btn-block btn-primary"
-                                            @click.prevent="
-                                                pickSupplier = false
-                                            "
-                                        >
-                                            Hủy
-                                        </button>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <button
-                                            class="btn btn-block btn-primary"
-                                        >
-                                            Nhập kho
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </ValidationObserver>
-                    </div>
-                </div>
+        <div
+            v-if="pickSupplier"
+            class="card card-info"
+            style="width: 500px;
+                margin: 0px auto;"
+        >
+            <div class="card-header">
+                <h3 class="card-title">Chọn nhà cung cấp</h3>
             </div>
+            <ValidationObserver v-slot="{ handleSubmit }">
+                <form
+                    class="form-card"
+                    @submit.prevent="handleSubmit(onImport)"
+                >
+                    <div class="card-body">
+                        <ValidationProvider
+                            name="supplier_id"
+                            v-slot="{ errors }"
+                        >
+                            <span class="inputErrors">{{ errors[0] }}</span>
+                            <div class="form-group">
+                                <label
+                                    >Nhà cung cấp</label
+                                >
+                                <select
+                                    class="form-control"
+                                    name="supplier_id"
+                                    :class="{
+                                        errorInput:
+                                            error.supplier_id
+                                    }"
+                                    v-model="supplier_id"
+                                >
+                                    <option
+                                        v-for="supplier in suppliers"
+                                        :key="supplier.id"
+                                        :value="supplier.id"
+                                    >
+                                        {{ supplier.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </ValidationProvider>
+
+                        <div class="row justify-content-end">
+                            <div class="form-group col-sm-6">
+                                <button
+                                    class="btn btn-block btn-primary"
+                                    @click.prevent="pickSupplier = false"
+                                >
+                                    Hủy
+                                </button>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <button class="btn btn-block btn-primary">
+                                    Nhập kho
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </ValidationObserver>
         </div>
     </div>
 </template>
@@ -435,7 +484,13 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     computed: {
-        ...mapGetters(["thumbnails", "importBooks", "totalPrice"])
+        ...mapGetters([
+            "thumbnails",
+            "importBooks",
+            "totalPrice",
+            "category_ids",
+            "sumPrice"
+        ])
     },
     data() {
         return {
@@ -444,7 +499,6 @@ export default {
                 author: null,
                 description: null,
                 supplier_id: null,
-                category_id: [],
                 price: null,
                 quantity: null,
                 book_code: null
@@ -467,29 +521,27 @@ export default {
         },
         onSubmit() {
             this.book["thumbnails"] = this.thumbnails;
-            // this.addBook(this.book);
-            // this.book = {
-            //     name: null,
-            //     description: null,
-            //     supplier_id: 1,
-            //     category_id: 1,
-            //     price: null,
-            //     quantity: null
-            // };
-            // this.success = true;
-            // this.active = false;
-            console.log(this.book);
-        },
-        cancel() {
+            this.book["category_ids"] = this.category_ids;
+            this.addBook(this.book);
+            this.book = {
+                name: null,
+                author: null,
+                description: null,
+                supplier_id: null,
+                price: null,
+                quantity: null,
+                book_code: null
+            };
+            this.success = true;
             this.active = false;
         },
         onImport() {
-            let equipments_import = [
+            let books_import = [
                 this.importBooks,
                 this.supplier_id,
-                this.totalPrice
+                this.sumPrice,
             ];
-            this.import(equipments_import);
+            this.import(books_import);
             this.success = true;
             this.pickSupplier = false;
         }

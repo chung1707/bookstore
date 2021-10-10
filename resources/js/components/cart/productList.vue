@@ -48,7 +48,7 @@
                                         <a :href="'/books/'+book.id">
                                             <img
                                                 :src="
-                                                    '/storage/bookstore_img/products/' +
+                                                    '/storage/thumbnails/' +
                                                         book.thumbnails[0].img
                                                 "
                                                 alt="Book Image"

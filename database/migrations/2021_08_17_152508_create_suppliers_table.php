@@ -22,6 +22,7 @@ class CreateSuppliersTable extends Migration
             $table->string('supplier_fax')->nullable();
             $table->string('logo')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

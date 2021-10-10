@@ -43,18 +43,31 @@ export default {
     addBook(context, book){
         context.commit('addBookImport',book);
         context.commit('setThumbnailNames',[]);
+        context.commit('setCategory_ids',[]);
     },
     removeBook(context, book){
         context.commit('removeImportBook',book);
     },
-    import(context,equipments_import){
-        let equipments = equipments_import[0];
-        let bill = equipments_import;
-        equipments.forEach(equipment => equipment.supplier_id = equipments_import[1]);
-        axios.post('/equipment',{'equipments': equipments, 'bill': bill}).then((response) =>{
+    import(context,books_import){
+        let books = books_import[0];
+        let bill = books_import;
+        books.forEach(book => book.supplier_id = books_import[1]);
+        axios.post('/admin/book',{'books': books, 'bill': bill}).then((response) =>{
             if(response.data.status == 201){
                 context.commit('setBookImport',[]);
             }
         });
     },
+    // categories selector
+    setCategory_ids(context,category_ids){
+        context.commit('setCategory_ids',category_ids);
+    },
+    //checkout
+    setPostage(context,postage){
+        context.commit('setPostage',postage);
+    },
+    clearCart(context){
+        axios.post('/clearCart');
+        context.commit('setBooks',[]);
+    }
 }

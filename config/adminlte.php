@@ -276,19 +276,19 @@ return [
             'submenu' => [
                 [
                     'text' => 'Chờ phê duyệt',
-                    'url'  => '#',
+                    'url'  => 'admin/new_orders',
                 ],
                 [
                     'text'    => 'Tiếp nhận và xử lý',
-                    'url'     => '#',
+                    'url'     => 'admin/processing_orders',
                 ],
                 [
                     'text' => 'Đã giao hàng',
-                    'url'  => '#',
+                    'url'  => 'admin/delivered_orders',
                 ],
                 [
                     'text' => 'Đơn đã hủy',
-                    'url'  => '#',
+                    'url'  => 'admin/canceled_orders',
                 ],
             ],
         ],
@@ -309,8 +309,8 @@ return [
                     'url'     => '#',
                 ],
                 [
-                    'text'    => 'Lịch sử',
-                    'url'     => '#',
+                    'text'    => 'Lịch sử nhập',
+                    'url'     => 'admin/import_bills',
                 ],
             ],
         ],
@@ -356,11 +356,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Danh sách nhà cung cấp',
-                    'url'  => '',
+                    'url'  => 'supplier/list-supplier',
                 ],
                 [
                     'text'    =>'Thêm nhà cung cấp',
-                    'url'     => '',
+                    'url'     => 'supplier/create-supplier',
                 ],
             ],
         ],

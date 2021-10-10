@@ -34,3 +34,5 @@ Route::get('/get_hot_books',[BookController::class, 'getHeaderBooks']);
 
 Route::get('suppliers',[InfoController::class,'getSuppliers']);
 Route::get('/select_categories', [InfoController::class, 'getSelectCategories']);
+
+Route::get('/info/transporters',[InfoController::class, 'getInfoTransporter']);

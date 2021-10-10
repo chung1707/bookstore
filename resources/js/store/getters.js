@@ -10,7 +10,7 @@ export default {
                     state.books[i].pivot.quantity *
                     ((100 - state.books[i].discount )/ 100);
             }
-        return sum;
+        return sum *((100-state.discountCode) /100 ) + state.postage;
     },
     totalBook(state){
         let total = 0;
@@ -31,4 +31,15 @@ export default {
     importBooks(state){
         return state.importBooks;
     },
+    //categories selector
+    category_ids(state){
+        return state.category_ids;
+    },
+    sumPrice(state){
+        let total = 0;
+        for(let i = 0; i < state.importBooks.length; i++){
+            total += state.importBooks[i].quantity * state.importBooks[i].price;
+        }
+        return total;
+    }
 }

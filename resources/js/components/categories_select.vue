@@ -4,7 +4,7 @@
             <span class="categoryItem"
             v-for="(category,index) in selectedCategories" :key="category.id">
                 {{ category.name }}
-                <span class="delete" @click="selectedCategories.splice(index,1)">x</span>
+                <span class="delete" @click="remove(index)">x</span>
             </span>
         </span>
         <div class="dropdown">
@@ -21,24 +21,23 @@
                 </a>
             </div>
         </div>
-        <input type="hidden" name="category_ids[]"
-        v-for="category in selectedCategories" :key="category.id"
-        :value="category.id">
     </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import {mapActions} from "vuex";
 export default {
     data(){
         return {
             keyWord: '',
             categories: [],
             selectedCategories: [],
+            category_ids: [],
         }
     },
     methods: {
+        ...mapActions(['setCategory_ids']),
         getCategories(){
             axios.get("/api/select_categories?keyWord="+this.keyWord).then((response)=>{
                 this.categories = response.data;
@@ -51,12 +50,22 @@ export default {
         addCategory(category){
             if(!this.selectedCategories.includes(category)){
                 this.selectedCategories.push(category);
+                this.category_ids.push(category.id);
             }
+        },
+        remove(index){
+            this.selectedCategories.splice(index,1);
+            this.category_ids.splice(index,1);
         }
     },
     mounted() {
         this.getCategories();
     },
+    watch: {
+        category_ids(){
+            this.setCategory_ids(this.category_ids);
+        }
+    }
 };
 </script>
 

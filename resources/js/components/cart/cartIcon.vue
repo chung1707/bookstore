@@ -35,11 +35,11 @@
                     </div>
                     <!-- End .product-cart-details -->
 
-                    <figure class="product-image-container">
+                    <figure class="product-image-container" v-if="book.thumbnails[0]">
                         <a :href="'/books/' + book.id" class="product-image">
                             <img
                                 :src="
-                                    '/storage/bookstore_img/products/' +
+                                    '/storage/thumbnails/' +
                                         book.thumbnails[0].img
                                 "
                                 alt="book"
