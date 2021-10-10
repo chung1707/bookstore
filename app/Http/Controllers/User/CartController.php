@@ -62,4 +62,8 @@ class CartController extends Controller
         ]);
         return response()->json(['qty' => $book->pivot->quantity]);
     }
+    public function clearCart(){
+        $cart = auth()->user()->cart;
+        $cart->books()->detach();
+    }
 }

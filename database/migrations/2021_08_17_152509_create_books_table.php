@@ -19,12 +19,13 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->string('book_code');
             $table->text('description')->nullable();
-            $table->float('price')->default(0);
+            $table->double('price')->default(0);
             $table->integer('sold')->default(0);
             $table->integer('quantity')->default(0);
             $table->integer('discount')->default(0);
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

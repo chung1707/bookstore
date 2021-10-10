@@ -13,12 +13,12 @@ class BookSaleBill extends Migration
      */
     public function up()
     {
-        Schema::create('book_sale_bill', function (Blueprint $table) {
+        Schema::create('book_sale_bills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_bill_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('sale_bills_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->integer('book_id');
             $table->integer('quantity')->default(1);
-            $table->float('price');
+            $table->double('price');
             $table->timestamps();
         });
     }
@@ -30,7 +30,7 @@ class BookSaleBill extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_sale_bill');
+        Schema::dropIfExists('book_sale_bills');
 
     }
 }

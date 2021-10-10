@@ -2919,9 +2919,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2949,15 +2953,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       keyWord: '',
       categories: [],
-      selectedCategories: []
+      selectedCategories: [],
+      category_ids: []
     };
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)(['setCategory_ids'])), {}, {
     getCategories: function getCategories() {
       var _this = this;
 
@@ -2972,11 +2978,21 @@ __webpack_require__.r(__webpack_exports__);
     addCategory: function addCategory(category) {
       if (!this.selectedCategories.includes(category)) {
         this.selectedCategories.push(category);
+        this.category_ids.push(category.id);
       }
+    },
+    remove: function remove(index) {
+      this.selectedCategories.splice(index, 1);
+      this.category_ids.splice(index, 1);
     }
-  },
+  }),
   mounted: function mounted() {
     this.getCategories();
+  },
+  watch: {
+    category_ids: function category_ids() {
+      this.setCategory_ids(this.category_ids);
+    }
   }
 });
 
@@ -3348,15 +3364,162 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["books", "authUser", "totalPrice"])),
   data: function data() {
     return {
-      discountCode: 0
+      discountCode: 0,
+      transporters: [],
+      transporter_id: [],
+      note: null,
+      provinces: [],
+      districts: [],
+      wards: [],
+      province_id: null,
+      district_id: null,
+      ward_id: null,
+      payment: null,
+      error: {},
+      success: false,
+      unsuccessful: false,
+      notItem: false
     };
   },
-  methods: {}
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(["setPostage", 'setBooksBeforeOrder', 'clearCart'])), {}, {
+    getTransporters: function getTransporters() {
+      var _this = this;
+
+      axios.get("api/info/transporters").then(function (response) {
+        _this.transporters = response.data.transporters;
+      });
+    },
+    getProvinces: function getProvinces() {
+      var _this2 = this;
+
+      axios.get("/api/location/provinces").then(function (response) {
+        _this2.provinces = response.data;
+      })["catch"](function () {});
+    },
+    getDistricts: function getDistricts() {
+      var _this3 = this;
+
+      axios.get("/api/location/province/" + this.province_id + "/districts").then(function (response) {
+        _this3.districts = response.data;
+      })["catch"](function (error) {});
+    },
+    getWards: function getWards() {
+      var _this4 = this;
+
+      axios.get("/api/location/province/district/" + this.district_id + "/wards").then(function (response) {
+        _this4.wards = response.data;
+      })["catch"](function (error) {});
+    },
+    onSubmit: function onSubmit() {
+      var _this5 = this;
+
+      if (this.books !== []) {
+        var orderBill = {};
+        orderBill.phone_number = this.authUser.phone;
+        orderBill.dispatch = this.authUser.address;
+        orderBill.district_id = this.authUser.district_id;
+        orderBill.ward_id = this.authUser.ward_id;
+        orderBill.province_id = this.authUser.province_id;
+        orderBill.payment_methods = this.payment;
+        orderBill.totalPrice = this.totalPrice;
+        orderBill.transporter_id = this.transporter_id;
+        orderBill.discount_code_id = this.discount_code_id;
+        orderBill.books = this.books;
+        orderBill.note = this.note;
+        axios.post("checkout", orderBill).then(function (response) {
+          if (response.data.status == 201) {
+            _this5.success = true;
+            _this5.error = {};
+
+            _this5.clearCart();
+
+            return;
+          }
+
+          _this5.unsuccessful = true;
+        })["catch"](function (error) {
+          _this5.error = error.response.data.errors;
+          _this5.success = false;
+        });
+      } else {
+        this.notItem = true;
+      }
+    }
+  }),
+  watch: {
+    province_id: function province_id() {
+      this.getDistricts();
+    },
+    district_id: function district_id() {
+      this.getWards();
+    },
+    success: function success() {
+      var _this6 = this;
+
+      setTimeout(function () {
+        return _this6.success = false;
+      }, 1500);
+    },
+    unsuccessful: function unsuccessful() {
+      var _this7 = this;
+
+      setTimeout(function () {
+        return _this7.unsuccessful = false;
+      }, 2000);
+    },
+    notItem: function notItem() {
+      var _this8 = this;
+
+      setTimeout(function () {
+        return _this8.notItem = false;
+      }, 2000);
+    }
+  },
+  mounted: function mounted() {
+    if (this.authUser) {
+      this.province_id = this.authUser.province_id;
+      this.district_id = this.authUser.district_id;
+      this.ward_id = this.authUser.ward_id;
+    }
+
+    this.getProvinces();
+    this.getDistricts();
+    this.getWards();
+    this.getTransporters();
+  }
 });
 
 /***/ }),
@@ -4046,9 +4209,58 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["thumbnails", "importBooks", "totalPrice"])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["thumbnails", "importBooks", "totalPrice", "category_ids", "sumPrice"])),
   data: function data() {
     return {
       book: {
@@ -4056,7 +4268,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         author: null,
         description: null,
         supplier_id: null,
-        category_id: [],
         price: null,
         quantity: null,
         book_code: null
@@ -4079,26 +4290,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     onSubmit: function onSubmit() {
-      this.book["thumbnails"] = this.thumbnails; // this.addBook(this.book);
-      // this.book = {
-      //     name: null,
-      //     description: null,
-      //     supplier_id: 1,
-      //     category_id: 1,
-      //     price: null,
-      //     quantity: null
-      // };
-      // this.success = true;
-      // this.active = false;
-
-      console.log(this.book);
-    },
-    cancel: function cancel() {
+      this.book["thumbnails"] = this.thumbnails;
+      this.book["category_ids"] = this.category_ids;
+      this.addBook(this.book);
+      this.book = {
+        name: null,
+        author: null,
+        description: null,
+        supplier_id: null,
+        price: null,
+        quantity: null,
+        book_code: null
+      };
+      this.success = true;
       this.active = false;
     },
     onImport: function onImport() {
-      var equipments_import = [this.importBooks, this.supplier_id, this.totalPrice];
-      this["import"](equipments_import);
+      var books_import = [this.importBooks, this.supplier_id, this.sumPrice];
+      this["import"](books_import);
       this.success = true;
       this.pickSupplier = false;
     }
@@ -4802,24 +5011,37 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
   addBook: function addBook(context, book) {
     context.commit('addBookImport', book);
     context.commit('setThumbnailNames', []);
+    context.commit('setCategory_ids', []);
   },
   removeBook: function removeBook(context, book) {
     context.commit('removeImportBook', book);
   },
-  "import": function _import(context, equipments_import) {
-    var equipments = equipments_import[0];
-    var bill = equipments_import;
-    equipments.forEach(function (equipment) {
-      return equipment.supplier_id = equipments_import[1];
+  "import": function _import(context, books_import) {
+    var books = books_import[0];
+    var bill = books_import;
+    books.forEach(function (book) {
+      return book.supplier_id = books_import[1];
     });
-    axios.post('/equipment', {
-      'equipments': equipments,
+    axios.post('/admin/book', {
+      'books': books,
       'bill': bill
     }).then(function (response) {
       if (response.data.status == 201) {
         context.commit('setBookImport', []);
       }
     });
+  },
+  // categories selector
+  setCategory_ids: function setCategory_ids(context, category_ids) {
+    context.commit('setCategory_ids', category_ids);
+  },
+  //checkout
+  setPostage: function setPostage(context, postage) {
+    context.commit('setPostage', postage);
+  },
+  clearCart: function clearCart(context) {
+    axios.post('/clearCart');
+    context.commit('setBooks', []);
   }
 });
 
@@ -4847,7 +5069,7 @@ __webpack_require__.r(__webpack_exports__);
       sum += state.books[i].price * state.books[i].pivot.quantity * ((100 - state.books[i].discount) / 100);
     }
 
-    return sum;
+    return sum * ((100 - state.discountCode) / 100) + state.postage;
   },
   totalBook: function totalBook(state) {
     var total = 0;
@@ -4869,6 +5091,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   importBooks: function importBooks(state) {
     return state.importBooks;
+  },
+  //categories selector
+  category_ids: function category_ids(state) {
+    return state.category_ids;
+  },
+  sumPrice: function sumPrice(state) {
+    var total = 0;
+
+    for (var i = 0; i < state.importBooks.length; i++) {
+      total += state.importBooks[i].quantity * state.importBooks[i].price;
+    }
+
+    return total;
   }
 });
 
@@ -4958,6 +5193,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   setBookImport: function setBookImport(state, importBooks) {
     state.importBooks = importBooks;
+  },
+  setCategory_ids: function setCategory_ids(state, category_ids) {
+    state.category_ids = category_ids;
+  },
+  // checkout
+  setPostage: function setPostage(state, postage) {
+    state.postage = postage;
+  },
+  setDiscountCode: function setDiscountCode(state, discountCode) {
+    state.discountCode = discountCode;
   }
 });
 
@@ -4979,7 +5224,11 @@ __webpack_require__.r(__webpack_exports__);
   books: [],
   discountCode: 0,
   thumbnails: [],
-  importBooks: []
+  importBooks: [],
+  //categories selector
+  category_ids: [],
+  //checkout
+  postage: 0
 });
 
 /***/ }),
@@ -5043,6 +5292,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   })),
   image: (0,vee_validate__WEBPACK_IMPORTED_MODULE_0__.extend)('image', _objectSpread(_objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__.image), {}, {
     message: 'Tệp tải lên phải là 1 hình ảnh'
+  })),
+  alpha_dash: (0,vee_validate__WEBPACK_IMPORTED_MODULE_0__.extend)('alpha_dash', _objectSpread(_objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__.alpha_dash), {}, {
+    message: 'Trường này không được nhập các kí tự đặc biệt'
   }))
 });
 
@@ -9628,6 +9880,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.CategorySearch[data-v-2fcd3a44] {\r\n    padding: 20px;\n}\n.categoryList[data-v-2fcd3a44] {\r\n    margin: 10px 0px;\n}\n.categoryItem[data-v-2fcd3a44]{\r\n    background-color: #dedede;;\r\n    border-radius: 10px;\r\n    color: black;\r\n    padding: 8px;\r\n    margin-right: 10px;\n}\n.delete[data-v-2fcd3a44] {\r\n    color: red;\r\n    cursor: pointer;\r\n    font-size: 20px;\r\n    font-weight: bold;\n}\n.dropdown[data-v-2fcd3a44] {\r\n    display: inline-block;\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error {\n    color: red;\n    display: block;\n}\n.success {\n    color: green;\n    padding: 20px;\n    background-color:rgba(0,255,0,0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput {\n    border-color: red;\n}\n.unsuccessful {\n    color: rgb(228, 155, 152);\n    padding: 20px;\n    background-color:rgba(255, 34, 34, 0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47572,6 +47848,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_checkout_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./checkout.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_checkout_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_checkout_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/import/import.vue?vue&type=style&index=0&lang=css&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/import/import.vue?vue&type=style&index=0&lang=css& ***!
@@ -51191,15 +51497,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _checkout_vue_vue_type_template_id_af204498___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkout.vue?vue&type=template&id=af204498& */ "./resources/js/components/checkout/checkout.vue?vue&type=template&id=af204498&");
 /* harmony import */ var _checkout_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./checkout.vue?vue&type=script&lang=js& */ "./resources/js/components/checkout/checkout.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _checkout_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./checkout.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _checkout_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _checkout_vue_vue_type_template_id_af204498___WEBPACK_IMPORTED_MODULE_0__.render,
   _checkout_vue_vue_type_template_id_af204498___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -51900,6 +52208,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_categories_select_vue_vue_type_style_index_0_id_2fcd3a44_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./categories_select.vue?vue&type=style&index=0&id=2fcd3a44&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/categories_select.vue?vue&type=style&index=0&id=2fcd3a44&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_checkout_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./checkout.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/checkout/checkout.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -53369,25 +53690,26 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("figure", { staticClass: "product-image-container" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "product-image",
-                      attrs: { href: "/books/" + book.id }
-                    },
-                    [
-                      _c("img", {
-                        attrs: {
-                          src:
-                            "/storage/bookstore_img/products/" +
-                            book.thumbnails[0].img,
-                          alt: "book"
-                        }
-                      })
-                    ]
-                  )
-                ]),
+                book.thumbnails[0]
+                  ? _c("figure", { staticClass: "product-image-container" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "product-image",
+                          attrs: { href: "/books/" + book.id }
+                        },
+                        [
+                          _c("img", {
+                            attrs: {
+                              src:
+                                "/storage/thumbnails/" + book.thumbnails[0].img,
+                              alt: "book"
+                            }
+                          })
+                        ]
+                      )
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "a",
@@ -53491,8 +53813,7 @@ var render = function() {
                           _c("img", {
                             attrs: {
                               src:
-                                "/storage/bookstore_img/products/" +
-                                book.thumbnails[0].img,
+                                "/storage/thumbnails/" + book.thumbnails[0].img,
                               alt: "Book Image"
                             }
                           })
@@ -53839,117 +54160,104 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "form-group content" },
-    [
+  return _c("div", { staticClass: "form-group content" }, [
+    _c(
+      "span",
+      { staticClass: "categoryList " },
+      _vm._l(_vm.selectedCategories, function(category, index) {
+        return _c("span", { key: category.id, staticClass: "categoryItem" }, [
+          _vm._v("\n            " + _vm._s(category.name) + "\n            "),
+          _c(
+            "span",
+            {
+              staticClass: "delete",
+              on: {
+                click: function($event) {
+                  return _vm.remove(index)
+                }
+              }
+            },
+            [_vm._v("x")]
+          )
+        ])
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "dropdown" }, [
       _c(
-        "span",
-        { staticClass: "categoryList " },
-        _vm._l(_vm.selectedCategories, function(category, index) {
-          return _c("span", { key: category.id, staticClass: "categoryItem" }, [
-            _vm._v("\n            " + _vm._s(category.name) + "\n            "),
-            _c(
-              "span",
+        "button",
+        {
+          staticClass: "btn btn-secondary dropdown-toggle",
+          attrs: {
+            type: "button",
+            id: "dropdownMenuButton",
+            "data-toggle": "dropdown",
+            "aria-haspopup": "true",
+            "aria-expanded": "false"
+          }
+        },
+        [_vm._v("\n            Chọn thể loại\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "dropdown-menu",
+          attrs: { "aria-labelledby": "dropdownMenuButton" }
+        },
+        [
+          _c("input", {
+            directives: [
               {
-                staticClass: "delete",
+                name: "model",
+                rawName: "v-model",
+                value: _vm.keyWord,
+                expression: "keyWord"
+              }
+            ],
+            staticClass: "form-control CategorySearch",
+            attrs: { type: "text", placeholder: "Nhập thể loại" },
+            domProps: { value: _vm.keyWord },
+            on: {
+              input: [
+                function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.keyWord = $event.target.value
+                },
+                _vm.debounceInput
+              ]
+            }
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.categories, function(category) {
+            return _c(
+              "a",
+              {
+                key: category.id,
+                staticClass: "dropdown-item",
+                attrs: { href: "#" },
                 on: {
                   click: function($event) {
-                    return _vm.selectedCategories.splice(index, 1)
+                    $event.preventDefault()
+                    return _vm.addCategory(category)
                   }
                 }
               },
-              [_vm._v("x")]
+              [
+                _vm._v(
+                  "\n            " + _vm._s(category.name) + "\n            "
+                )
+              ]
             )
-          ])
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "dropdown" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-secondary dropdown-toggle",
-            attrs: {
-              type: "button",
-              id: "dropdownMenuButton",
-              "data-toggle": "dropdown",
-              "aria-haspopup": "true",
-              "aria-expanded": "false"
-            }
-          },
-          [_vm._v("\n            Chọn thể loại\n        ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "dropdown-menu",
-            attrs: { "aria-labelledby": "dropdownMenuButton" }
-          },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.keyWord,
-                  expression: "keyWord"
-                }
-              ],
-              staticClass: "form-control CategorySearch",
-              attrs: { type: "text", placeholder: "Nhập thể loại" },
-              domProps: { value: _vm.keyWord },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.keyWord = $event.target.value
-                  },
-                  _vm.debounceInput
-                ]
-              }
-            }),
-            _vm._v(" "),
-            _vm._l(_vm.categories, function(category) {
-              return _c(
-                "a",
-                {
-                  key: category.id,
-                  staticClass: "dropdown-item",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.addCategory(category)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n            " + _vm._s(category.name) + "\n            "
-                  )
-                ]
-              )
-            })
-          ],
-          2
-        )
-      ]),
-      _vm._v(" "),
-      _vm._l(_vm.selectedCategories, function(category) {
-        return _c("input", {
-          key: category.id,
-          attrs: { type: "hidden", name: "category_ids[]" },
-          domProps: { value: category.id }
-        })
-      })
-    ],
-    2
-  )
+          })
+        ],
+        2
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -53976,111 +54284,935 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "page-content" }, [
     _c("div", { staticClass: "checkout" }, [
-      _c("div", { staticClass: "container" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _c("form", { attrs: { action: "#" } }, [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-lg-9" },
-              [
-                _c("update-infos", {
-                  staticStyle: { "margin-bottom": "30px" }
-                }),
-                _vm._v(" "),
-                _c("textarea", {
-                  staticClass: "form-control",
-                  attrs: {
-                    cols: "30",
-                    rows: "4",
-                    placeholder:
-                      "Notes about your order, e.g. special notes for delivery"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("aside", { staticClass: "col-lg-3" }, [
-              _c("div", { staticClass: "summary" }, [
-                _c("h3", { staticClass: "summary-title" }, [
-                  _vm._v("Your Order")
-                ]),
-                _vm._v(" "),
-                _c("table", { staticClass: "table table-summary" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    [
-                      _vm._l(_vm.books, function(book) {
-                        return _c("tr", { key: book.id }, [
-                          _c("td", [
-                            _c("a", { attrs: { href: "#" } }, [
-                              _vm._v(
-                                _vm._s(book.name) +
-                                  " -SL:\n                                                " +
-                                  _vm._s(book.pivot.quantity)
-                              )
-                            ])
+      _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _vm.success
+            ? _c("h5", { staticClass: "success" }, [
+                _c("i", { staticClass: "fas fa-check" }),
+                _vm._v(" Đặt hàng thành công\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.unsuccessful
+            ? _c("h5", { staticClass: "unsuccessful" }, [
+                _c("i", { staticClass: "fas fa-times-octagon" }, [
+                  _vm._v("Đã có lỗi sãy ra, đặt hàng thất bại")
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.notItem
+            ? _c("h5", { staticClass: "unsuccessful" }, [
+                _c("i", { staticClass: "fas fa-times-octagon" }, [
+                  _vm._v("Đã có lỗi sãy ra, đặt hàng thất bại")
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c("ValidationObserver", {
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var handleSubmit = ref.handleSubmit
+                  return [
+                    _c(
+                      "form",
+                      {
+                        attrs: { action: "#" },
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            return handleSubmit(_vm.onSubmit)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-lg-9" }, [
+                            _c(
+                              "div",
+                              { staticStyle: { "margin-bottom": "30px" } },
+                              [
+                                _c(
+                                  "div",
+                                  [
+                                    _c("ValidationProvider", {
+                                      attrs: {
+                                        rules: "required|max:255|min:9|numeric",
+                                        name: "phone"
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass: "inputErrors"
+                                                  },
+                                                  [_vm._v(_vm._s(errors[0]))]
+                                                ),
+                                                _vm._v(" "),
+                                                _vm.error.phone
+                                                  ? _c(
+                                                      "span",
+                                                      { staticClass: "error" },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.error.phone[0]
+                                                          )
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _c("label", [
+                                                  _vm._v("Số điện thoại")
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.authUser.phone,
+                                                      expression:
+                                                        "authUser.phone"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  class: {
+                                                    errorInput: _vm.error.phone
+                                                  },
+                                                  attrs: {
+                                                    type: "text",
+                                                    required: "",
+                                                    name: "phone"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.authUser.phone
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.authUser,
+                                                        "phone",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c("label", [_vm._v("Địa chỉ")]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "form-group row" }, [
+                                  _c("div", { staticClass: "col" }, [
+                                    _vm.error.province_id
+                                      ? _c("span", { staticClass: "error" }, [
+                                          _vm._v(
+                                            _vm._s(_vm.error.province_id[0])
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c(
+                                      "select",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.province_id,
+                                            expression: "province_id"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        class: {
+                                          errorInput: _vm.error.province_id
+                                        },
+                                        attrs: { name: "province_id" },
+                                        on: {
+                                          change: function($event) {
+                                            var $$selectedVal = Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function(o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function(o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                            _vm.province_id = $event.target
+                                              .multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "option",
+                                          { attrs: { value: "null" } },
+                                          [
+                                            _vm._v(
+                                              "Vui lòng chọn địa\n                                                điểm"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.provinces, function(
+                                          province
+                                        ) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: province.id,
+                                              domProps: { value: province.id }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                                " +
+                                                  _vm._s(province.name) +
+                                                  "\n                                            "
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col" }, [
+                                    _vm.error.district_id
+                                      ? _c("span", { staticClass: "error" }, [
+                                          _vm._v(
+                                            _vm._s(_vm.error.district_id[0])
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c(
+                                      "select",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.district_id,
+                                            expression: "district_id"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        class: {
+                                          errorInput: _vm.error.district_id
+                                        },
+                                        attrs: { name: "district_id" },
+                                        on: {
+                                          change: function($event) {
+                                            var $$selectedVal = Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function(o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function(o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                            _vm.district_id = $event.target
+                                              .multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "option",
+                                          { attrs: { value: "null" } },
+                                          [
+                                            _vm._v(
+                                              "Vui lòng chọn địa\n                                                điểm"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.districts, function(
+                                          district
+                                        ) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: district.id,
+                                              domProps: { value: district.id }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                                " +
+                                                  _vm._s(district.name) +
+                                                  "\n                                            "
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col" }, [
+                                    _vm.error.ward_id
+                                      ? _c("span", { staticClass: "error" }, [
+                                          _vm._v(_vm._s(_vm.error.ward_id[0]))
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c(
+                                      "select",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.ward_id,
+                                            expression: "ward_id"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        class: {
+                                          errorInput: _vm.error.ward_id
+                                        },
+                                        attrs: { name: "ward_id" },
+                                        on: {
+                                          change: function($event) {
+                                            var $$selectedVal = Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function(o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function(o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                            _vm.ward_id = $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "option",
+                                          { attrs: { value: "null" } },
+                                          [
+                                            _vm._v(
+                                              "Vui lòng chọn địa\n                                                điểm"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.wards, function(ward) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: ward.id,
+                                              domProps: { value: ward.id }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                                " +
+                                                  _vm._s(ward.name) +
+                                                  "\n                                            "
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  [
+                                    _c("ValidationProvider", {
+                                      attrs: {
+                                        rules: "required|max:255",
+                                        name: "address"
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass: "inputErrors"
+                                                  },
+                                                  [_vm._v(_vm._s(errors[0]))]
+                                                ),
+                                                _vm._v(" "),
+                                                _vm.error.address
+                                                  ? _c(
+                                                      "span",
+                                                      { staticClass: "error" },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.error.address[0]
+                                                          )
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _c("label", [
+                                                  _vm._v(
+                                                    "Địa chỉ nhận hàng chi\n                                            tiết"
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.authUser.address,
+                                                      expression:
+                                                        "authUser.address"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  class: {
+                                                    errorInput:
+                                                      _vm.error.address
+                                                  },
+                                                  attrs: {
+                                                    type: "text",
+                                                    required: "",
+                                                    name: "address"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.authUser.address
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.authUser,
+                                                        "address",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    })
+                                  ],
+                                  1
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.note,
+                                  expression: "note"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                cols: "30",
+                                rows: "4",
+                                placeholder:
+                                  "Những điều cần lưu ý cho đơn hàng của bạn"
+                              },
+                              domProps: { value: _vm.note },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.note = $event.target.value
+                                }
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                            " +
-                                _vm._s(
-                                  book.price *
-                                    book.pivot.quantity *
-                                    ((100 - book.discount) / 100)
-                                ) +
-                                "\n                                        "
-                            )
+                          _c("aside", { staticClass: "col-lg-3" }, [
+                            _c("div", { staticClass: "summary" }, [
+                              _c("h3", { staticClass: "summary-title" }, [
+                                _vm._v("Your Order")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "table",
+                                { staticClass: "table table-summary" },
+                                [
+                                  _c("thead", [
+                                    _c("tr", [
+                                      _c("th", [_vm._v("Sản phẩm chọn mua")]),
+                                      _vm._v(" "),
+                                      _c("th", [_vm._v("Tổng tiền")])
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "tbody",
+                                    [
+                                      _vm._l(_vm.books, function(book) {
+                                        return _c("tr", { key: book.id }, [
+                                          _c("td", [
+                                            _c("a", { attrs: { href: "#" } }, [
+                                              _vm._v(
+                                                _vm._s(book.name) +
+                                                  " -SL:\n                                                    " +
+                                                  _vm._s(book.pivot.quantity)
+                                              )
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              "\n                                                " +
+                                                _vm._s(
+                                                  book.price *
+                                                    book.pivot.quantity *
+                                                    ((100 - book.discount) /
+                                                      100)
+                                                ) +
+                                                "\n                                                VNĐ\n                                            "
+                                            )
+                                          ])
+                                        ])
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "summary-subtotal" },
+                                        [
+                                          _c("td", [_vm._v("Mã giảm giá")]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(_vm.discountCode) + "%"
+                                            )
+                                          ])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "summary-shipping" },
+                                        [
+                                          _c("td", [_vm._v("Vận chuyển")]),
+                                          _vm._v(" "),
+                                          _c("td", [_vm._v(" ")])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.transporters, function(
+                                        transporter,
+                                        index
+                                      ) {
+                                        return _c(
+                                          "tr",
+                                          {
+                                            key: index,
+                                            staticClass: "summary-shipping-row"
+                                          },
+                                          [
+                                            _c("td", [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "custom-control custom-radio"
+                                                },
+                                                [
+                                                  _c("ValidationProvider", {
+                                                    attrs: {
+                                                      rules: "required",
+                                                      name: "transporter"
+                                                    },
+                                                    scopedSlots: _vm._u(
+                                                      [
+                                                        {
+                                                          key: "default",
+                                                          fn: function(ref) {
+                                                            var errors =
+                                                              ref.errors
+                                                            return [
+                                                              _c("input", {
+                                                                directives: [
+                                                                  {
+                                                                    name:
+                                                                      "model",
+                                                                    rawName:
+                                                                      "v-model",
+                                                                    value:
+                                                                      _vm.transporter_id,
+                                                                    expression:
+                                                                      "transporter_id"
+                                                                  }
+                                                                ],
+                                                                staticClass:
+                                                                  "custom-control-input",
+                                                                attrs: {
+                                                                  type: "radio",
+                                                                  id:
+                                                                    "Transporter" +
+                                                                    index,
+                                                                  name:
+                                                                    "transporter"
+                                                                },
+                                                                domProps: {
+                                                                  value:
+                                                                    transporter.id,
+                                                                  checked: _vm._q(
+                                                                    _vm.transporter_id,
+                                                                    transporter.id
+                                                                  )
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.setPostage(
+                                                                      transporter.postage
+                                                                    )
+                                                                  },
+                                                                  change: function(
+                                                                    $event
+                                                                  ) {
+                                                                    _vm.transporter_id =
+                                                                      transporter.id
+                                                                  }
+                                                                }
+                                                              }),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "label",
+                                                                {
+                                                                  staticClass:
+                                                                    "custom-control-label",
+                                                                  attrs: {
+                                                                    for:
+                                                                      "Transporter" +
+                                                                      index
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      transporter.name
+                                                                    )
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "span",
+                                                                {
+                                                                  staticClass:
+                                                                    "inputErrors"
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      errors[0]
+                                                                    )
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      null,
+                                                      true
+                                                    )
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(
+                                                "\n                                                " +
+                                                  _vm._s(transporter.postage) +
+                                                  "\n                                                VNĐ\n                                            "
+                                              )
+                                            ])
+                                          ]
+                                        )
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "summary-total" },
+                                        [
+                                          _c("td", [_vm._v("Tổng hóa đơn:")]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(_vm.totalPrice) + " VNĐ"
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    ],
+                                    2
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "accordion-summary",
+                                  attrs: { id: "accordion-payment" }
+                                },
+                                [
+                                  _c("h3", { staticClass: "summary-title" }, [
+                                    _vm._v("Phương thức thanh toán")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "card" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "card-header",
+                                        attrs: { id: "heading-1" }
+                                      },
+                                      [
+                                        _c(
+                                          "h2",
+                                          { staticClass: "card-title" },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "custom-control custom-radio"
+                                              },
+                                              [
+                                                _c("ValidationProvider", {
+                                                  attrs: {
+                                                    rules: "required",
+                                                    name: "payment"
+                                                  },
+                                                  scopedSlots: _vm._u(
+                                                    [
+                                                      {
+                                                        key: "default",
+                                                        fn: function(ref) {
+                                                          var errors =
+                                                            ref.errors
+                                                          return [
+                                                            _c("input", {
+                                                              directives: [
+                                                                {
+                                                                  name: "model",
+                                                                  rawName:
+                                                                    "v-model",
+                                                                  value:
+                                                                    _vm.payment,
+                                                                  expression:
+                                                                    "payment"
+                                                                }
+                                                              ],
+                                                              staticClass:
+                                                                "custom-control-input",
+                                                              attrs: {
+                                                                name:
+                                                                  "payment_methods",
+                                                                type: "radio",
+                                                                id:
+                                                                  "payment_on_delivery",
+                                                                value:
+                                                                  "payment_on_delivery"
+                                                              },
+                                                              domProps: {
+                                                                checked: _vm._q(
+                                                                  _vm.payment,
+                                                                  "payment_on_delivery"
+                                                                )
+                                                              },
+                                                              on: {
+                                                                change: function(
+                                                                  $event
+                                                                ) {
+                                                                  _vm.payment =
+                                                                    "payment_on_delivery"
+                                                                }
+                                                              }
+                                                            }),
+                                                            _vm._v(" "),
+                                                            _c(
+                                                              "label",
+                                                              {
+                                                                staticClass:
+                                                                  "custom-control-label",
+                                                                attrs: {
+                                                                  for:
+                                                                    "payment_on_delivery"
+                                                                }
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "\n                                                        Thanh toán khi nhận\n                                                        hàng\n                                                    "
+                                                                )
+                                                              ]
+                                                            ),
+                                                            _vm._v(" "),
+                                                            _c(
+                                                              "span",
+                                                              {
+                                                                staticClass:
+                                                                  "inputErrors"
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  _vm._s(
+                                                                    errors[0]
+                                                                  )
+                                                                )
+                                                              ]
+                                                            )
+                                                          ]
+                                                        }
+                                                      }
+                                                    ],
+                                                    null,
+                                                    true
+                                                  )
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm.payment == "payment_on_delivery"
+                                      ? _c(
+                                          "div",
+                                          {
+                                            staticClass: "collapse show",
+                                            attrs: { id: "collapse-1" }
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "card-body" },
+                                              [
+                                                _vm._v(
+                                                  "\n                                                Thanh toán khi người giao\n                                                hàng vận chuyển sản phẩm đến\n                                                với bạn\n                                            "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn btn-outline-primary-2 btn-order btn-block",
+                                  attrs: { type: "submit" }
+                                },
+                                [
+                                  _c("span", { staticClass: "btn-text" }, [
+                                    _vm._v("Đơn hàng của bạn")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    { staticClass: "btn-hover-text" },
+                                    [_vm._v("Đặt hàng")]
+                                  )
+                                ]
+                              )
+                            ])
                           ])
                         ])
-                      }),
-                      _vm._v(" "),
-                      _c("tr", { staticClass: "summary-subtotal" }, [
-                        _c("td", [_vm._v("Mã giảm giá")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.discountCode))])
-                      ]),
-                      _vm._v(" "),
-                      _vm._m(3),
-                      _vm._v(" "),
-                      _vm._m(4),
-                      _vm._v(" "),
-                      _vm._m(5),
-                      _vm._v(" "),
-                      _c("tr", { staticClass: "summary-total" }, [
-                        _c("td", [_vm._v("Tổng hóa đơn:")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                                            " +
-                              _vm._s(
-                                _vm.totalPrice *
-                                  ((100 - _vm.discountCode) / 100)
-                              ) +
-                              "\n                                        "
-                          )
-                        ])
-                      ])
-                    ],
-                    2
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._m(6),
-                _vm._v(" "),
-                _vm._m(7)
-              ])
+                      ]
+                    )
+                  ]
+                }
+              }
             ])
-          ])
-        ])
-      ])
+          })
+        ],
+        1
+      )
     ])
   ])
 }
@@ -54108,357 +55240,6 @@ var staticRenderFns = [
     return _c("button", { staticClass: "btn btn-outline-primary-2 " }, [
       _c("span", {}, [_vm._v("Sử dụng mã")])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Sản phẩm chọn mua")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Tổng tiền")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "summary-shipping" }, [
-      _c("td", [_vm._v("Vận chuyển")]),
-      _vm._v(" "),
-      _c("td", [_vm._v(" ")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "summary-shipping-row" }, [
-      _c("td", [
-        _c("div", { staticClass: "custom-control custom-radio" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "radio", id: "free-shipping", name: "shipping" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "free-shipping" }
-            },
-            [_vm._v("Free Shipping")]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("td", [_vm._v("$0.00")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "summary-shipping-row" }, [
-      _c("td", [
-        _c("div", { staticClass: "custom-control custom-radio" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "radio", id: "express-shipping", name: "shipping" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "express-shipping" }
-            },
-            [_vm._v("Express:")]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("td", [_vm._v("$20.00")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "accordion-summary", attrs: { id: "accordion-payment" } },
-      [
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { staticClass: "card-header", attrs: { id: "heading-1" } },
-            [
-              _c("h2", { staticClass: "card-title" }, [
-                _c(
-                  "a",
-                  {
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "collapse",
-                      href: "#collapse-1",
-                      "aria-expanded": "true",
-                      "aria-controls": "collapse-1"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                                                Direct bank transfer\n                                            "
-                    )
-                  ]
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse show",
-              attrs: {
-                id: "collapse-1",
-                "aria-labelledby": "heading-1",
-                "data-parent": "#accordion-payment"
-              }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v(
-                  "\n                                            Make your payment directly into\n                                            our bank account. Please use\n                                            your Order ID as the payment\n                                            reference. Your order will not\n                                            be shipped until the funds have\n                                            cleared in our account.\n                                        "
-                )
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { staticClass: "card-header", attrs: { id: "heading-2" } },
-            [
-              _c("h2", { staticClass: "card-title" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "collapsed",
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "collapse",
-                      href: "#collapse-2",
-                      "aria-expanded": "false",
-                      "aria-controls": "collapse-2"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                                                Check payments\n                                            "
-                    )
-                  ]
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse",
-              attrs: {
-                id: "collapse-2",
-                "aria-labelledby": "heading-2",
-                "data-parent": "#accordion-payment"
-              }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v(
-                  "\n                                            Ipsum dolor sit amet,\n                                            consectetuer adipiscing elit.\n                                            Donec odio. Quisque volutpat\n                                            mattis eros. Nullam malesuada\n                                            erat ut turpis.\n                                        "
-                )
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { staticClass: "card-header", attrs: { id: "heading-3" } },
-            [
-              _c("h2", { staticClass: "card-title" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "collapsed",
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "collapse",
-                      href: "#collapse-3",
-                      "aria-expanded": "false",
-                      "aria-controls": "collapse-3"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                                                Cash on delivery\n                                            "
-                    )
-                  ]
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse",
-              attrs: {
-                id: "collapse-3",
-                "aria-labelledby": "heading-3",
-                "data-parent": "#accordion-payment"
-              }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v(
-                  "\n                                            Quisque volutpat mattis eros.\n                                            Lorem ipsum dolor sit amet,\n                                            consectetuer adipiscing elit.\n                                            Donec odio. Quisque volutpat\n                                            mattis eros.\n                                        "
-                )
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { staticClass: "card-header", attrs: { id: "heading-4" } },
-            [
-              _c("h2", { staticClass: "card-title" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "collapsed",
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "collapse",
-                      href: "#collapse-4",
-                      "aria-expanded": "false",
-                      "aria-controls": "collapse-4"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                                                PayPal\n                                                "
-                    ),
-                    _c("small", { staticClass: "float-right paypal-link" }, [
-                      _vm._v("What is PayPal?")
-                    ])
-                  ]
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse",
-              attrs: {
-                id: "collapse-4",
-                "aria-labelledby": "heading-4",
-                "data-parent": "#accordion-payment"
-              }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v(
-                  "\n                                            Nullam malesuada erat ut turpis.\n                                            Suspendisse urna nibh, viverra\n                                            non, semper suscipit, posuere a,\n                                            pede. Donec nec justo eget felis\n                                            facilisis fermentum.\n                                        "
-                )
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { staticClass: "card-header", attrs: { id: "heading-5" } },
-            [
-              _c("h2", { staticClass: "card-title" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "collapsed",
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "collapse",
-                      href: "#collapse-5",
-                      "aria-expanded": "false",
-                      "aria-controls": "collapse-5"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                                                Credit Card (Stripe)\n                                                "
-                    ),
-                    _c("img", {
-                      attrs: {
-                        src: "assets/images/payments-summary.png",
-                        alt: "payments cards"
-                      }
-                    })
-                  ]
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse",
-              attrs: {
-                id: "collapse-5",
-                "aria-labelledby": "heading-5",
-                "data-parent": "#accordion-payment"
-              }
-            },
-            [
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v(
-                  "\n                                            Donec nec justo eget felis\n                                            facilisis fermentum.Lorem ipsum\n                                            dolor sit amet, consectetuer\n                                            adipiscing elit. Donec odio.\n                                            Quisque volutpat mattis eros.\n                                            Lorem ipsum dolor sit ame.\n                                        "
-                )
-              ])
-            ]
-          )
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-primary-2 btn-order btn-block",
-        attrs: { type: "submit" }
-      },
-      [
-        _c("span", { staticClass: "btn-text" }, [_vm._v("Place Order")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "btn-hover-text" }, [
-          _vm._v("Proceed to Checkout")
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -54575,7 +55356,7 @@ var render = function() {
           _c("a", { attrs: { href: "category.html" } }, [
             _c("img", {
               attrs: {
-                src: "/storage/bookstore_img/products/" + this.thumbnail,
+                src: "/storage/thumbnails/" + this.thumbnail,
                 alt: "Banner"
               }
             }),
@@ -54667,9 +55448,7 @@ var render = function() {
           _c("a", { attrs: { href: "category.html" } }, [
             _c("img", {
               attrs: {
-                src:
-                  "/storage/bookstore_img/products/" +
-                  _vm.books[0].thumbnails[0].img,
+                src: "/storage/thumbnails/" + _vm.books[0].thumbnails[0].img,
                 alt: "Banner"
               }
             }),
@@ -54739,7 +55518,96 @@ var render = function() {
           [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-sm-12" }, [
-                _vm._m(1),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-bordered table-striped dataTable dtr-inline",
+                    attrs: {
+                      id: "example1",
+                      role: "grid",
+                      "aria-describedby": "example1_info"
+                    }
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.importBooks, function(book) {
+                        return _c(
+                          "tr",
+                          {
+                            key: book.id,
+                            staticClass: "odd",
+                            attrs: { role: "row" }
+                          },
+                          [
+                            _c("td", { attrs: { tabindex: "0" } }, [
+                              _c("img", {
+                                staticStyle: { "max-width": "80px" },
+                                attrs: {
+                                  src:
+                                    "/storage/thumbnails/" + book.thumbnails[0],
+                                  alt: "ảnh sản phẩm"
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "sorting_1" }, [
+                              _vm._v(
+                                "\n                                        " +
+                                  _vm._s(book.name) +
+                                  "\n                                    "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(book.book_code))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(book.quantity))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(book.price))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-default btn-sm",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.removeBook(book)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Xóa")]
+                              )
+                            ])
+                          ]
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm._m(2)
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", [
+                  _vm.sumPrice
+                    ? _c("div", { staticClass: "row justify-content-end" }, [
+                        _c(
+                          "div",
+                          { staticClass: "form-group col-sm-6 text-right" },
+                          [
+                            _c("h3", { staticStyle: { color: "red" } }, [
+                              _vm._v(_vm._s(_vm.sumPrice) + " VNĐ")
+                            ])
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row justify-content-end" }, [
                   _c("div", { staticClass: "form-group col-sm-2" }, [
@@ -54756,7 +55624,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                                    Thêm thiết bị\n                                "
+                          "\n                                    Thêm sản phẩm\n                                "
                         )
                       ]
                     )
@@ -54798,303 +55666,44 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "card card-info",
-        staticStyle: { width: "max-content", margin: "0px auto" }
-      },
-      [
-        _vm._m(2),
-        _vm._v(" "),
-        _c("ValidationObserver", {
-          scopedSlots: _vm._u([
-            {
-              key: "default",
-              fn: function(ref) {
-                var handleSubmit = ref.handleSubmit
-                return [
-                  _c(
-                    "form",
-                    {
-                      staticClass: "form-card",
-                      on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return handleSubmit(_vm.onSubmit)
-                        }
-                      }
-                    },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "card-body" },
-                        [
-                          _c("ValidationProvider", {
-                            attrs: { rules: "required|max:255", name: "name" },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "default",
-                                  fn: function(ref) {
-                                    var errors = ref.errors
-                                    return [
-                                      _c(
-                                        "span",
-                                        { staticClass: "inputErrors" },
-                                        [_vm._v(_vm._s(errors[0]))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "input-group mb-3" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass: "input-group-prepend"
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "input-group-text",
-                                                  staticStyle: {
-                                                    width: "120px"
-                                                  }
-                                                },
-                                                [_vm._v("Tên sản phẩm")]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.book.name,
-                                                expression: "book.name"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            class: {
-                                              errorInput: _vm.error.name
-                                            },
-                                            attrs: {
-                                              type: "text",
-                                              name: "name",
-                                              placeholder: "Nhập tên sản phẩm"
-                                            },
-                                            domProps: { value: _vm.book.name },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.book,
-                                                  "name",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ]
-                                  }
-                                }
-                              ],
-                              null,
-                              true
-                            )
-                          }),
-                          _vm._v(" "),
-                          _c("ValidationProvider", {
-                            attrs: {
-                              rules: "required|max:255|min:7",
-                              name: "book_code"
-                            },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "default",
-                                  fn: function(ref) {
-                                    var errors = ref.errors
-                                    return [
-                                      _c(
-                                        "span",
-                                        { staticClass: "inputErrors" },
-                                        [_vm._v(_vm._s(errors[0]))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "input-group mb-3" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass: "input-group-prepend"
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "input-group-text",
-                                                  staticStyle: {
-                                                    width: "120px"
-                                                  }
-                                                },
-                                                [_vm._v("Mã sản phẩm")]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.book.book_code,
-                                                expression: "book.book_code"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            class: {
-                                              errorInput: _vm.error.book_code
-                                            },
-                                            attrs: {
-                                              type: "text",
-                                              name: "name",
-                                              placeholder: "Nhập mã sản phẩm"
-                                            },
-                                            domProps: {
-                                              value: _vm.book.book_code
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.book,
-                                                  "book_code",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ]
-                                  }
-                                }
-                              ],
-                              null,
-                              true
-                            )
-                          }),
-                          _vm._v(" "),
-                          _c("ValidationProvider", {
-                            attrs: {
-                              rules: "required|max:255",
-                              name: "author"
-                            },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "default",
-                                  fn: function(ref) {
-                                    var errors = ref.errors
-                                    return [
-                                      _c(
-                                        "span",
-                                        { staticClass: "inputErrors" },
-                                        [_vm._v(_vm._s(errors[0]))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "input-group mb-3" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass: "input-group-prepend"
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "input-group-text",
-                                                  staticStyle: {
-                                                    width: "120px"
-                                                  }
-                                                },
-                                                [_vm._v("Tác giả")]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.book.author,
-                                                expression: "book.author"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            class: {
-                                              errorInput: _vm.error.author
-                                            },
-                                            attrs: {
-                                              type: "text",
-                                              name: "author",
-                                              placeholder: "Nhập mã sản phẩm"
-                                            },
-                                            domProps: {
-                                              value: _vm.book.author
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.book,
-                                                  "author",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ]
-                                  }
-                                }
-                              ],
-                              null,
-                              true
-                            )
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "row" }, [
+    _vm.active
+      ? _c(
+          "div",
+          {
+            staticClass: "card card-info",
+            staticStyle: { width: "max-content", margin: "0px auto" }
+          },
+          [
+            _vm._m(3),
+            _vm._v(" "),
+            _c("ValidationObserver", {
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var handleSubmit = ref.handleSubmit
+                      return [
+                        _c(
+                          "form",
+                          {
+                            staticClass: "form-card",
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return handleSubmit(_vm.onSubmit)
+                              }
+                            }
+                          },
+                          [
                             _c(
                               "div",
-                              { staticClass: "col-lg-6" },
+                              { staticClass: "card-body" },
                               [
                                 _c("ValidationProvider", {
                                   attrs: {
                                     rules: "required|max:255",
-                                    name: "quantity"
+                                    name: "name"
                                   },
                                   scopedSlots: _vm._u(
                                     [
@@ -55131,7 +55740,7 @@ var render = function() {
                                                           width: "120px"
                                                         }
                                                       },
-                                                      [_vm._v("Số lượng")]
+                                                      [_vm._v("Tên sản phẩm")]
                                                     )
                                                   ]
                                                 ),
@@ -55141,24 +55750,117 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value: _vm.book.quantity,
+                                                      value: _vm.book.name,
+                                                      expression: "book.name"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  class: {
+                                                    errorInput: _vm.error.name
+                                                  },
+                                                  attrs: {
+                                                    type: "text",
+                                                    name: "name",
+                                                    placeholder:
+                                                      "Nhập tên sản phẩm"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.book.name
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.book,
+                                                        "name",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    null,
+                                    true
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _c("ValidationProvider", {
+                                  attrs: {
+                                    rules: "required|max:255|min:7",
+                                    name: "book_code"
+                                  },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          return [
+                                            _c(
+                                              "span",
+                                              { staticClass: "inputErrors" },
+                                              [_vm._v(_vm._s(errors[0]))]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "input-group mb-3"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "input-group-prepend"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticClass:
+                                                          "input-group-text",
+                                                        staticStyle: {
+                                                          width: "120px"
+                                                        }
+                                                      },
+                                                      [_vm._v("Mã sản phẩm")]
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.book.book_code,
                                                       expression:
-                                                        "book.quantity"
+                                                        "book.book_code"
                                                     }
                                                   ],
                                                   staticClass: "form-control",
                                                   class: {
                                                     errorInput:
-                                                      _vm.error.quantity
+                                                      _vm.error.book_code
                                                   },
                                                   attrs: {
-                                                    type: "number",
-                                                    min: 1,
-                                                    name: "quantity",
-                                                    placeholder: "Số lượng"
+                                                    type: "text",
+                                                    name: "name",
+                                                    placeholder:
+                                                      "Nhập mã sản phẩm"
                                                   },
                                                   domProps: {
-                                                    value: _vm.book.quantity
+                                                    value: _vm.book.book_code
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -55169,7 +55871,7 @@ var render = function() {
                                                       }
                                                       _vm.$set(
                                                         _vm.book,
-                                                        "quantity",
+                                                        "book_code",
                                                         $event.target.value
                                                       )
                                                     }
@@ -55184,19 +55886,12 @@ var render = function() {
                                     null,
                                     true
                                   )
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "col-lg-6" },
-                              [
+                                }),
+                                _vm._v(" "),
                                 _c("ValidationProvider", {
                                   attrs: {
                                     rules: "required|max:255",
-                                    name: "price"
+                                    name: "author"
                                   },
                                   scopedSlots: _vm._u(
                                     [
@@ -55233,7 +55928,7 @@ var render = function() {
                                                           width: "120px"
                                                         }
                                                       },
-                                                      [_vm._v("Giá thành")]
+                                                      [_vm._v("Tác giả")]
                                                     )
                                                   ]
                                                 ),
@@ -55243,23 +55938,21 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value: _vm.book.price,
-                                                      expression: "book.price"
+                                                      value: _vm.book.author,
+                                                      expression: "book.author"
                                                     }
                                                   ],
                                                   staticClass: "form-control",
                                                   class: {
-                                                    errorInput: _vm.error.price
+                                                    errorInput: _vm.error.author
                                                   },
                                                   attrs: {
-                                                    type: "number",
-                                                    min: 1,
-                                                    name: "price",
-                                                    placeholder:
-                                                      "Nhập tên sản phẩm"
+                                                    type: "text",
+                                                    name: "author",
+                                                    placeholder: "Tác giả"
                                                   },
                                                   domProps: {
-                                                    value: _vm.book.price
+                                                    value: _vm.book.author
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -55270,7 +55963,7 @@ var render = function() {
                                                       }
                                                       _vm.$set(
                                                         _vm.book,
-                                                        "price",
+                                                        "author",
                                                         $event.target.value
                                                       )
                                                     }
@@ -55285,424 +55978,465 @@ var render = function() {
                                     null,
                                     true
                                   )
-                                })
-                              ],
-                              1
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("ValidationProvider", {
-                            attrs: {
-                              rules: "required|max:255",
-                              name: "description"
-                            },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "default",
-                                  fn: function(ref) {
-                                    var errors = ref.errors
-                                    return [
-                                      _c(
-                                        "span",
-                                        { staticClass: "inputErrors" },
-                                        [_vm._v(_vm._s(errors[0]))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "input-group mb-3" },
-                                        [
-                                          _c(
-                                            "div",
+                                }),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "col-lg-6" },
+                                    [
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          rules:
+                                            "required|max:255|numeric|quantityValid",
+                                          name: "quantity"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
                                             {
-                                              staticClass: "input-group-prepend"
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "input-group-text",
-                                                  staticStyle: {
-                                                    width: "120px"
-                                                  }
-                                                },
-                                                [_vm._v("Mô tả")]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("textarea", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.book.description,
-                                                expression: "book.description"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            class: {
-                                              errorInput: _vm.error.description
-                                            },
-                                            attrs: {
-                                              rows: "5",
-                                              type: "text",
-                                              name: "description",
-                                              placeholder: "Nhập tên sản phẩm"
-                                            },
-                                            domProps: {
-                                              value: _vm.book.description
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  _vm.book,
-                                                  "description",
-                                                  $event.target.value
-                                                )
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c(
+                                                    "span",
+                                                    {
+                                                      staticClass: "inputErrors"
+                                                    },
+                                                    [_vm._v(_vm._s(errors[0]))]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "input-group mb-3"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "input-group-prepend"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "input-group-text",
+                                                              staticStyle: {
+                                                                width: "120px"
+                                                              }
+                                                            },
+                                                            [_vm._v("Số lượng")]
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              _vm.book.quantity,
+                                                            expression:
+                                                              "book.quantity"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "form-control",
+                                                        class: {
+                                                          errorInput:
+                                                            _vm.error.quantity
+                                                        },
+                                                        attrs: {
+                                                          type: "number",
+                                                          min: 1,
+                                                          name: "quantity",
+                                                          placeholder:
+                                                            "Số lượng"
+                                                        },
+                                                        domProps: {
+                                                          value:
+                                                            _vm.book.quantity
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.$set(
+                                                              _vm.book,
+                                                              "quantity",
+                                                              $event.target
+                                                                .value
+                                                            )
+                                                          }
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                ]
                                               }
                                             }
-                                          })
-                                        ]
-                                      )
-                                    ]
-                                  }
-                                }
-                              ],
-                              null,
-                              true
-                            )
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [_c("categories-select")],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-group" },
-                            [
-                              _c("span", { staticClass: "input-group-text" }, [
-                                _vm._v("Chọn 2 ảnh cho sản phẩm")
-                              ]),
-                              _vm._v(" "),
-                              _c("dropzone-uploader")
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "form-group",
-                              staticStyle: {
-                                display: "flex",
-                                "justify-content": "center"
-                              }
-                            },
-                            [
-                              _c(
-                                "div",
-                                { staticClass: "form-group col-sm-4" },
-                                [
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
                                   _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-block btn-danger",
-                                      on: {
-                                        click: function($event) {
-                                          $event.preventDefault()
-                                          _vm.active = true
-                                        }
-                                      }
-                                    },
+                                    "div",
+                                    { staticClass: "col-lg-6" },
                                     [
-                                      _vm._v(
-                                        "\n                                Huỷ bỏ\n                            "
-                                      )
-                                    ]
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          rules:
+                                            "required|max:255|numeric|quantityValid",
+                                          name: "price"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c(
+                                                    "span",
+                                                    {
+                                                      staticClass: "inputErrors"
+                                                    },
+                                                    [_vm._v(_vm._s(errors[0]))]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "input-group mb-3"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "input-group-prepend"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "input-group-text",
+                                                              staticStyle: {
+                                                                width: "120px"
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "Giá thành"
+                                                              )
+                                                            ]
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              _vm.book.price,
+                                                            expression:
+                                                              "book.price"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "form-control",
+                                                        class: {
+                                                          errorInput:
+                                                            _vm.error.price
+                                                        },
+                                                        attrs: {
+                                                          type: "number",
+                                                          min: 1,
+                                                          name: "price",
+                                                          placeholder:
+                                                            "Giá thành"
+                                                        },
+                                                        domProps: {
+                                                          value: _vm.book.price
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.$set(
+                                                              _vm.book,
+                                                              "price",
+                                                              $event.target
+                                                                .value
+                                                            )
+                                                          }
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
                                   )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "form-group col-sm-4" },
-                                [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-block btn-primary"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                Thêm thiết bị\n                            "
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      )
-                    ]
-                  )
-                ]
-              }
-            }
-          ])
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _vm.pickSupplier
-      ? _c("div", { staticClass: "container-fluid px-1 py-5 mx-auto" }, [
-          _c("div", { staticClass: "row d-flex justify-content-center" }, [
-            _c(
-              "div",
-              { staticClass: "col-xl-7 col-lg-8 col-md-9 col-11 text-center" },
-              [
-                _c(
-                  "div",
-                  { staticClass: "card" },
-                  [
-                    _c("ValidationObserver", {
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "default",
-                            fn: function(ref) {
-                              var handleSubmit = ref.handleSubmit
-                              return [
-                                _c("h5", { staticClass: "text-center mb-4" }, [
-                                  _vm._v("Chọn nhà cung cấp")
                                 ]),
                                 _vm._v(" "),
-                                _c(
-                                  "form",
-                                  {
-                                    staticClass: "form-card",
-                                    on: {
-                                      submit: function($event) {
-                                        $event.preventDefault()
-                                        return handleSubmit(_vm.onImport)
+                                _c("ValidationProvider", {
+                                  attrs: {
+                                    rules: "required",
+                                    name: "description"
+                                  },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          return [
+                                            _c(
+                                              "span",
+                                              { staticClass: "inputErrors" },
+                                              [_vm._v(_vm._s(errors[0]))]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "input-group mb-3"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "input-group-prepend"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticClass:
+                                                          "input-group-text",
+                                                        staticStyle: {
+                                                          width: "120px"
+                                                        }
+                                                      },
+                                                      [_vm._v("Mô tả")]
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c("textarea", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.book.description,
+                                                      expression:
+                                                        "book.description"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  class: {
+                                                    errorInput:
+                                                      _vm.error.description
+                                                  },
+                                                  attrs: {
+                                                    rows: "5",
+                                                    type: "text",
+                                                    name: "description",
+                                                    placeholder:
+                                                      "Mô tả về sản phẩm"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.book.description
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.book,
+                                                        "description",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        }
                                       }
+                                    ],
+                                    null,
+                                    true
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _c("ValidationProvider", {
+                                  attrs: {
+                                    rules: "required",
+                                    name: "category_ids"
+                                  },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          return [
+                                            _c(
+                                              "span",
+                                              { staticClass: "inputErrors" },
+                                              [_vm._v(_vm._s(errors[0]))]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              { staticClass: "form-group" },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: _vm.category_ids,
+                                                      expression: "category_ids"
+                                                    }
+                                                  ],
+                                                  attrs: {
+                                                    type: "hidden",
+                                                    name: "category_ids"
+                                                  },
+                                                  domProps: {
+                                                    value: _vm.category_ids
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.category_ids =
+                                                        $event.target.value
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c("categories-select")
+                                              ],
+                                              1
+                                            )
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    null,
+                                    true
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "form-group" },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "input-group-text" },
+                                      [_vm._v("Chọn 2 ảnh cho sản phẩm")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("dropzone-uploader")
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "form-group",
+                                    staticStyle: {
+                                      display: "flex",
+                                      "justify-content": "center"
                                     }
                                   },
                                   [
                                     _c(
                                       "div",
-                                      {
-                                        staticClass:
-                                          "form-group col-sm-12 flex-column d-flex text-left"
-                                      },
+                                      { staticClass: "form-group col-sm-4" },
                                       [
-                                        _c("ValidationProvider", {
-                                          attrs: {
-                                            rules: "required",
-                                            name: "supplier"
-                                          },
-                                          scopedSlots: _vm._u(
-                                            [
-                                              {
-                                                key: "default",
-                                                fn: function(ref) {
-                                                  var errors = ref.errors
-                                                  return [
-                                                    _c(
-                                                      "span",
-                                                      {
-                                                        staticClass:
-                                                          "inputErrors"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          _vm._s(errors[0])
-                                                        )
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "form-group"
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "label",
-                                                          {
-                                                            attrs: {
-                                                              for: "role"
-                                                            }
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "Nhà cung cấp"
-                                                            )
-                                                          ]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "select",
-                                                          {
-                                                            directives: [
-                                                              {
-                                                                name: "model",
-                                                                rawName:
-                                                                  "v-model",
-                                                                value:
-                                                                  _vm.supplier_id,
-                                                                expression:
-                                                                  "supplier_id"
-                                                              }
-                                                            ],
-                                                            staticClass:
-                                                              "form-control",
-                                                            class: {
-                                                              errorInput:
-                                                                _vm.error
-                                                                  .supplier_id
-                                                            },
-                                                            attrs: {
-                                                              name:
-                                                                "supplier_id"
-                                                            },
-                                                            on: {
-                                                              change: function(
-                                                                $event
-                                                              ) {
-                                                                var $$selectedVal = Array.prototype.filter
-                                                                  .call(
-                                                                    $event
-                                                                      .target
-                                                                      .options,
-                                                                    function(
-                                                                      o
-                                                                    ) {
-                                                                      return o.selected
-                                                                    }
-                                                                  )
-                                                                  .map(function(
-                                                                    o
-                                                                  ) {
-                                                                    var val =
-                                                                      "_value" in
-                                                                      o
-                                                                        ? o._value
-                                                                        : o.value
-                                                                    return val
-                                                                  })
-                                                                _vm.supplier_id = $event
-                                                                  .target
-                                                                  .multiple
-                                                                  ? $$selectedVal
-                                                                  : $$selectedVal[0]
-                                                              }
-                                                            }
-                                                          },
-                                                          _vm._l(
-                                                            _vm.suppliers,
-                                                            function(supplier) {
-                                                              return _c(
-                                                                "option",
-                                                                {
-                                                                  key:
-                                                                    supplier.id,
-                                                                  domProps: {
-                                                                    value:
-                                                                      supplier.id
-                                                                  }
-                                                                },
-                                                                [
-                                                                  _vm._v(
-                                                                    "\n                                                " +
-                                                                      _vm._s(
-                                                                        supplier.name
-                                                                      ) +
-                                                                      "\n                                            "
-                                                                  )
-                                                                ]
-                                                              )
-                                                            }
-                                                          ),
-                                                          0
-                                                        )
-                                                      ]
-                                                    )
-                                                  ]
-                                                }
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-block btn-danger",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                _vm.active = false
                                               }
-                                            ],
-                                            null,
-                                            true
-                                          )
-                                        })
-                                      ],
-                                      1
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Huỷ bỏ\n                            "
+                                            )
+                                          ]
+                                        )
+                                      ]
                                     ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
-                                      {
-                                        staticClass: "row justify-content-end"
-                                      },
+                                      { staticClass: "form-group col-sm-4" },
                                       [
                                         _c(
-                                          "div",
+                                          "button",
                                           {
-                                            staticClass: "form-group col-sm-6"
+                                            staticClass:
+                                              "btn btn-block btn-primary"
                                           },
                                           [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-block btn-primary",
-                                                on: {
-                                                  click: function($event) {
-                                                    $event.preventDefault()
-                                                    _vm.pickSupplier = false
-                                                  }
-                                                }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                                        Hủy\n                                    "
-                                                )
-                                              ]
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass: "form-group col-sm-6"
-                                          },
-                                          [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-block btn-primary"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                                        Nhập kho\n                                    "
-                                                )
-                                              ]
+                                            _vm._v(
+                                              "\n                                Thêm sản phẩm\n                            "
                                             )
                                           ]
                                         )
@@ -55710,22 +56444,228 @@ var render = function() {
                                     )
                                   ]
                                 )
-                              ]
+                              ],
+                              1
+                            )
+                          ]
+                        )
+                      ]
+                    }
+                  }
+                ],
+                null,
+                false,
+                3257220520
+              )
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.pickSupplier
+      ? _c(
+          "div",
+          {
+            staticClass: "card card-info",
+            staticStyle: { width: "500px", margin: "0px auto" }
+          },
+          [
+            _vm._m(4),
+            _vm._v(" "),
+            _c("ValidationObserver", {
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var handleSubmit = ref.handleSubmit
+                      return [
+                        _c(
+                          "form",
+                          {
+                            staticClass: "form-card",
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return handleSubmit(_vm.onImport)
+                              }
                             }
-                          }
-                        ],
-                        null,
-                        false,
-                        1609181437
-                      )
-                    })
-                  ],
-                  1
-                )
-              ]
-            )
-          ])
-        ])
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "card-body" },
+                              [
+                                _c("ValidationProvider", {
+                                  attrs: { name: "supplier_id" },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          return [
+                                            _c(
+                                              "span",
+                                              { staticClass: "inputErrors" },
+                                              [_vm._v(_vm._s(errors[0]))]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              { staticClass: "form-group" },
+                                              [
+                                                _c("label", [
+                                                  _vm._v("Nhà cung cấp")
+                                                ]),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "select",
+                                                  {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.supplier_id,
+                                                        expression:
+                                                          "supplier_id"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    class: {
+                                                      errorInput:
+                                                        _vm.error.supplier_id
+                                                    },
+                                                    attrs: {
+                                                      name: "supplier_id"
+                                                    },
+                                                    on: {
+                                                      change: function($event) {
+                                                        var $$selectedVal = Array.prototype.filter
+                                                          .call(
+                                                            $event.target
+                                                              .options,
+                                                            function(o) {
+                                                              return o.selected
+                                                            }
+                                                          )
+                                                          .map(function(o) {
+                                                            var val =
+                                                              "_value" in o
+                                                                ? o._value
+                                                                : o.value
+                                                            return val
+                                                          })
+                                                        _vm.supplier_id = $event
+                                                          .target.multiple
+                                                          ? $$selectedVal
+                                                          : $$selectedVal[0]
+                                                      }
+                                                    }
+                                                  },
+                                                  _vm._l(
+                                                    _vm.suppliers,
+                                                    function(supplier) {
+                                                      return _c(
+                                                        "option",
+                                                        {
+                                                          key: supplier.id,
+                                                          domProps: {
+                                                            value: supplier.id
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                    " +
+                                                              _vm._s(
+                                                                supplier.name
+                                                              ) +
+                                                              "\n                                "
+                                                          )
+                                                        ]
+                                                      )
+                                                    }
+                                                  ),
+                                                  0
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    null,
+                                    true
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "row justify-content-end" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group col-sm-6" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-block btn-primary",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                _vm.pickSupplier = false
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Hủy\n                            "
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "form-group col-sm-6" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-block btn-primary"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Nhập kho\n                            "
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        )
+                      ]
+                    }
+                  }
+                ],
+                null,
+                false,
+                349744609
+              )
+            })
+          ],
+          1
+        )
       : _vm._e()
   ])
 }
@@ -55744,195 +56684,169 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "table",
-      {
-        staticClass: "table table-bordered table-striped dataTable dtr-inline",
-        attrs: {
-          id: "example1",
-          role: "grid",
-          "aria-describedby": "example1_info"
-        }
-      },
-      [
-        _c("thead", [
-          _c("tr", { attrs: { role: "row" } }, [
-            _c(
-              "th",
-              {
-                staticClass: "sorting",
-                attrs: {
-                  tabindex: "0",
-                  "aria-controls": "example1",
-                  rowspan: "1",
-                  colspan: "1",
-                  "aria-label":
-                    "Rendering engine: activate to sort column ascending"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                        Ảnh\n                                    "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "th",
-              {
-                staticClass: "sorting_desc",
-                attrs: {
-                  tabindex: "0",
-                  "aria-controls": "example1",
-                  rowspan: "1",
-                  colspan: "1",
-                  "aria-label": "Browser: activate to sort column ascending",
-                  "aria-sort": "descending"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                        Tên sản phẩm\n                                    "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "th",
-              {
-                staticClass: "sorting",
-                attrs: {
-                  tabindex: "0",
-                  "aria-controls": "example1",
-                  rowspan: "1",
-                  colspan: "1",
-                  "aria-label": "Platform(s): activate to sort column ascending"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                        Mã sản phẩm\n                                    "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "th",
-              {
-                staticClass: "sorting",
-                attrs: {
-                  tabindex: "0",
-                  "aria-controls": "example1",
-                  rowspan: "1",
-                  colspan: "1",
-                  "aria-label":
-                    "Engine version: activate to sort column ascending"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                        Số lượng\n                                    "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "th",
-              {
-                staticClass: "sorting",
-                attrs: {
-                  tabindex: "0",
-                  "aria-controls": "example1",
-                  rowspan: "1",
-                  colspan: "1",
-                  "aria-label": "CSS grade: activate to sort column ascending"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                        Giá thành\n                                    "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "th",
-              {
-                staticClass: "sorting",
-                attrs: {
-                  tabindex: "0",
-                  "aria-controls": "example1",
-                  rowspan: "1",
-                  colspan: "1",
-                  "aria-label": "CSS grade: activate to sort column ascending"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                        Thao tác\n                                    "
-                )
-              ]
+    return _c("thead", [
+      _c("tr", { attrs: { role: "row" } }, [
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example1",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label":
+                "Rendering engine: activate to sort column ascending"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                        Ảnh\n                                    "
             )
-          ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting_desc",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example1",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "Browser: activate to sort column ascending",
+              "aria-sort": "descending"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                        Tên sản phẩm\n                                    "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example1",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "Platform(s): activate to sort column ascending"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                        Mã sản phẩm\n                                    "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example1",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "Engine version: activate to sort column ascending"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                        Số lượng\n                                    "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example1",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "CSS grade: activate to sort column ascending"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                        Giá thành\n                                    "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example1",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "CSS grade: activate to sort column ascending"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                        Thao tác\n                                    "
+            )
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tfoot", [
+      _c("tr", [
+        _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
+          _vm._v(
+            "\n                                        Ảnh\n                                    "
+          )
         ]),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", { staticClass: "odd", attrs: { role: "row" } }, [
-            _c("td", { attrs: { tabindex: "0" } }, [_vm._v("Gecko")]),
-            _vm._v(" "),
-            _c("td", { staticClass: "sorting_1" }, [_vm._v("Seamonkey 1.1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Win 98+ / OSX.2+")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("1.8")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("A")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("A")])
-          ])
+        _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
+          _vm._v(
+            "\n                                        Tên sản phẩm\n                                    "
+          )
         ]),
         _vm._v(" "),
-        _c("tfoot", [
-          _c("tr", [
-            _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
-              _vm._v(
-                "\n                                        Ảnh\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
-              _vm._v(
-                "\n                                        Tên sản phẩm\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
-              _vm._v(
-                "\n                                        Mã sản phẩm\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
-              _vm._v(
-                "\n                                        Số lượng\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
-              _vm._v(
-                "\n                                        Giá thành\n                                    "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
-              _vm._v(
-                "\n                                        Thao tác\n                                    "
-              )
-            ])
-          ])
+        _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
+          _vm._v(
+            "\n                                        Mã sản phẩm\n                                    "
+          )
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
+          _vm._v(
+            "\n                                        Số lượng\n                                    "
+          )
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
+          _vm._v(
+            "\n                                        Giá thành\n                                    "
+          )
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { rowspan: "1", colspan: "1" } }, [
+          _vm._v(
+            "\n                                        Thao tác\n                                    "
+          )
         ])
-      ]
-    )
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -55942,6 +56856,14 @@ var staticRenderFns = [
       _c("h3", { staticClass: "card-title" }, [
         _vm._v("Thêm sản phẩm vào hàng chờ nhập")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Chọn nhà cung cấp")])
     ])
   }
 ]

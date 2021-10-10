@@ -10,12 +10,13 @@ use App\Models\Supplier;
 use App\Models\Thumbnail;
 use App\Models\ImportBills;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
 {
-    use HasFactory;
-
+    use HasFactory,SoftDeletes;
+    protected $fillable = ['name','author','quantity','price','description','supplier_id','book_code'];
 
     public function categories(){
         return $this->belongsToMany(Category::class);

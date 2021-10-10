@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BooksCreated;
 use App\Models\Book;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\Category;
 use App\Models\Supplier;
+use App\Models\Thumbnail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 
 
 
@@ -52,7 +54,34 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $books = $request->books;
+            foreach ($books as $item) {
+                $book = Book::where('book_code', '=', $item['book_code'])->first();
+                if($book){
+                    $book->quantity += $item['quantity'];
+                    $book->update();
+                }else{
+                    $book = new Book;
+                    $book->fill($item);
+                    $book->save();
+                    if($item['thumbnails']){
+                        foreach($item['thumbnails'] as $file)
+                        {
+                            $thumbnails[]= [
+                                'book_id' => $book->id,
+                                'img'=>  $file,
+                            ];
+                        }
+                        Thumbnail::insert($thumbnails);
+                    }
+                }
+            }
+            BooksCreated::dispatch($request->bill);
+            return response()->json(['success' => true, 'status' => 201]);
+        }catch(\Exception $e){
+            return response()->json(['e' => $e, 'status' => 401]);
+        }
     }
 
     /**

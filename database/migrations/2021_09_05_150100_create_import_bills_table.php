@@ -18,8 +18,9 @@ class CreateImportBillsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('supplier_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('transaction_id');
-            $table->float('totalPrice')->default(0);
+            $table->double('totalPrice')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

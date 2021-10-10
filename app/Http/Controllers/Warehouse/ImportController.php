@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Warehouse;
 
-use App\Http\Controllers\Controller;
+use App\Models\AppConst;
 use App\Models\ImportBills;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ImportController extends Controller
 {
@@ -15,7 +16,8 @@ class ImportController extends Controller
      */
     public function index()
     {
-        //
+        $importBills = ImportBills::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
+        return view('warehouse.import_history')->with('importBills', $importBills);
     }
 
     /**
@@ -45,9 +47,10 @@ class ImportController extends Controller
      * @param  \App\Models\ImportBills  $importBills
      * @return \Illuminate\Http\Response
      */
-    public function show(ImportBills $importBills)
+    public function show(ImportBills $importBill)
     {
-        //
+        $importBill->load('user','supplier','books');
+        return view('warehouse.import_bill_details')->with('importBill', $importBill);
     }
 
     /**

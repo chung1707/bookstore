@@ -26,7 +26,7 @@ class ValidEmailRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $user = User::where('email', '=', $value)->first();
+        $user = User::where('email', '=', $value)->whereNull('deleted_at')->first();
         if($user == null){
             return true;
         }

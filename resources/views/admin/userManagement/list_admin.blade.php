@@ -13,9 +13,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Danh sách tài khoản admin --</h3>
                     <h4 class="card-title">
-
                         Trang: {{ $admins->currentPage() }} / {{$admins->lastPage()}}
-                        <span> -- Tổng tài khoản admin: {{ count($admins)* $admins->lastPage()+1 }}</span>
                     </h4>
                     <div class="card-tools">
                         <div
@@ -59,12 +57,12 @@
                                         >Hoạt động</span
                                     >
                                 </td>
-                                <td><a href="{{ route('admin.showUser',['user' =>$admin]) }}" class="btn btn-default btn-sm">Xem chi tiết</a></td>
+                                <td><a href="{{ route('admin.showUser',['user' =>$admin]) }}" class="btn-flat btn-default btn-sm">Xem chi tiết</a></td>
                                 <td class="table__content">
                                     <form action="{{ route('admin.deleteUser',['user' => $admin]) }}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <button class="btn btn-default btn-sm" type='submit'>Xóa</button>
+                                        <button class="btn-flat btn-default btn-sm" type='submit'>Xóa</button>
                                     </form>
                                 </td>
                             </tr>

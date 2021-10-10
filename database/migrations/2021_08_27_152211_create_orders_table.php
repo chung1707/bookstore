@@ -17,12 +17,13 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('transaction_id');
+            $table->string('payment_methods');
             $table->text('note')->nullable();
-            $table->float('totalPrice')->default(0);
+            $table->double('totalPrice')->default(0);
             $table->boolean('pending')->default(true);
             $table->boolean('processing')->default(false);
-            $table->boolean('complete')->default(false);
-            $table->boolean('Canceled')->default(false);
+            $table->boolean('delivered')->default(false);
+            $table->boolean('canceled')->default(false);
             $table->foreignId('transporter_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->integer('discount_code_id')->nullable();
             $table->string('dispatch');
@@ -31,6 +32,7 @@ class CreateOrdersTable extends Migration
             $table->integer('district_id');
             $table->integer('ward_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

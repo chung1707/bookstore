@@ -25,9 +25,7 @@ class ValidPasswordRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if($value!==null){
 
-        }
     }
 
     /**

@@ -18,8 +18,10 @@ class CreateArticlesTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('title');
             $table->text('content');
+            $table->boolean('active')->default(false);
             $table->boolean('in_home')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
     /**

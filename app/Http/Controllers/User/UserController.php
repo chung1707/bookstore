@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Models\AppConst;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -16,8 +17,9 @@ use App\Http\Requests\UpdateUserInfosRequest;class UserController extends Contro
      */
     public function index()
     {
-        $user = User::where('id','=',auth()->user()->id)->with('province','ward','district','orders')->first();
-        return view('client.account')->with('user', $user);
+        $user = User::where('id','=',auth()->user()->id)->with('province','ward','district')->first();
+        $orders = $user->orders()->orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
+        return view('client.account')->with('user', $user)->with('orders',$orders);
     }
 
     public function updateInfos(UpdateUserInfosRequest $request)
