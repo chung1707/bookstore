@@ -11,6 +11,7 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserManageController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Warehouse\ImportController;
@@ -95,7 +96,19 @@ Route::get('/get_cart',[CartController::class,'getCart'])->middleware('auth');
 Route::get('/cart',[CartController::class,'index'])->middleware('auth');
 Route::post('/delete_book_in_cart',[CartController::class,'deleteBookInCart'])->middleware('auth');
 Route::post('/update_qty_cart',[CartController::class,'updateQty'])->middleware('auth');
+
 Route::post('/clearCart',[CartController::class,'clearCart'])->middleware('auth');
+
+//Supplier
+Route::get('/supplier/list-supplier',[SupplierController::class,'index'])->middleware('auth')->name('admin.listSupplier');
+Route::get('/supplier/create-supplier',[SupplierController::class,'create'])->middleware('auth')->name('admin.createSupplier');
+Route::post('/supplier/add-supplier',[SupplierController::class,'store'])->middleware('auth');
+Route::get('/supplier/edit-supplier/{supplier}',[SupplierController::class,'edit'])->middleware('auth')->name('admin.editSupplier');
+Route::post('/supplier/update-supplier/{supplier}',[SupplierController::class,'update'])->middleware('auth')->name('admin.updateSupplier');
+Route::delete('/supplier/destroy-supplier/{supplier}',[SupplierController::class,'destroy'])->name('admin.destroySupplier');
+
+
+
 //checkout
 
 Route::resource('/article',ArticleController::class);

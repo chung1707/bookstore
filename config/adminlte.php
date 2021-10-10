@@ -356,11 +356,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Danh sách nhà cung cấp',
-                    'url'  => '',
+                    'url'  => 'supplier/list-supplier',
                 ],
                 [
                     'text'    =>'Thêm nhà cung cấp',
-                    'url'     => '',
+                    'url'     => 'supplier/create-supplier',
                 ],
             ],
         ],
