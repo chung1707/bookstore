@@ -210,7 +210,7 @@
                             </div>
                         </ValidationProvider>
                         <ValidationProvider
-                            rules="required|max:255"
+                            rules="required|max:255|quantityValid"
                             name="author"
                             v-slot="{ errors }"
                         >
@@ -236,7 +236,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <ValidationProvider
-                                    rules="required|max:255"
+                                    rules="required|max:255|quantityValid"
                                     name="quantity"
                                     v-slot="{ errors }"
                                 >

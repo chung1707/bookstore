@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserManageController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Warehouse\ImportController;
-
+use App\Http\Controllers\Admin\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +67,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::get('/import/create',[ImportController::class,'create'])->name('import.create');
 });
 
+//Category
+Route::resource('/admin/category',CategoryController::class)->middleware(['auth', 'role:admin']);
+Route::get('/admin/dmbv',[CategoryController::class, 'listdmbv'])->middleware(['auth', 'role:admin']);
+Route::post('/category/update-category/{category}',[CategoryController::class,'updateDM'])->middleware('auth')->name('admin.updatecategory');
 // user route
 Route::group(['middleware' => ['auth', 'role:user,author']], function () {
     Route::get('/profile',[UserController::class,'index']);
@@ -81,6 +85,10 @@ Route::get('/get_cart',[CartController::class,'getCart'])->middleware('auth');
 Route::get('/cart',[CartController::class,'index'])->middleware('auth');
 Route::post('/delete_book_in_cart',[CartController::class,'deleteBookInCart'])->middleware('auth');
 Route::post('/update_qty_cart',[CartController::class,'updateQty'])->middleware('auth');
+
+
+
+
 
 //checkout
 

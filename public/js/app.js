@@ -9530,7 +9530,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-2fd1d876] {\n    color: red;\n    display: block;\n}\n.success[data-v-2fd1d876] {\n    color: green;\n    padding: 20px;\n    background-color:rgba(0,255,0,0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-2fd1d876] {\n    border-color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-2fd1d876] {\r\n    color: red;\r\n    display: block;\n}\n.success[data-v-2fd1d876] {\r\n    color: green;\r\n    padding: 20px;\r\n    background-color:rgba(0,255,0,0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-2fd1d876] {\r\n    border-color: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9554,7 +9554,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-40aa5b4a] {\n    color: red;\n    display: block;\n}\n.success[data-v-40aa5b4a] {\n    color: green;\n    padding: 20px;\n    background-color: rgba(0, 255, 0, 0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-40aa5b4a] {\n    border-color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-40aa5b4a] {\r\n    color: red;\r\n    display: block;\n}\n.success[data-v-40aa5b4a] {\r\n    color: green;\r\n    padding: 20px;\r\n    background-color: rgba(0, 255, 0, 0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-40aa5b4a] {\r\n    border-color: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9578,7 +9578,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.quantityInput[data-v-21b0b48c]::-webkit-outer-spin-button,\n.quantityInput[data-v-21b0b48c]::-webkit-inner-spin-button{\n    -webkit-appearance: none;\n    margin: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.quantityInput[data-v-21b0b48c]::-webkit-outer-spin-button,\r\n.quantityInput[data-v-21b0b48c]::-webkit-inner-spin-button{\r\n    -webkit-appearance: none;\r\n    margin: 0;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9603,7 +9603,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.contentCart[data-v-e1bf4dee] {\n    justify-content: space-around !important;\n}\n.quantityInput[data-v-e1bf4dee]::-webkit-outer-spin-button,\n.quantityInput[data-v-e1bf4dee]::-webkit-inner-spin-button {\n    -webkit-appearance: none;\n    margin: 0;\n}\n.emptyCart[data-v-e1bf4dee] {\n    width: 780px;\n}\n.CartItem[data-v-e1bf4dee]{\n    width: 780px;\n}\n.successLoad[data-v-e1bf4dee]{\n    color: green;\n    background-color:rgba(0,255,0,0.3);\n    text-align: center;\n    z-index: 2;\n    padding: 10px 20px;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n\n\n/*\nemptycart style */\nbody[data-v-e1bf4dee] {\n    background-color: #eee;\n    font-family: 'Calibri', sans-serif !important\n}\n.mt-100[data-v-e1bf4dee] {\n    margin-top: 100px\n}\n.card[data-v-e1bf4dee] {\n    margin-bottom: 30px;\n    border: 0;\n    transition: all .3s ease;\n    letter-spacing: .5px;\n    border-radius: 8px;\n    box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05)\n}\n.card .card-header[data-v-e1bf4dee] {\n    background-color: #fff;\n    border-bottom: none;\n    padding: 24px;\n    border-bottom: 1px solid #f6f7fb;\n    border-top-left-radius: 8px;\n    border-top-right-radius: 8px\n}\n.card-header[data-v-e1bf4dee]:first-child {\n    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0\n}\n.card .card-body[data-v-e1bf4dee] {\n    padding: 30px;\n    background-color: transparent;\n    padding-bottom: 70px;\n}\n.cartImg[data-v-e1bf4dee]{\n    display: inline-block !important;\n}\n.btn-primary[data-v-e1bf4dee],\n.btn-primary.disabled[data-v-e1bf4dee],\n.btn-primary[data-v-e1bf4dee]:disabled {\n    background-color: #4466f2 !important;\n    border-color: #4466f2 !important\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.contentCart[data-v-e1bf4dee] {\r\n    justify-content: space-around !important;\n}\n.quantityInput[data-v-e1bf4dee]::-webkit-outer-spin-button,\r\n.quantityInput[data-v-e1bf4dee]::-webkit-inner-spin-button {\r\n    -webkit-appearance: none;\r\n    margin: 0;\n}\n.emptyCart[data-v-e1bf4dee] {\r\n    width: 780px;\n}\n.CartItem[data-v-e1bf4dee]{\r\n    width: 780px;\n}\n.successLoad[data-v-e1bf4dee]{\r\n    color: green;\r\n    background-color:rgba(0,255,0,0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    padding: 10px 20px;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\r\n\r\n\r\n/*\r\nemptycart style */\nbody[data-v-e1bf4dee] {\r\n    background-color: #eee;\r\n    font-family: 'Calibri', sans-serif !important\n}\n.mt-100[data-v-e1bf4dee] {\r\n    margin-top: 100px\n}\n.card[data-v-e1bf4dee] {\r\n    margin-bottom: 30px;\r\n    border: 0;\r\n    transition: all .3s ease;\r\n    letter-spacing: .5px;\r\n    border-radius: 8px;\r\n    box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05)\n}\n.card .card-header[data-v-e1bf4dee] {\r\n    background-color: #fff;\r\n    border-bottom: none;\r\n    padding: 24px;\r\n    border-bottom: 1px solid #f6f7fb;\r\n    border-top-left-radius: 8px;\r\n    border-top-right-radius: 8px\n}\n.card-header[data-v-e1bf4dee]:first-child {\r\n    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0\n}\n.card .card-body[data-v-e1bf4dee] {\r\n    padding: 30px;\r\n    background-color: transparent;\r\n    padding-bottom: 70px;\n}\n.cartImg[data-v-e1bf4dee]{\r\n    display: inline-block !important;\n}\n.btn-primary[data-v-e1bf4dee],\r\n.btn-primary.disabled[data-v-e1bf4dee],\r\n.btn-primary[data-v-e1bf4dee]:disabled {\r\n    background-color: #4466f2 !important;\r\n    border-color: #4466f2 !important\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9627,7 +9627,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.CategorySearch[data-v-2fcd3a44] {\n    padding: 20px;\n}\n.categoryList[data-v-2fcd3a44] {\n    margin: 10px 0px;\n}\n.categoryItem[data-v-2fcd3a44]{\n    background-color: #dedede;;\n    border-radius: 10px;\n    color: black;\n    padding: 8px;\n    margin-right: 10px;\n}\n.delete[data-v-2fcd3a44] {\n    color: red;\n    cursor: pointer;\n    font-size: 20px;\n    font-weight: bold;\n}\n.dropdown[data-v-2fcd3a44] {\n    display: inline-block;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.CategorySearch[data-v-2fcd3a44] {\r\n    padding: 20px;\n}\n.categoryList[data-v-2fcd3a44] {\r\n    margin: 10px 0px;\n}\n.categoryItem[data-v-2fcd3a44]{\r\n    background-color: #dedede;;\r\n    border-radius: 10px;\r\n    color: black;\r\n    padding: 8px;\r\n    margin-right: 10px;\n}\n.delete[data-v-2fcd3a44] {\r\n    color: red;\r\n    cursor: pointer;\r\n    font-size: 20px;\r\n    font-weight: bold;\n}\n.dropdown[data-v-2fcd3a44] {\r\n    display: inline-block;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9651,7 +9651,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.error {\n    color: red;\n    display: block;\n}\n.success {\n    color: green;\n    padding: 20px;\n    background-color: rgba(0, 255, 0, 0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput {\n    border-color: red;\n}\n.inputErrors {\n    color: red;\n    display: block;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error {\r\n    color: red;\r\n    display: block;\n}\n.success {\r\n    color: green;\r\n    padding: 20px;\r\n    background-color: rgba(0, 255, 0, 0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\n.errorInput {\r\n    border-color: red;\n}\n.inputErrors {\r\n    color: red;\r\n    display: block;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9675,7 +9675,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-50ea0098] {\n    color: red;\n    display: block;\n}\n.success[data-v-50ea0098] {\n    color: green;\n    padding: 20px;\n    background-color:rgba(0,255,0,0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-50ea0098] {\n    border-color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-50ea0098] {\r\n    color: red;\r\n    display: block;\n}\n.success[data-v-50ea0098] {\r\n    color: green;\r\n    padding: 20px;\r\n    background-color:rgba(0,255,0,0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-50ea0098] {\r\n    border-color: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9699,7 +9699,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-29ca9f7a] {\n    color: red;\n    display: block;\n}\n.success[data-v-29ca9f7a] {\n    color: green;\n    padding: 20px;\n    background-color:rgba(0,255,0,0.3);\n    text-align: center;\n    z-index: 2;\n    position: fixed;\n    top: 20%;\n    left: 50%;\n    margin-right: -50%;\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-29ca9f7a] {\n    border-color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.error[data-v-29ca9f7a] {\r\n    color: red;\r\n    display: block;\n}\n.success[data-v-29ca9f7a] {\r\n    color: green;\r\n    padding: 20px;\r\n    background-color:rgba(0,255,0,0.3);\r\n    text-align: center;\r\n    z-index: 2;\r\n    position: fixed;\r\n    top: 20%;\r\n    left: 50%;\r\n    margin-right: -50%;\r\n    transform: translate(-50%, -50%);\n}\n.errorInput[data-v-29ca9f7a] {\r\n    border-color: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -55001,7 +55001,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("ValidationProvider", {
                             attrs: {
-                              rules: "required|max:255",
+                              rules: "required|max:255|quantityValid",
                               name: "author"
                             },
                             scopedSlots: _vm._u(
@@ -55093,7 +55093,7 @@ var render = function() {
                               [
                                 _c("ValidationProvider", {
                                   attrs: {
-                                    rules: "required|max:255",
+                                    rules: "required|max:255|quantityValid",
                                     name: "quantity"
                                   },
                                   scopedSlots: _vm._u(
