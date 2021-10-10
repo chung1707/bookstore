@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\UpdateSupplierRequest;
 use App\Models\Supplier;
-
+use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
@@ -15,9 +15,18 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+            if(isset($request->searchName)){
+                $name=$request->searchName;
+                $suppliers =  Supplier::where('name','like','%'.$name.'%')->get();
+                return view('admin.supplierManagement.list_supplier')->with('suppliers',$suppliers)->with('oldsearch',$name);
+            }else{
+                $suppliers = Supplier::paginate(5)->fragment('suppliers');
+                return view('admin.supplierManagement.list_supplier')->with('suppliers',$suppliers);
+            }
+
     }
 
     /**
@@ -28,6 +37,7 @@ class SupplierController extends Controller
     public function create()
     {
         //
+        return view('admin.supplierManagement.create_supplier');
     }
 
     /**
@@ -39,6 +49,22 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|unique:suppliers|max:255',
+            'address' => 'required|unique:suppliers|max:255',
+            'email' => 'required|unique:suppliers|max:255',
+            'phone' => 'numeric|unique:suppliers',
+            'supplier_fax' => 'numeric|unique:suppliers',
+        ]);
+        $supplier = new Supplier;
+        $supplier->name = $request->name;
+        $supplier->address = $request->address;
+        $supplier->phone = $request->phone;
+        $supplier->email = $request->email;
+        $supplier->supplier_fax = $request->supplier_fax;
+        $supplier->logo = $request->thumbnails[0];
+        $supplier->save();
+        return redirect()->route('admin.listSupplier');
     }
 
     /**
@@ -61,6 +87,7 @@ class SupplierController extends Controller
     public function edit(Supplier $supplier)
     {
         //
+        return view('admin.supplierManagement.edit_supplier')->with('supplier',$supplier);
     }
 
     /**
@@ -70,9 +97,15 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
         //
+        $supplier->fill($request->all());
+        if(isset( $request->thumbnails[0])){
+            $supplier->logo = $request->thumbnails[0];
+        }
+        $supplier->update();
+        return redirect()->route('admin.listSupplier');
     }
 
     /**
@@ -84,5 +117,8 @@ class SupplierController extends Controller
     public function destroy(Supplier $supplier)
     {
         //
+        $supplier->delete();
+        return redirect()->back();
     }
+
 }
