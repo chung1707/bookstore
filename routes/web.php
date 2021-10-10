@@ -66,6 +66,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     // import
     Route::get('/import/create',[ImportController::class,'create'])->name('import.create');
     Route::post('/book',[BookController::class, 'store'])->name('books.store');
+    Route::get('/import_bills',[ImportController::class, 'index'])->name('import_bills.index');
+    Route::get('/import_details/{importBill}',[ImportController::class, 'show'])->name('import_bills.show');
+
     // orders
     Route::get('new_orders',[OrderController::class, 'newOrders'])->name('new_orders');
     Route::get('processing_orders',[OrderController::class, 'orderProcessing'])->name('processing_orders');
@@ -73,7 +76,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::get('canceled_orders',[OrderController::class, 'orderCanceled'])->name('canceled_orders');
     Route::put('receive_order/{order}',[OrderController::class, 'receiveOrder'])->name('receive_order');
     Route::put('delivered/{order}',[OrderController::class, 'markDelivered'])->name('mark_delivered');
-
+    Route::get('order/{order}',[OrderController::class, 'show'])->name('order.show');
 });
 Route::put('canceled/{order}',[OrderController::class, 'markCanceled'])->middleware('auth')->name('mark_canceled');
 

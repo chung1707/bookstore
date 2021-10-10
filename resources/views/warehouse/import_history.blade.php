@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Đơn hàng đang xử lý</h1>
+<h1>Danh sách hóa đơn nhập</h1>
 @stop
 
 @section('content')
@@ -11,9 +11,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Danh sách đơn hàng đang được xử lý -- </h3>
+                <h3 class="card-title">Danh sách hóa đơn nhập --</h3>
                 <h4 class="card-title">
-                    Trang: {{ $orders->currentPage() }} / {{$orders->lastPage()}}
+                    Trang: {{ $importBills->currentPage() }} / {{$importBills->lastPage()}}
                 </h4>
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -32,32 +32,29 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>Thời gian tạo</th>
-                            <th>Mã đơn hàng</th>
-                            <th>Tổng tiền</th>
-                            <th>Xem chi tiết</th>
-                            <th colspan="3">Thao tác</th>
+                            <th>Mã giao dịch</th>
+                            <th>Người nhập</th>
+                            <th>Nhà cung cấp</th>
+                            <th>Tổng giá</th>
+                            <th>Chi tiết</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($orders as $order)
+                        @foreach ($importBills as $importBill)
                         <tr>
-                            <td>{{ $order->created_at }}</td>
-                            <td>{{ $order->transaction_id }}</td>
-                            <td>{{ $order->totalPrice }}</td>
-                            <td><a href="{{ route('order.show',['order' => $order]) }}" class="btn-flat btn-info btn-sm">Xem chi tiết</a></td>
-                            <td class="table__content">
-                                <form action="{{route('mark_delivered',['order' => $order])}}" method="post">
-                                    @method('PUT')
-                                    @csrf
-                                    <button class="btn-flat btn-secondary btn-sm" type='submit'>Đã giao hàng</button>
-                                </form>
+                            <td>{{ $importBill->transaction_id }}</td>
+                            <td>{{ $importBill->user->name }}</td>
+                            <td>{{ $importBill->supplier->name }}</td>
+                            <td>{{ $importBill->totalPrice }}</td>
+                            <td><a href="{{ route('import_bills.show',['importBill' => $importBill]) }}" class="btn-flat btn-default btn-sm">Xem chi tiết</a></td>
+                            <td>
+
                             </td>
                             <td class="table__content">
-                                <form action="{{route('mark_canceled',['order' => $order])}}" method="post">
-                                    @method('PUT')
+                                <form action="" method="post">
+                                    @method('DELETE')
                                     @csrf
-                                    <button class="btn-flat btn-danger btn-sm" type='submit'>Hủy</button>
+                                    <button class="btn-flat btn-default btn-sm" type='submit'>Xóa</button>
                                 </form>
                             </td>
                         </tr>
@@ -67,7 +64,7 @@
             </div>
             <div style="padding-top: 20px;
                             margin: 0px auto;">
-                {{ $orders->links() }}
+                {{ $importBills->links() }}
             </div>
 
             <!-- /.card-body -->

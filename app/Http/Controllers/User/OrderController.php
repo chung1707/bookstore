@@ -99,7 +99,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->load('books','user');
+        return view('order.order_details')->with('order', $order);
     }
 
     /**

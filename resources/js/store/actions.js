@@ -53,10 +53,9 @@ export default {
         let bill = books_import;
         books.forEach(book => book.supplier_id = books_import[1]);
         axios.post('/admin/book',{'books': books, 'bill': bill}).then((response) =>{
-            console.log(response.data);
-            // if(response.data.status == 201){
-            //     context.commit('setBookImport',[]);
-            // }
+            if(response.data.status == 201){
+                context.commit('setBookImport',[]);
+            }
         });
     },
     // categories selector

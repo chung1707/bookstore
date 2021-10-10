@@ -155,7 +155,7 @@
                                         class="btn btn-block btn-primary"
                                         @click.prevent="active = true"
                                     >
-                                        Thêm thiết bị
+                                        Thêm sản phẩm
                                     </button>
                                 </div>
                                 <div
@@ -196,7 +196,7 @@
                 >
                     <div class="card-body">
                         <ValidationProvider
-                            rules="required|max:255|alpha_dash"
+                            rules="required|max:255"
                             name="name"
                             v-slot="{ errors }"
                         >
@@ -248,7 +248,7 @@
                             </div>
                         </ValidationProvider>
                         <ValidationProvider
-                            rules="required|max:255|alpha_dash"
+                            rules="required|max:255"
                             name="author"
                             v-slot="{ errors }"
                         >
@@ -404,7 +404,7 @@
                             </div>
                             <div class="form-group col-sm-4">
                                 <button class="btn btn-block btn-primary">
-                                    Thêm thiết bị
+                                    Thêm sản phẩm
                                 </button>
                             </div>
                         </div>

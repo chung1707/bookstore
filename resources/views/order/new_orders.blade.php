@@ -45,7 +45,7 @@
                             <td>{{ $order->created_at }}</td>
                             <td>{{ $order->transaction_id }}</td>
                             <td>{{ $order->totalPrice }}</td>
-                            <td><a href="" class="btn-flat btn-info btn-sm">Xem chi tiết</a></td>
+                            <td><a href="{{ route('order.show',['order' => $order]) }}" class="btn-flat btn-info btn-sm">Xem chi tiết</a></td>
                             <td class="table__content">
                                 <form action="{{route('receive_order',['order' => $order])}}" method="post">
                                     @method('PUT')

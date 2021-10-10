@@ -5026,9 +5026,9 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       'books': books,
       'bill': bill
     }).then(function (response) {
-      console.log(response.data); // if(response.data.status == 201){
-      //     context.commit('setBookImport',[]);
-      // }
+      if (response.data.status == 201) {
+        context.commit('setBookImport', []);
+      }
     });
   },
   // categories selector
@@ -55624,7 +55624,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                                    Thêm thiết bị\n                                "
+                          "\n                                    Thêm sản phẩm\n                                "
                         )
                       ]
                     )
@@ -55702,7 +55702,7 @@ var render = function() {
                               [
                                 _c("ValidationProvider", {
                                   attrs: {
-                                    rules: "required|max:255|alpha_dash",
+                                    rules: "required|max:255",
                                     name: "name"
                                   },
                                   scopedSlots: _vm._u(
@@ -55890,7 +55890,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("ValidationProvider", {
                                   attrs: {
-                                    rules: "required|max:255|alpha_dash",
+                                    rules: "required|max:255",
                                     name: "author"
                                   },
                                   scopedSlots: _vm._u(
@@ -56436,7 +56436,7 @@ var render = function() {
                                           },
                                           [
                                             _vm._v(
-                                              "\n                                Thêm thiết bị\n                            "
+                                              "\n                                Thêm sản phẩm\n                            "
                                             )
                                           ]
                                         )
@@ -56455,7 +56455,7 @@ var render = function() {
                 ],
                 null,
                 false,
-                1031778333
+                3257220520
               )
             })
           ],

@@ -309,8 +309,8 @@ return [
                     'url'     => '#',
                 ],
                 [
-                    'text'    => 'Lịch sử',
-                    'url'     => '#',
+                    'text'    => 'Lịch sử nhập',
+                    'url'     => 'admin/import_bills',
                 ],
             ],
         ],
