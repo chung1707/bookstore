@@ -338,15 +338,15 @@ return [
             'submenu' => [
                 [
                     'text' => 'Danh mục sách',
-                    'url'  => '',
+                    'url'  => '/admin/category',
                 ],
                 [
                     'text'    =>'Danh mục bài viết',
-                    'url'     => '',
+                    'url'     => 'admin/dmbv',
                 ],
                 [
                     'text' => 'Thêm Danh mục',
-                    'url'  => '',
+                    'url'  => 'admin/category/create ',
                 ],
             ],
         ],
@@ -356,11 +356,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Danh sách nhà cung cấp',
-                    'url'  => '',
+                    'url'  => 'supplier/list-supplier',
                 ],
                 [
                     'text'    =>'Thêm nhà cung cấp',
-                    'url'     => '',
+                    'url'     => 'supplier/create-supplier',
                 ],
             ],
         ],
