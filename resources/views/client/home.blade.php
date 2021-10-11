@@ -189,7 +189,9 @@
                     <figure class="product-media">
                         <a href="{{ route('books.show',['book' =>$trendBook]) }}">
                             <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                            @isset($trendBook->thumbnails[0])
                             <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
+                            @endisset
                         </a>
                     </figure><!-- End .product-media -->
                     @else
@@ -270,7 +272,9 @@
                             <figure class="product-media">
                                 <a href="{{ route('books.show',['book' =>$newBook]) }}">
                                     <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                                    @isset($newBook->thumbnails[1])
                                     <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
+                                    @endisset
                                 </a>
                             </figure><!-- End .product-media -->
                             @else

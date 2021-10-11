@@ -298,7 +298,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Kho sách',
-                    'url'  => '#',
+                    'url'  => 'admin/book_list',
                 ],
                 [
                     'text'    => 'Nhập sách',

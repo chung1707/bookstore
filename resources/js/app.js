@@ -47,6 +47,8 @@ Vue.component('block-user', require('./components/admin/user_management/blockUse
 //import
 Vue.component('import', require('./components/import/import.vue').default);
 
+//admin book
+Vue.component('thumbnail_display', require('./components/thumbnails.vue').default);
 
 
 import Vue from 'vue';

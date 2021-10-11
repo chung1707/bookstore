@@ -57,7 +57,7 @@
                                         >Hoạt động</span
                                     >
                                 </td>
-                                <td><a href="{{ route('admin.showUser',['user' =>$admin]) }}" class="btn-flat btn-default btn-sm">Xem chi tiết</a></td>
+                                <td><a href="{{ route('admin.showUser',['user' =>$admin]) }}"  class="btn btn-info">Xem chi tiết</a></td>
                                 <td class="table__content">
                                     <form action="{{ route('admin.deleteUser',['user' => $admin]) }}" method="post">
                                         @method('DELETE')

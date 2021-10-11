@@ -83,6 +83,7 @@ class OrderController extends Controller
                     ]
                 );
                 $item->quantity -= $book['pivot']['quantity'];
+                $item->sold += $book['pivot']['quantity'];
                 $item->update();
             }
             return response()->json(['success' => true, 'status' => 201]);

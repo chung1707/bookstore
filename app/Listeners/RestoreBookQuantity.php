@@ -29,6 +29,7 @@ class RestoreBookQuantity
         foreach ($event->books as $item){
             $book = Book::find($item->id);
             $book->quantity += $item->pivot->quantity;
+            $book->sold -= $item->pivot->quantity;
             $book->update();
         }
     }

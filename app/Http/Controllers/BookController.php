@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\BooksCreated;
 use App\Models\Book;
+use App\Models\AppConst;
 use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Thumbnail;
+use App\Events\BooksCreated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,19 @@ class BookController extends Controller
     public function getHeaderBooks(){
         $headerBooks = Book::orderBy('sold','desc')->with('thumbnails')->take(8)->get();
         return response()->json(['books' => $headerBooks]);
+    }
+
+    public function adminBookList(){
+        $books = Book::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
+        $books->load('thumbnails');
+        $totalBooks = Book::count('id');
+        $bestSellingBook = Book::orderBy('sold', 'desc')->first();
+        $totalSold = Book::sum('sold');
+        return view('books.list_book')
+        ->with('books', $books)
+        ->with('totalBooks', $totalBooks)
+        ->with('bestSellingBook', $bestSellingBook)
+        ->with('totalSold', $totalSold);
     }
     /**
      * Display a listing of the resource.
@@ -34,16 +48,6 @@ class BookController extends Controller
                 ->with('books',$books)
                 ->with('categories',$categories)
                 ->with('suppliers',$suppliers);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -75,6 +79,11 @@ class BookController extends Controller
                         }
                         Thumbnail::insert($thumbnails);
                     }
+                    foreach($item['category_ids'] as $cate)
+                    {
+                        $category = Category::find($cate);
+                        $category->books()->attach($book);
+                    }
                 }
             }
             BooksCreated::dispatch($request->bill);
@@ -103,6 +112,10 @@ class BookController extends Controller
         return view('client.product-details')
                 ->with('relatedBooks',$relatedBooks)
                 ->with('book',$book);
+    }
+    public function adminShow(Book $book){
+        $book->load('categories','thumbnails','supplier');
+        return view('books.book_details')->with('book',$book);
     }
 
     /**

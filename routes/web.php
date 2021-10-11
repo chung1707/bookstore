@@ -77,6 +77,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::put('receive_order/{order}',[OrderController::class, 'receiveOrder'])->name('receive_order');
     Route::put('delivered/{order}',[OrderController::class, 'markDelivered'])->name('mark_delivered');
     Route::get('order/{order}',[OrderController::class, 'show'])->name('order.show');
+
+    // books
+    Route::get('/book_list',[BookController::class, 'adminBookList'])->name('books_list');
+    Route::get('/admin_book/{book}',[BookController::class, 'adminShow'])->name('book.admin_show');
 });
 Route::put('canceled/{order}',[OrderController::class, 'markCanceled'])->middleware('auth')->name('mark_canceled');
 
