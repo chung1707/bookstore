@@ -8,55 +8,53 @@
 
 @section('content')
 <div class="container-fluid">
-<div class="row" style="justify-content: center;">
-          <div class="col-12 col-sm-6 col-md-4">
+    <div class="row" style="justify-content: center;">
+        <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-book"></i></span>
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-book"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Tổng số sản phẩm</span>
-                <span class="info-box-number">
-                  {{$totalBooks}}
-                  <small>Sản phẩm</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
+                <div class="info-box-content">
+                    <span class="info-box-text">Tổng số sản phẩm</span>
+                    <span class="info-box-number">
+                        {{$totalBooks}}
+                        <small>Sản phẩm</small>
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-4">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Sản phẩm bán chạy nhất</span>
-                <span class="info-box-number">{{$bestSellingBook->name}}<small>--{{$bestSellingBook->sold}} cuốn</small> </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-
-          <div class="col-12 col-sm-6 col-md-4">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Tổng sản phẩm đã bán</span>
-                <span class="info-box-number">{{$totalSold}}</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <!-- /.col -->
         </div>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Sản phẩm bán chạy nhất</span>
+                    <span class="info-box-number">{{$bestSellingBook->name}}<small>-{{$bestSellingBook->sold}} cuốn</small> </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-file-invoice-dollar"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Tổng sản phẩm đã bán</span>
+                    <span class="info-box-number">{{$totalSold}}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <admin-cart-icon></admin-cart-icon>
+        <!-- /.col -->
+        <!-- /.col -->
+    </div>
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -99,6 +97,9 @@
                                 <img src="{{ asset('storage/thumbnails/'.$book->thumbnails[0]->img) }}" alt="Banner" style="width:80px;">
                             </td>
                             <td><a href="{{route('book.admin_show',['book' => $book])}}" class="btn btn-info">Xem chi tiết</a></td>
+                            <td>
+                                <add_to_admin_cart :book="{{ json_encode($book) }}"></add_to_admin_cart>
+                            </td>
                             <td class="table__content">
                                 <form action="" method="post">
                                     @method('DELETE')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\AdminCart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -82,5 +83,6 @@ class RegisterController extends Controller
     protected function registered(Request $request, $user)
     {
         Cart::firstOrCreate(['user_id' => $user->id]);
+        AdminCart::firstOrCreate(['user_id' => $user->id]);
     }
 }

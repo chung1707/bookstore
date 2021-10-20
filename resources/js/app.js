@@ -49,6 +49,13 @@ Vue.component('import', require('./components/import/import.vue').default);
 
 //admin book
 Vue.component('thumbnail_display', require('./components/thumbnails.vue').default);
+Vue.component('edit-book', require('./components/books/edit_book.vue').default);
+
+//cart admin
+Vue.component('admin-cart-icon', require('./components/admin/adminCart/admin_cart.vue').default);
+Vue.component('add_to_admin_cart', require('./components/admin/adminCart/add_to_admin_cart.vue').default);
+Vue.component('bill', require('./components/admin/adminCart/bill.vue').default);
+
 
 
 import Vue from 'vue';

@@ -49,4 +49,32 @@ export default {
     setDiscountCode(state, discountCode){
         state.discountCode = discountCode;
     },
+
+    //admin cart
+    setAdminCart(state, books){
+        state.adminCart = books;
+    },
+    addToAdminCart(state, book){
+        let qty  = 1;
+        // tim san pham trong gio hang admin
+        let itemIncart = state.adminCart.find(item => {
+            return item.id === book.id;
+        });
+        // san pham da co tron gio
+        if(itemIncart){
+            if(itemIncart.pivot.quantity + qty > itemIncart.quantity){
+                itemIncart.pivot.quantity = itemIncart.quantity;
+                return;
+            }
+            itemIncart.pivot.quantity += qty;
+            return;
+        }
+        //san pham chua co tron gio
+        book['pivot'] = {'quantity':qty,'price': null};
+        state.adminCart.push(book);
+    },
+    deleteBookInAdminCart(state,book){
+        let index = state.adminCart.indexOf(book);
+        state.adminCart.splice(index, 1);
+    },
 }

@@ -35,7 +35,7 @@ class CategoryController extends Controller
             $categories = Category::where('for_books', '=', true)->get();
             return view('admin.categoryManagement.listDMS')->with('categories',$categories);
         }
-                    
+
     }
     public function listdmbv(Request $request){
         if(isset($request->searchName)){
@@ -47,7 +47,7 @@ class CategoryController extends Controller
             $categories = Category::where('for_books', '=', false)->get();
             return view('admin.categoryManagement.listDMBV')->with('categories',$categories);
         }
-      
+
     }
 
     /**
@@ -68,12 +68,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         //dd($request);
         $validated = $request->validate([
             'name' => 'required|unique:categories|max:255',
             'description' => 'required|max:1000',
-            
+
         ]);
         $category = new Category;
         $category->name = $request->name;
@@ -116,7 +116,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         //
-        // $category->fill($request->all()); 
+        // $category->fill($request->all());
         // $category->update();
         // return redirect()->route('category.index');
         dd('$request');
@@ -135,7 +135,7 @@ class CategoryController extends Controller
     }
     public function updateDM(UpdateCategoryRequest $request, Category $category)
     {
-         $category->fill($request->all()); 
+         $category->fill($request->all());
         $category->update();
         return redirect()->route('category.index');
     // dd('$request');

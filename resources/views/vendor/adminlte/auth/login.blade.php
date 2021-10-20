@@ -83,7 +83,7 @@
                 background: #ff5e00;
                 border-radius: 3px;
                 color: white;
-                margin-left: 9px;
+                margin-left: 13px;
                 margin-top: 10px;"
                 >Login with Google</a>
 

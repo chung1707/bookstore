@@ -66,11 +66,13 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         try{
+            // tao don hang
             $order = new Order;
             $order->fill($request->all());
             $order->user_id = auth()->user()->id;
             $order->transaction_id = Str::random(AppConst::TRANSACTION_CODE);
             $order->save();
+            // Attach sach vao don hang
             $books = $request->books;
             foreach($books as $book){
                 $item = Book::find($book['id']);
@@ -82,6 +84,7 @@ class OrderController extends Controller
                         'discount' => $book['discount']
                     ]
                 );
+                // cap nhap so luong sach va so luong ban ra
                 $item->quantity -= $book['pivot']['quantity'];
                 $item->sold += $book['pivot']['quantity'];
                 $item->update();

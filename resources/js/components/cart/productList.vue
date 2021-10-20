@@ -179,7 +179,7 @@
                     <a
                         href="/checkout"
                         class="btn btn-outline-primary-2 btn-order btn-block"
-                        >PROCEED TO CHECKOUT</a
+                        >Đặt hàng</a
                     >
                 </div>
                 <!-- End .summary -->
@@ -187,7 +187,7 @@
                 <a
                     href="/books"
                     class="btn btn-outline-dark-2 btn-block mb-3"
-                    ><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i
+                    ><span>Mua thêm sách</span><i class="icon-refresh"></i
                 ></a>
             </aside>
         <!-- End .col-lg-3 -->

@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Events\BooksCreated;
 use App\Events\OrderCanceled;
+use App\Listeners\BookUpdate;
+use App\Events\SaleBillCreated;
 use App\Listeners\CreateImportBills;
 use Illuminate\Support\Facades\Event;
 use App\Listeners\RestoreBookQuantity;
 use Illuminate\Auth\Events\Registered;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -32,6 +35,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderCanceled::class=>[
             RestoreBookQuantity::class,
+        ],
+        SaleBillCreated::class=>[
+            BookUpdate::class,
         ]
     ];
 

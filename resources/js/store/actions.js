@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 export default {
+    //user cart
     getListBook(context){
         axios.get("/get_cart").then(response =>{
             context.commit('setBooks',response.data.books);
@@ -16,9 +17,10 @@ export default {
         context.commit('deleteBook',book);
     },
     updateQty(context,book){
-        axios.post("/update_qty_cart", { 'book_id': book.id, newQuanty: book.pivot.quantity }).then (() =>{
-        });
+        axios.post("/update_qty_cart", { 'book_id': book.id, newQuanty: book.pivot.quantity });
     },
+
+
     setAuthUser(context,user){
         context.commit('setAuthUser',user);
     },
@@ -69,5 +71,27 @@ export default {
     clearCart(context){
         axios.post('/clearCart');
         context.commit('setBooks',[]);
-    }
+    },
+    // admin cart
+    getAdminCart(context){
+        axios.get("/admin/get_cart").then(response =>{
+            context.commit('setAdminCart',response.data.books);
+        });
+    },
+    addToAdminCart(context,book){
+        axios.post("/admin/add-to-cart",{'book_id': book.id}).then(()=> {
+            context.commit('addToAdminCart',book);
+        });
+    },
+    deleteBookInAdminCart(context,book){
+        axios.post("/admin/delete_book_in_cart",{'book_id': book.id});
+        context.commit('deleteBookInAdminCart',book);
+    },
+    updateQtyAdminCart(context,book){
+        axios.post("/admin/update_qty_cart", { 'book_id': book.id, newQuanty: book.pivot.quantity });
+    },
+    clearCart(context){
+        axios.post('/admin/clearCart');
+        context.commit('setAdminCart',[]);
+    },
 }

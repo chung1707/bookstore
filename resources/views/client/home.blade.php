@@ -185,7 +185,7 @@
                             }'>
                 @foreach($trendBooks as $trendBook)
                 <div class="product product-11 text-center">
-                    @if($trendBook->thumbnails[0])
+                    @if(isset($trendBook->thumbnails[0]))
                     <figure class="product-media">
                         <a href="{{ route('books.show',['book' =>$trendBook]) }}">
                             <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
@@ -196,7 +196,7 @@
                     </figure><!-- End .product-media -->
                     @else
                     <figure class="product-media">
-                        <a href="{{ route('books.show',['book' =>$newBook]) }}">
+                        <a href="{{ route('books.show',['book' =>$trendBook]) }}">
                             <img src="{{ asset('storage/thumbnails/product0.jpg')}}" alt="Product image" class="product-image">
                             <img src="{{ asset('storage/thumbnails/product0.jpg')}}" alt="Product image" class="product-image-hover">
                         </a>

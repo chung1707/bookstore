@@ -32,7 +32,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">Kiểm tra ngay <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/admin/book_list" class="small-box-footer">Kiểm tra ngay <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

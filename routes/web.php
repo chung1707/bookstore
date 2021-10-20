@@ -3,19 +3,20 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\User\CheckoutController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserManageController;
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\Warehouse\ExportController;
 use App\Http\Controllers\Warehouse\ImportController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Warehouse\AdminCartController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,13 +83,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     // books
     Route::get('/book_list',[BookController::class, 'adminBookList'])->name('books_list');
     Route::get('/admin_book/{book}',[BookController::class, 'adminShow'])->name('book.admin_show');
+    Route::put('/book/{book}',[BookController::class, 'update'])->name('book.update');
+
+    //admin cart
+    Route::post('/add-to-cart',[AdminCartController::class,'store']);
+    Route::get('/get_cart',[AdminCartController::class,'getCart']);
+    Route::get('/cart',[AdminCartController::class,'index']);
+    Route::post('/delete_book_in_cart',[AdminCartController::class,'deleteBookInCart']);
+    Route::post('/update_qty_cart',[AdminCartController::class,'update']);
+    Route::post('/clearCart',[AdminCartController::class,'clearCart']);
+    // export bill
+    Route::post('/export_bill',[ExportController::class,'createExportBill']);
+    Route::get('/export_bill/history',[ExportController::class,'history'])->name('export_bill_history');
+    Route::delete('/export_bill/{bill}',[ExportController::class,'deleteBill'])->name('export_bill_delete');
+    Route::get('/export_bill/history/{bill}',[ExportController::class,'show'])->name('export_bill_show');
+
 });
 Route::put('canceled/{order}',[OrderController::class, 'markCanceled'])->middleware('auth')->name('mark_canceled');
+Route::get('/admin_book/{book}/edit',[BookController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('book.edit');
 
 //Category
 Route::resource('/admin/category',CategoryController::class)->middleware(['auth', 'role:admin']);
-Route::get('/admin/dmbv',[CategoryController::class, 'listdmbv'])->middleware(['auth', 'role:admin']);
-Route::post('/category/update-category/{category}',[CategoryController::class,'updateDM'])->middleware('auth')->name('admin.updatecategory');
+Route::get('/admin/dmbv',[CategoryController::class, 'listdmbv'])->middleware(['auth', 'role:admin'])->name('listdmbv');
+Route::post('/category/update-category/{category}',[CategoryController::class,'updateDM'])->middleware(['auth', 'role:admin'])->name('admin.updatecategory');
 // user route
 Route::group(['middleware' => ['auth', 'role:user,author']], function () {
     Route::get('/profile',[UserController::class,'index']);
@@ -105,31 +122,21 @@ Route::get('/cart',[CartController::class,'index'])->middleware('auth');
 Route::post('/delete_book_in_cart',[CartController::class,'deleteBookInCart'])->middleware('auth');
 Route::post('/update_qty_cart',[CartController::class,'updateQty'])->middleware('auth');
 
-
 Route::post('/clearCart',[CartController::class,'clearCart'])->middleware('auth');
 
 //Supplier
-Route::get('/supplier/list-supplier',[SupplierController::class,'index'])->middleware('auth')->name('admin.listSupplier');
-Route::get('/supplier/create-supplier',[SupplierController::class,'create'])->middleware('auth')->name('admin.createSupplier');
+Route::get('/supplier/list-supplier',[SupplierController::class,'index'])->middleware(['auth', 'role:admin'])->name('admin.listSupplier');
+Route::get('/supplier/create-supplier',[SupplierController::class,'create'])->middleware(['auth', 'role:admin'])->name('admin.createSupplier');
 Route::post('/supplier/add-supplier',[SupplierController::class,'store'])->middleware('auth');
-Route::get('/supplier/edit-supplier/{supplier}',[SupplierController::class,'edit'])->middleware('auth')->name('admin.editSupplier');
-Route::post('/supplier/update-supplier/{supplier}',[SupplierController::class,'update'])->middleware('auth')->name('admin.updateSupplier');
-Route::delete('/supplier/destroy-supplier/{supplier}',[SupplierController::class,'destroy'])->name('admin.destroySupplier');
+Route::get('/supplier/edit-supplier/{supplier}',[SupplierController::class,'edit'])->middleware(['auth', 'role:admin'])->name('admin.editSupplier');
+Route::post('/supplier/update-supplier/{supplier}',[SupplierController::class,'update'])->middleware(['auth', 'role:admin'])->name('admin.updateSupplier');
+Route::delete('/supplier/destroy-supplier/{supplier}',[SupplierController::class,'destroy'])->middleware(['auth', 'role:admin'])->name('admin.destroySupplier');
 
-
-
-//checkout
-
-Route::resource('/article',ArticleController::class);
 
 Route::get('/books',[BookController::class,'index'])->name('books.index');
 Route::get('/books/{book}',[BookController::class,'show'])->name('books.show');
 
-
-
-
 // preview
-
 
 Route::get('/blog',function(){
     return view('blog.blog');

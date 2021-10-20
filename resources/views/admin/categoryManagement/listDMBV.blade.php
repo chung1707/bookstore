@@ -8,12 +8,12 @@
 
 @section('content')
 <div class="row">
-    <div class="col-12">    
+    <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">DANH MỤC BÀI VIẾT </h3>
             </div>
-            <form action="{{ route('generated::ra8i62m6Z8HJVrg4') }}" method="get">
+            <form action="{{ route('listdmbv') }}" method="get">
             @csrf
             <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
               <div class="input-group">
@@ -56,7 +56,7 @@
                     </tbody>
                 </table>
             </div>
-           
+
 
             <!-- /.card-body -->
         </div>

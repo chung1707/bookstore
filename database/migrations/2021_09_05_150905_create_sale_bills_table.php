@@ -18,7 +18,8 @@ class CreateSaleBillsTable extends Migration
             $table->double('totalPrice')->default(0);
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('transaction_id');
-            $table->text('note')->nullable();
+            $table->string('name');
+            $table->string('phone')->nullable();
             $table->integer('discount_code_id')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -6,7 +6,9 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Models\SaleBill;
 use App\Models\Supplier;
+use App\Models\AdminCart;
 use App\Models\Thumbnail;
 use App\Models\ImportBills;
 use Illuminate\Database\Eloquent\Model;
@@ -39,5 +41,11 @@ class Book extends Model
     }
     public function import_bills(){
         return $this->belongsToMany(ImportBills::class);
+    }
+    public function adminCarts(){
+        return $this->belongsToMany(AdminCart::class);
+    }
+    public function saleBills(){
+        return $this->belongsToMany(SaleBill::class);
     }
 }

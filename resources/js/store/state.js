@@ -8,4 +8,5 @@ export default {
     category_ids: [],
     //checkout
     postage: 0,
+    adminCart: [],
 }

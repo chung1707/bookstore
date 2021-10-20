@@ -5,16 +5,16 @@ namespace App\Models;
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class SaleBill extends Model
+class AdminCart extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
+    protected $fillable = ['user_id'];
     public function user(){
         return $this->belongsTo(User::class);
     }
     public function books(){
-        return $this->belongsToMany(Book::class)->withPivot('quantity', 'price');
+        return $this->belongsToMany(Book::class)->withPivot('quantity');
     }
 }

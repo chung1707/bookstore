@@ -11,8 +11,8 @@ use App\Events\BooksCreated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
-
-
+use App\Http\Requests\Book\UpdateBookRequest;
+use PhpOffice\PhpSpreadsheet\Writer\Ods\Thumbnails;
 
 class BookController extends Controller
 {
@@ -126,7 +126,8 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        $book->load('thumbnails','categories');
+        return view('books.edit_book')->with('book',$book);
     }
 
     /**
@@ -136,9 +137,28 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
-        //
+        // cap nhap thong tin sach
+        $book->fill($request->all());
+        $book->update();
+        // cap nhap anh cho sach
+        if(isset($request->newThumbnails[0])){
+            Thumbnail::where('book_id',$book->id)->delete();
+            foreach(explode(',',$request->newThumbnails) as $file)
+            {
+                $thumbnails[]= [
+                    'book_id' => $book->id,
+                    'img'=>  $file,
+                ];
+            }
+            Thumbnail::insert($thumbnails);
+        }
+        // cap nhap danh muc sach
+        if(isset($request->category_ids)){
+            $book->categories()->detach();
+            $book->categories()->attach($request->category_ids);
+        }
     }
 
     /**

@@ -305,12 +305,12 @@ return [
                     'url'     => 'admin/import/create',
                 ],
                 [
-                    'text'    => 'Xuất sách',
-                    'url'     => '#',
-                ],
-                [
                     'text'    => 'Lịch sử nhập',
                     'url'     => 'admin/import_bills',
+                ],
+                [
+                    'text'    => 'Lịch sử xuất',
+                    'url'     => 'admin/export_bill/history',
                 ],
             ],
         ],

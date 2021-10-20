@@ -52,12 +52,12 @@
               <div class="mt-4">
                 <div class="btn btn-primary btn-lg btn-flat">
                 <i class="fas fa-wrench"></i>
-                  Chỉnh sửa thông tin
+                <a class="btn-primary" href="{{ route('book.edit',['book' => $book]) }}">Sửa thông tin sản phẩm</a>
                 </div>
 
                 <div class="btn btn-primary btn-lg btn-flat">
                   <i class="fas fa-undo fa-lg mr-2"></i>
-                  <a class="btn-primary" href="{{ redirect()->back()->getTargetUrl() }}">Quay lại</a>
+                  <a class="btn-primary" href="{{ route('books_list') }}">Quay lại</a>
                 </div>
               </div>
             </div>

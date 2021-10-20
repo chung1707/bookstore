@@ -6,6 +6,8 @@ use App\Models\Cart;
 use App\Models\Role;
 use App\Models\Order;
 use App\Models\Comment;
+use App\Models\SaleBill;
+use App\Models\AdminCart;
 use App\Models\ImportBills;
 use HoangPhi\VietnamMap\Models\Ward;
 use HoangPhi\VietnamMap\Models\District;
@@ -85,5 +87,11 @@ class User extends Authenticatable
     }
     public function import_bills(){
         return $this->hasMany(ImportBills::class);
+    }
+    public function adminCart(){
+        return $this->hasOne(AdminCart::class);
+    }
+    public function saleBills(){
+        return $this->hasMany(SaleBill::class);
     }
 }

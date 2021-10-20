@@ -15,9 +15,9 @@ export default {
     totalBook(state){
         let total = 0;
         for(let i = 0; i < state.books.length; i++){
-            total += state.books[i].pivot.quantity;
+            total += Number(state.books[i].pivot.quantity);
         }
-        return total;
+        return Number(total);
     },
     discountCode(state){
         return state.discountCode ;
@@ -41,5 +41,26 @@ export default {
             total += state.importBooks[i].quantity * state.importBooks[i].price;
         }
         return total;
-    }
+    },
+    //admin cart
+    adminCart(state){
+        return state.adminCart;
+    },
+    adminCartTotalPrice(state){
+        let sum = null;
+            for (var i = 0; i < state.adminCart.length; i++) {
+                sum +=
+                    state.adminCart[i].price *
+                    state.adminCart[i].pivot.quantity *
+                    ((100 - state.adminCart[i].discount )/ 100);
+            }
+        return sum;
+    },
+    totalBookInAdminCart(state){
+        let total = 0;
+        for(let i = 0; i < state.adminCart.length; i++){
+            total += Number(state.adminCart[i].pivot.quantity);
+        }
+        return Number(total);
+    },
 }
