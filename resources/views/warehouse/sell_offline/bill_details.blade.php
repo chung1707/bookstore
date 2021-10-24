@@ -91,7 +91,7 @@
               <div class="row">
                 <!-- accepted payments column -->
                 <div class="col-6">
-                    <p class="lead">Phương thức thanh toán: Thanh toán online</p>
+                    <p class="lead">Hóa đơn được in tại cửa hàng Molla Book</p>
                 </div>
                 <!-- /.col -->
                 <div class="col-6">
