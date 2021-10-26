@@ -378,6 +378,20 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Quản lý nhà vận chuyển',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Danh sách vận chuyển',
+                    'url'  => 'admin/transporters',
+                ],
+                [
+                    'text' => 'Thêm nhà vận chuyển',
+                    'url'  => 'admin/create-transporter',
+                ],
+            ],
+        ],
     ],
 
     /*

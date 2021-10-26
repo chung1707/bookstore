@@ -17,6 +17,8 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Warehouse\ExportController;
 use App\Http\Controllers\Warehouse\ImportController;
 use App\Http\Controllers\Warehouse\AdminCartController;
+use App\Http\Controllers\Transporters\TransportersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,9 +94,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::post('/update_qty_cart', [AdminCartController::class, 'update']);
     Route::post('/clearCart', [AdminCartController::class, 'clearCart']);
     // export bill
+
+    //transporters
+    Route::get('/transporters',[TransportersController::class, 'index'])->name('transporters_list');
+    Route::get('/create-transporter',[TransportersController::class,'create'])->name('admin.createTransporter');
+    Route::post('/add-transporter',[TransportersController::class,'store'])->name('admin.storeTransporter');
+    Route::get('/edit-transporter/{transporter}',[TransportersController::class,'edit'])->name('admin.editTransporter');
+    Route::post('/update-transporter/{transporter}',[TransportersController::class,'update'])->name('admin.updateTransporter');
+    Route::delete('/destroy-transporter/{transporter}',[TransportersController::class,'destroy'])->name('admin.destroyTransporter');
+  
     Route::post('/export_bill', [ExportController::class, 'createExportBill']);
     Route::get('/export_bill/history', [ExportController::class, 'history'])->name('export_bill_history');
     Route::get('/export_bill/history/{bill}', [ExportController::class, 'show'])->name('export_bill_show');
+
 });
 
 //// ADMIN
