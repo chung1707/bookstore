@@ -17,6 +17,8 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Warehouse\ExportController;
 use App\Http\Controllers\Warehouse\ImportController;
 use App\Http\Controllers\Warehouse\AdminCartController;
+use App\Http\Controllers\Transporters\TransportersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -97,7 +99,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::get('/export_bill/history',[ExportController::class,'history'])->name('export_bill_history');
     Route::delete('/export_bill/{bill}',[ExportController::class,'deleteBill'])->name('export_bill_delete');
     Route::get('/export_bill/history/{bill}',[ExportController::class,'show'])->name('export_bill_show');
-
+    //transporters
+    Route::get('/transporters',[TransportersController::class, 'index'])->name('transporters_list');
+    Route::get('/create-transporter',[TransportersController::class,'create'])->name('admin.createTransporter');
+    Route::post('/add-transporter',[TransportersController::class,'store'])->name('admin.storeTransporter');
+    Route::get('/edit-transporter/{transporter}',[TransportersController::class,'edit'])->name('admin.editTransporter');
+    Route::post('/update-transporter/{transporter}',[TransportersController::class,'update'])->name('admin.updateTransporter');
+    Route::delete('/destroy-transporter/{transporter}',[TransportersController::class,'destroy'])->name('admin.destroyTransporter');
 });
 Route::put('canceled/{order}',[OrderController::class, 'markCanceled'])->middleware('auth')->name('mark_canceled');
 Route::get('/admin_book/{book}/edit',[BookController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('book.edit');
