@@ -68,7 +68,7 @@
 
             <div class="dropdown-cart-action">
                 <a href="/cart" class="btn btn-primary">Giỏ hàng</a>
-                <a href="checkout" class="btn btn-outline-primary-2"
+                <a href="/checkout" class="btn btn-outline-primary-2"
                     ><span>Thanh toán</span><i class="icon-long-arrow-right"></i
                 ></a>
             </div>

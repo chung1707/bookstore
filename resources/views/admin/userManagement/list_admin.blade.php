@@ -59,11 +59,7 @@
                                 </td>
                                 <td><a href="{{ route('admin.showUser',['user' =>$admin]) }}"  class="btn btn-info">Xem chi tiết</a></td>
                                 <td class="table__content">
-                                    <form action="{{ route('admin.deleteUser',['user' => $admin]) }}" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn-flat btn-default btn-sm" type='submit'>Xóa</button>
-                                    </form>
+                                    <delete :item="{{ json_encode($admin) }}" :link="{{json_encode($linkDelete)}}"></delete>
                                 </td>
                             </tr>
                             @endforeach

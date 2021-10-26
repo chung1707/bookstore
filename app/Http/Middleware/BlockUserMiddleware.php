@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class checBlockUserMiddleware
+class BlockUserMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,6 +16,9 @@ class checBlockUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if(auth()->user()->blocked){
+            abort(403);
+        }
         return $next($request);
     }
 }

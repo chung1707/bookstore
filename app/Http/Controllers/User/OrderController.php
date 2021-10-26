@@ -16,24 +16,28 @@ use App\Http\Requests\StoreOrderRequest;
 class OrderController extends Controller
 {
     public function newOrders(){
-        $orders = Order::where('pending','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+        $orders = Order::orderBy('id','desc')->where('pending','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
         $orders->load('user');
         return view('order.new_orders')->with('orders', $orders);
     }
     public function orderProcessing(){
-        $orders = Order::where('processing','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+        $orders = Order::orderBy('id','desc')->where('processing','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
         $orders->load('user');
         return view('order.processing_orders')->with('orders', $orders);
     }
     public function orderDelivered(){
-        $orders = Order::where('delivered','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+        $linkDelete = '/admin/order/';
+        $orders = Order::orderBy('id','desc')->where('delivered','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
         $orders->load('user');
-        return view('order.delivered_orders')->with('orders', $orders);
+        return view('order.delivered_orders')->with('orders', $orders)->with('linkDelete', $linkDelete);
     }
     public function orderCanceled(){
-        $orders = Order::where('canceled','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+        $linkDelete = '/admin/order/';
+        $orders = Order::orderBy('id','desc')->where('canceled','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
         $orders->load('user');
-        return view('order.canceled_orders')->with('orders', $orders);
+        return view('order.canceled_orders')
+        ->with('orders', $orders)
+        ->with('linkDelete', $linkDelete);
     }
     public function markDelivered(Order $order){
         $order->delivered = true;
@@ -138,6 +142,11 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        try{
+            $order->delete();
+            return response()->json(['status' => 201, 'name' =>$order->transaction_id]);
+        }catch(\Exception $e){
+            return response()->json(['status' => 401, 'error' =>$e]);
+        }
     }
 }

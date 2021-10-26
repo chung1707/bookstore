@@ -12,20 +12,23 @@ class UserManageController extends Controller
 {
     public function adminAccounts()
     {
+        $linkDelete = "/user_delete/";
         $admins = User::whereHas('role', function (Builder $query) {
             $query->where('name', '=', 'admin');
         })->where('id', '!=', auth()->user()->id)->orderBy('created_at', 'desc')->with('province', 'ward', 'district',)->paginate(AppConst::DEFAULT_PER_PAGE);
-        $total = User::count('id');
         return view('admin.userManagement.list_admin')
-        ->with('total', $total)
+        ->with('linkDelete', $linkDelete)
         ->with('admins', $admins);
     }
     public function userAccounts()
     {
+        $linkDelete = "/user_delete/";
         $users = User::whereHas('role', function (Builder $query) {
             $query->where('name', '!=', 'admin');
         })->orderBy('created_at', 'desc')->with('province', 'ward', 'district',)->paginate(AppConst::DEFAULT_PER_PAGE);
-        return view('admin.userManagement.list_user')->with('users', $users);
+        return view('admin.userManagement.list_user')
+        ->with('users', $users)
+        ->with('linkDelete', $linkDelete);
     }
     public function blockUser(User $user){
         $user->blocked =true;
@@ -36,8 +39,12 @@ class UserManageController extends Controller
         $user->save();
     }
     public function deleteUser(User $user){
-        $user->delete();
-        return redirect()->back();
+        try{
+            $user->delete();
+            return response()->json(['status' => 201, 'name' =>$user->name]);
+        }catch(\Exception $e){
+            return response()->json(['status' => 401, 'error' =>$e]);
+        }
     }
     public function showUser(User $user){
         $user->load('role');

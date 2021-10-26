@@ -56,6 +56,19 @@ Vue.component('admin-cart-icon', require('./components/admin/adminCart/admin_car
 Vue.component('add_to_admin_cart', require('./components/admin/adminCart/add_to_admin_cart.vue').default);
 Vue.component('bill', require('./components/admin/adminCart/bill.vue').default);
 
+//delete
+Vue.component('delete', require('./components/admin/delete.vue').default);
+
+// print bill
+Vue.component('print', require('./components/print_invoice.vue').default);
+//comment
+Vue.component('comment', require('./components/comment.vue').default);
+
+
+//rating
+import StarRating from 'vue-star-rating'
+Vue.component('star-rating', StarRating);
+
 
 
 import Vue from 'vue';
@@ -81,6 +94,10 @@ Vue.component('ValidationObserver', ValidationObserver);
 
 import { } from './vee_rules';
 
+
+//star rating
+
 const app = new Vue({
     el: '#app',store,
 });
+
