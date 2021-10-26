@@ -137,7 +137,7 @@
                         class="btn btn-block btn-primary"
                         href="/admin/book_list"
                     >
-                        Nhập thêm sách
+                        Chọn thêm sách
                     </a>
                 </div>
             </div>
@@ -279,7 +279,7 @@ export default {
             "getAdminCart",
             "deleteBookInAdminCart",
             "updateQtyAdminCart",
-            "clearCart"
+            "clearAdminCart"
         ]),
         increasing(book) {
             if (book.pivot.quantity < book.quantity) {
@@ -309,7 +309,7 @@ export default {
             bill.discount_code_id = null;
             axios.post('/admin/export_bill',{'bill': bill, 'name': this.name, 'phone': this.phone}).then((response) => {
                 if(response.data.status == 201){
-                    this.clearCart();
+                    this.clearAdminCart();
                     this.success = true;
                     this.error = {};
                     window.location.href = "/admin/export_bill/history/" + response.data.bill_id;

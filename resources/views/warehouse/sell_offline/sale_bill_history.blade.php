@@ -50,11 +50,7 @@
                             <td>{{ $saleBill->totalPrice }}</td>
                             <td><a href="{{route('export_bill_show',[ 'bill'=>$saleBill ])}}" class="btn-flat btn-default btn-sm">Xem chi tiết</a></td>
                             <td class="table__content">
-                                <form action="{{ route('export_bill_delete',['bill' => $saleBill]) }}" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button class="btn-flat btn-default btn-sm" type='submit'>Xóa</button>
-                                </form>
+                                <delete :item="{{ json_encode($saleBill) }}" :link="{{json_encode($linkDelete)}}"></delete>
                             </td>
                         </tr>
                         @endforeach

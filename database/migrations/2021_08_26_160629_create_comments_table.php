@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('book_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->text('content');
-            $table->string('rate',30);
+            $table->integer('rating');
             $table->timestamps();
         });
     }

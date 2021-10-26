@@ -41,12 +41,19 @@ class ExportController extends Controller
         }
     }
     public function history(){
+        $linkDelete = '/admin/export_bill/';
         $saleBills = SaleBill::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
-        return view('warehouse.sell_offline.sale_bill_history')->with('saleBills',$saleBills);
+        return view('warehouse.sell_offline.sale_bill_history')
+        ->with('saleBills',$saleBills)
+        ->with('linkDelete',$linkDelete);
     }
-    public function deleteBill(Request $request){
-        SaleBill::find($request->bill)->delete();
-        return redirect()->back();
+    public function deleteBill(SaleBill $bill){
+        try{
+            $bill->delete();
+            return response()->json(['status' => 201, 'name' =>$bill->transaction_id]);
+        }catch(\Exception $e){
+            return response()->json(['status' => 401, 'error' =>$e]);
+        }
     }
     public function show(SaleBill $bill){
         $bill->load('user','books');

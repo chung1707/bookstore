@@ -305,8 +305,6 @@ export default {
             setTimeout(() => (this.success = false), 1500);
         }
     },
-    mounted(){
-    },
 };
 </script>
 

@@ -90,7 +90,7 @@ export default {
     updateQtyAdminCart(context,book){
         axios.post("/admin/update_qty_cart", { 'book_id': book.id, newQuanty: book.pivot.quantity });
     },
-    clearCart(context){
+    clearAdminCart(context){
         axios.post('/admin/clearCart');
         context.commit('setAdminCart',[]);
     },

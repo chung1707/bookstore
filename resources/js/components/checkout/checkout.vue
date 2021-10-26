@@ -451,12 +451,13 @@ export default {
             orderBill.books = this.books;
             orderBill.note = this.note;
             axios
-                .post("checkout", orderBill)
+                .post("/checkout", orderBill)
                 .then((response) => {
                     if(response.data.status == 201){
                         this.success = true;
                         this.error = {};
                         this.clearCart();
+                        window.location.href = "/profile";
                         return;
                     }
                         this.unsuccessful =true;

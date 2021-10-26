@@ -101,11 +101,7 @@
                                 <add_to_admin_cart :book="{{ json_encode($book) }}"></add_to_admin_cart>
                             </td>
                             <td class="table__content">
-                                <form action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button class="btn-flat btn-danger btn-sm" type='submit'>Xóa</button>
-                                </form>
+                                <delete :book="{{ json_encode($book) }}" :link="{{json_encode($linkDelete)}}"></delete>
                             </td>
                         </tr>
                         @endforeach
