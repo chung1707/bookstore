@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Danh sách người dùng</h1>
+<h1>Danh sách Admin</h1>
 @stop
 
 @section('content')
@@ -12,27 +12,23 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Danh sách tài khoản admin --</h3>
+                    @if (!isset($search))
                     <h4 class="card-title">
                         Trang: {{ $admins->currentPage() }} / {{$admins->lastPage()}}
                     </h4>
+                    @endif
                     <div class="card-tools">
-                        <div
-                            class="input-group input-group-sm"
-                            style="width: 150px;"
-                        >
-                            <input
-                                type="text"
-                                name="table_search"
-                                class="form-control float-right"
-                                placeholder="Search"
-                            />
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
+                        <form action="{{ route('admin.admin_accounts') }}" method="get">
+                            @csrf
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="tableSearch" class="form-control float-right" placeholder="Search" value="@if (isset($search)){{ $search }} @endif"/>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -66,11 +62,12 @@
                         </tbody>
                     </table>
                 </div>
+                @if (!isset($search))
                 <div style="padding-top: 20px;
                             margin: 0px auto;">
                     {{ $admins->links() }}
                 </div>
-
+                @endif
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

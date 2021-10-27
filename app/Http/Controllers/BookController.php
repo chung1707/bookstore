@@ -24,7 +24,7 @@ class BookController extends Controller
         return response()->json(['books' => $headerBooks]);
     }
 
-    public function adminBookList()
+    public function adminBookList(Request $request)
     {
         $books = Book::orderBy('id', 'desc')->paginate(AppConst::DEFAULT_PER_PAGE);
         $books->load('thumbnails');
@@ -32,27 +32,65 @@ class BookController extends Controller
         $bestSellingBook = Book::orderBy('sold', 'desc')->first();
         $totalSold = Book::sum('sold');
         $linkDelete = "/admin/book/";
-        return view('books.list_book')
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $books = Book::orderBy('id', 'desc')->where('name','like','%'.$search.'%')
+            ->orWhere('book_code','like','%'.$search.'%')
+            ->get();
+            return view('books.list_book')
+            ->with('books', $books)
+            ->with('totalBooks', $totalBooks)
+            ->with('bestSellingBook', $bestSellingBook)
+            ->with('linkDelete', $linkDelete)
+            ->with('search', $search)
+            ->with('totalSold', $totalSold);
+        }else{
+            return view('books.list_book')
             ->with('books', $books)
             ->with('totalBooks', $totalBooks)
             ->with('bestSellingBook', $bestSellingBook)
             ->with('linkDelete', $linkDelete)
             ->with('totalSold', $totalSold);
+        }
+
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::paginate(9);
+        $SupplierChecked=[];
+        $CategoryChecked=[];
         $categories = Category::where('for_books', '=', true)->get();
         $suppliers = Supplier::all();
-        return view('client.products')
-            ->with('books', $books)
-            ->with('categories', $categories)
-            ->with('suppliers', $suppliers);
+        $checked = 'checked';
+        if(isset($request->SupplierSearch[0])&&isset($request->CategorySearch[0])){
+            $books = Book::whereHas('categories', function (Builder $query) use ($request)  {
+                $query->whereIn('category_id',$request->CategorySearch);
+            })->whereIn('supplier_id',$request->SupplierSearch)->take(9)->get();
+            $CategoryChecked=$request->CategorySearch;
+            $SupplierChecked=$request->SupplierSearch;
+        }else if(!isset($request->SupplierSearch[0])&&isset($request->CategorySearch[0])){
+            $books = Book::whereHas('categories', function (Builder $query) use ($request)  {
+                $query->whereIn('category_id',$request->CategorySearch);
+            })->take(9)->get();
+            $CategoryChecked=$request->CategorySearch;
+        }else if(isset($request->SupplierSearch[0])&&!isset($request->CategorySearch[0])){
+            $books = Book::whereIn('supplier_id',$request->SupplierSearch)->take(9)->get(); 
+            $SupplierChecked=$request->SupplierSearch;
+        }else{
+            $books = Book::paginate(9); 
+        }
+            return view('client.products')
+                ->with('books', $books)
+                ->with('categories', $categories)
+                ->with('SupplierChecked', $SupplierChecked)
+                ->with('CategoryChecked', $CategoryChecked)
+                ->with('checked', $checked)
+                ->with('suppliers', $suppliers);
+
     }
 
     /**

@@ -204,12 +204,16 @@ import { mapGetters } from "vuex";
 export default {
     props: {
         bought: {
+<<<<<<< HEAD
+            type: Boolean,
+=======
             required: true,
             type: Boolean
         },
         book: {
             required: true,
             type: Object
+>>>>>>> df4ed080677125dc671635879ddc727c146b93de
         }
     },
     computed: {

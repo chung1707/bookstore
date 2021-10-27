@@ -15,29 +15,55 @@ use App\Http\Requests\StoreOrderRequest;
 
 class OrderController extends Controller
 {
-    public function newOrders(){
-        $orders = Order::orderBy('id','desc')->where('pending','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
-        $orders->load('user');
-        return view('order.new_orders')->with('orders', $orders);
+    public function newOrders(Request $request){
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $orders = Order::orderBy('id','desc')->where('pending','=', true)->where('transaction_id','like','%'.$search.'%')->get();
+            $orders->load('user');
+            return view('order.new_orders')->with('orders', $orders)->with('search', $search);
+        } else{
+            $orders = Order::orderBy('id','desc')->where('pending','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+            $orders->load('user');
+            return view('order.new_orders')->with('orders', $orders);
+        }
     }
-    public function orderProcessing(){
-        $orders = Order::orderBy('id','desc')->where('processing','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
-        $orders->load('user');
-        return view('order.processing_orders')->with('orders', $orders);
+    public function orderProcessing(Request $request){
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $orders = Order::orderBy('id','desc')->where('processing','=', true)->where('transaction_id','like','%'.$search.'%')->get();
+            $orders->load('user');
+            return view('order.processing_orders')->with('orders', $orders)->with('search', $search);
+        } else{
+            $orders = Order::orderBy('id','desc')->where('processing','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+            $orders->load('user');
+            return view('order.processing_orders')->with('orders', $orders);
+        }
     }
-    public function orderDelivered(){
+    public function orderDelivered(Request $request){
         $linkDelete = '/admin/order/';
-        $orders = Order::orderBy('id','desc')->where('delivered','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
-        $orders->load('user');
-        return view('order.delivered_orders')->with('orders', $orders)->with('linkDelete', $linkDelete);
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $orders = Order::orderBy('id','desc')->where('delivered','=', true)->where('transaction_id','like','%'.$search.'%')->get();
+            $orders->load('user');
+            return view('order.delivered_orders')->with('orders', $orders)->with('search', $search)->with('linkDelete', $linkDelete);
+        } else {
+            $orders = Order::orderBy('id','desc')->where('delivered','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+            $orders->load('user');
+            return view('order.delivered_orders')->with('orders', $orders)->with('linkDelete', $linkDelete);
+        }
     }
-    public function orderCanceled(){
+    public function orderCanceled(Request $request){
         $linkDelete = '/admin/order/';
-        $orders = Order::orderBy('id','desc')->where('canceled','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
-        $orders->load('user');
-        return view('order.canceled_orders')
-        ->with('orders', $orders)
-        ->with('linkDelete', $linkDelete);
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $orders = Order::orderBy('id','desc')->where('canceled','=', true)->where('transaction_id','like','%'.$search.'%')->get();
+            $orders->load('user');
+            return view('order.canceled_orders')->with('orders', $orders)->with('search', $search)->with('linkDelete', $linkDelete);
+        } else {
+            $orders = Order::orderBy('id','desc')->where('canceled','=', true)->paginate(AppConst::DEFAULT_PER_PAGE);
+            $orders->load('user');
+            return view('order.canceled_orders')->with('orders', $orders)->with('linkDelete', $linkDelete);
+        }
     }
     public function markDelivered(Order $order){
         $order->delivered = true;
