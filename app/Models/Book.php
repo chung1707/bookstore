@@ -31,7 +31,7 @@ class Book extends Model
     }
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->hasMany(Comment::class);
     }
     public function carts(){
         return $this->belongsToMany(Cart::class);

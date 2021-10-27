@@ -1,7 +1,7 @@
 <template>
     <div>
         <h5 class="success" v-if="success">
-            <i class="fas fa-check"></i> Đã xóa: {{name}}!
+            <i class="fas fa-check"></i> Đã xóa: {{this.name}}!
         </h5>
         <h5 class="unsuccessful" v-if="error">
             <i class="fas fa-times-octagon">Đã có lỗi sãy ra, Xóa không thành công!</i>
@@ -78,6 +78,7 @@ export default {
         onDelete() {
             var formData = new FormData();
             formData.append("_method", "delete");
+            formData.append("item_id", this.item.id);
             this.show = false;
             axios.post(this.link +this.item.id ,formData).then(response => {
                 if(response.data.status == 201){

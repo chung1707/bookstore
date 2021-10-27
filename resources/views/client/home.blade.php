@@ -40,7 +40,7 @@
                                 </picture>
                             </figure><!-- End .slide-image -->
 
-                            <div class="intro-content" >
+                            <div class="intro-content">
                                 <h3 class="intro-subtitle">Best Sellers</h3><!-- End .h3 intro-subtitle -->
                                 <h1 class="intro-title">Bán chạy<br>nhất</h1><!-- End .intro-title -->
 
@@ -187,12 +187,16 @@
                 <div class="product product-11 text-center">
                     @if(isset($trendBook->thumbnails[0]))
                     <figure class="product-media">
-                        <a href="{{ route('books.show',['book' =>$trendBook]) }}">
-                            <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
-                            @isset($trendBook->thumbnails[0])
-                            <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
-                            @endisset
-                        </a>
+                        @if($trendBook->quantity < 1) <span class="product-label label-out">Hết hàng</span>
+                            @endif
+                            @if($trendBook->quantity < 10) <span class="product-label label-out">Chỉ còn lại {{$trendBook->quantity}} cuốn</span>
+                                @endif
+                                <a href="{{ route('books.show',['book' =>$trendBook]) }}">
+                                    <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                                    @isset($trendBook->thumbnails[0])
+                                    <img src="{{ asset('storage/thumbnails/'.$trendBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
+                                    @endisset
+                                </a>
                     </figure><!-- End .product-media -->
                     @else
                     <figure class="product-media">
@@ -208,9 +212,11 @@
                             {{$trendBook->price}} VNĐ
                         </div><!-- End .product-price -->
                     </div><!-- End .product-body -->
+                    @if ($trendBook->quantity > 1)
                     <div class="product-action">
-                        <add-to-cart :book="{{ $trendBook }}" ></add-to-cart>
+                        <add-to-cart :book="{{ $trendBook }}"></add-to-cart>
                     </div><!-- End .product-action -->
+                    @endif
                 </div><!-- End .product -->
                 @endforeach
             </div>
@@ -218,41 +224,10 @@
     </div><!-- End .tab-content -->
 </div><!-- End .container -->
 
-<div class="container categories pt-6">
-    <h2 class="title-lg text-center mb-4">Danh mục phổ biến</h2><!-- End .title-lg text-center -->
-
-    <div class="row">
-        @foreach ($trendCategories as $trendCategory)
-        <div class="col-6 col-lg-4">
-            <div class="banner banner-display banner-link-anim">
-                @if(isset($trendCategory->books[1]))
-                    @isset($trendCategory->books[1]->thumbnail[0])
-                    <a href="#">
-                        <img src="{{ asset('storage/thumbnails/'.$trendCategory->books[1]->thumbnails[0]->img) }}" alt="Banner">
-                    </a>
-                    @endisset
-                @endif
-                <div class="banner-content banner-content-center">
-                    <h3 class="banner-title text-white">
-                        <a href="#"
-                        style=" font-size: 30px;
-                            color: #ffffff;
-                            font-family: 'molla';"
-                        >{{ $trendCategory->name }}</a></h3><!-- End .banner-title -->
-                    <a href="#" class="btn btn-outline-white banner-link">Khám phá<i class="icon-long-arrow-right"></i></a>
-                </div><!-- End .banner-content -->
-            </div><!-- End .banner -->
-        </div><!-- End .col-sm-6 col-lg-3 -->
-        @endforeach
-    </div><!-- End .row -->
-</div><!-- End .container -->
-
-<div class="mb-5"></div><!-- End .mb-6 -->
-
 
 <div class="container">
     <div class="heading heading-center mb-6">
-        <h2 class="title">Sản phẩm gần đây</h2><!-- End .title -->
+        <h2 class="title">Sản phẩm mới nhất</h2><!-- End .title -->
 
         <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
             <li class="nav-item">
@@ -270,12 +245,17 @@
                         <div class="product product-11 mt-v3 text-center">
                             @if(isset($newBook->thumbnails[0]))
                             <figure class="product-media">
-                                <a href="{{ route('books.show',['book' =>$newBook]) }}">
-                                    <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
-                                    @isset($newBook->thumbnails[1])
-                                    <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
-                                    @endisset
-                                </a>
+                                @if($newBook->quantity < 1)
+                                <span class="product-label label-out">Hết hàng</span>
+                                @endif
+                                @if($newBook->quantity < 10) <span class="product-label label-out">Chỉ còn lại {{$newBook->quantity}} cuốn</span>
+                                    @endif
+                                    <a href="{{ route('books.show',['book' =>$newBook]) }}">
+                                        <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
+                                        @isset($newBook->thumbnails[1])
+                                        <img src="{{ asset('storage/thumbnails/'.$newBook->thumbnails[1]->img)}}" alt="Product image" class="product-image-hover">
+                                        @endisset
+                                    </a>
                             </figure><!-- End .product-media -->
                             @else
                             <figure class="product-media">
@@ -291,10 +271,11 @@
                                     {{$newBook->price}} VNĐ
                                 </div><!-- End .product-price -->
                             </div><!-- End .product-body -->
-
+                            @if($newBook->quantity > 1)
                             <div class="product-action">
-                                <add-to-cart :book="{{ $newBook }}" ></add-to-cart>
+                                <add-to-cart :book="{{ $newBook }}"></add-to-cart>
                             </div><!-- End .product-action -->
+                            @endif
                         </div><!-- End .product -->
                     </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
                     @endforeach

@@ -141,7 +141,11 @@
                                     @foreach($suppliers as $supplier)
                                         <div class="filter-item">
                                             <div class="custom-control custom-checkbox">
+<<<<<<< HEAD
                                                 <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}" name="SupplierSearch[]" value="{{$supplier->id}}" @if(isset($SupplierChecked[0])&&in_array($supplier->id, $SupplierChecked)) {{ $checked }} @endif>
+=======
+                                                <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}">
+>>>>>>> df4ed080677125dc671635879ddc727c146b93de
                                                 <label class="custom-control-label" for="{{ $supplier->name }}">{{ $supplier->name }}</label>
                                             </div><!-- End .custom-checkbox -->
                                         </div><!-- End .filter-item -->

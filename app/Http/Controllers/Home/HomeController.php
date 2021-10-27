@@ -28,7 +28,6 @@ class HomeController extends Controller
     public function index()
     {
         $suppliers = Supplier::get();
-        $trendCategories = Category::where('for_books', '=', true)->withCount('books')->orderBy('books_count','desc')->take(3)->get();
         $trendBooks = Book::orderBy('sold','desc')->take(10)->get();
         $newBooks = Book::orderBy('created_at','desc')->take(8)->get();
         $categories = Category::where('for_books', '=', true)->get();
@@ -36,7 +35,6 @@ class HomeController extends Controller
                 ->with('trendBooks',$trendBooks)
                 ->with('newBooks',$newBooks)
                 ->with('suppliers',$suppliers)
-                ->with('categories',$categories)
-                ->with('trendCategories',$trendCategories);
+                ->with('categories',$categories);
     }
 }

@@ -169,8 +169,13 @@ class BookController extends Controller
     }
     public function adminShow(Book $book)
     {
+        $linkDelete = "/comment/";
         $book->load('categories', 'thumbnails', 'supplier');
-        return view('books.book_details')->with('book', $book);
+        $book->load('comments');
+        return view('books.book_details')
+        ->with('linkDelete', $linkDelete)
+        ->with('book', $book);
+
     }
 
     /**

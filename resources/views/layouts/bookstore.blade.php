@@ -109,7 +109,7 @@
                                     </div><!-- End .megamenu megamenu-md -->
                                 </li>
                                 <li>
-                                    <a href="product.html" class="sf-with-ul">Sản Phẩm</a>
+                                    <a href="/books" class="sf-with-ul">Sản Phẩm</a>
 
                                     <div class="megamenu megamenu-sm"
                                         style=" max-height: 400px;

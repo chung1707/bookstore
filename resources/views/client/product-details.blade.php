@@ -32,7 +32,9 @@
                     <div class="product-details sticky-content">
                         <h1 class="product-title">{{$book->name}}</h1><!-- End .product-title -->
                         <div class="ratings-container">
-                            <star-rating v-bind:star-size="30" :read-only="true" :rating="4">></star-rating><i style="color: yellow;" class="fas fa-star"></i>
+
+                            <rating :book="{{ json_encode($book) }}" :star_size="{{ json_encode(20)}}"></rating>
+
                         </div>
                         <div class="product-price">
                             @if($book->discount!=0)
@@ -55,9 +57,11 @@
                             <div class="product-cat">
                                 <span>Category:</span>
                                 @foreach ($book->categories as $category)
-                                <a href="#" style="
-                                                        font-family: 'molla';
-                                                        font-size: 16px;">|{{$category->name}}</a>
+                                <a href="#"
+                                    style="
+                                    font-family: 'molla';
+                                    font-size: 16px;">
+                                    |{{$category->name}}</a>
                                 @endforeach
                             </div><!-- End .product-cat -->
 
@@ -69,77 +73,7 @@
                                 <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
                             </div>
                         </div><!-- End .product-details-footer -->
-
-                        <div class="accordion accordion-plus product-details-accordion" id="product-accordion">
-                            <div class="card card-box card-sm">
-                                <div class="card-header" id="product-desc-heading">
-                                    <h2 class="card-title">
-                                        <a class="collapsed" role="button" data-toggle="collapse" href="#product-accordion-desc" aria-expanded="false" aria-controls="product-accordion-desc">
-                                            Mô tả
-                                        </a>
-                                    </h2>
-                                </div><!-- End .card-header -->
-                                <div id="product-accordion-desc" class="collapse" aria-labelledby="product-desc-heading" data-parent="#product-accordion">
-                                    <div class="card-body">
-                                        <div class="product-desc-content">
-                                            <p>{!! $book->description !!}</p>
-                                        </div><!-- End .product-desc-content -->
-                                    </div><!-- End .card-body -->
-                                </div><!-- End .collapse -->
-                            </div><!-- End .card -->
-
-                            <div class="card card-box card-sm">
-                                <div class="card-header" id="product-info-heading">
-                                    <h2 class="card-title">
-                                        <a role="button" data-toggle="collapse" href="#product-accordion-info" aria-expanded="true" aria-controls="product-accordion-info">
-                                            Thông tin thêm
-                                        </a>
-                                    </h2>
-                                </div><!-- End .card-header -->
-                                <div id="product-accordion-info" class="collapse show" aria-labelledby="product-info-heading" data-parent="#product-accordion">
-                                    <div class="card-body">
-                                        <div class="product-desc-content">
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
-
-                                            <h3>Fabric & care</h3>
-                                            <ul>
-                                                <li>100% Polyester</li>
-                                                <li>Do not iron</li>
-                                                <li>Do not wash</li>
-                                                <li>Do not bleach</li>
-                                                <li>Do not tumble dry</li>
-                                                <li>Professional dry clean only</li>
-                                            </ul>
-                                        </div><!-- End .product-desc-content -->
-                                    </div><!-- End .card-body -->
-                                </div><!-- End .collapse -->
-                            </div><!-- End .card -->
-
-                            <div class="card card-box card-sm">
-                                <div class="card-header" id="product-shipping-heading">
-                                    <h2 class="card-title">
-                                        <a class="collapsed" role="button" data-toggle="collapse" href="#product-accordion-shipping" aria-expanded="false" aria-controls="product-accordion-shipping">
-                                            Giao hàng và đổi trả
-                                        </a>
-                                    </h2>
-                                </div><!-- End .card-header -->
-                                <div id="product-accordion-shipping" class="collapse" aria-labelledby="product-shipping-heading" data-parent="#product-accordion">
-                                    <div class="card-body">
-                                        <div class="product-desc-content">
-                                            <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
-                                                We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
-                                        </div><!-- End .product-desc-content -->
-                                    </div><!-- End .card-body -->
-                                </div><!-- End .collapse -->
-                            </div><!-- End .card -->
-
-
-                            <div class="card card-box card-sm">
-                                <comment :bought="{{ json_encode($bought) }}"></comment>
-                            </div><!-- End .card -->
-
-
-                        </div><!-- End .accordion -->
+                        <comment :bought="{{ json_encode($bought) }}"  :book="{{ json_encode($book) }}"></comment>
                     </div><!-- End .product-details -->
                 </div><!-- End .col-md-6 -->
             </div><!-- End .row -->
@@ -176,15 +110,20 @@
             @foreach($relatedBooks as $relatedBook)
             <div class="product product-7">
                 <figure class="product-media">
-                    <span class="product-label label-new">New</span>
-                    <span class="product-label label-top">Top</span>
-                    <span class="product-label label-out">Out of Stock</span>
+                    @if($relatedBook->quantity < 1)
+                    <span class="product-label label-out">Hết hàng</span>
+                    @endif
+                    @if($relatedBook->quantity < 10)
+                    <span class="product-label label-out">Chỉ còn lại {{$relatedBook->quantity}} cuốn</span>
+                    @endif
                     <a href="{{ route('books.show',['book' =>$relatedBook]) }}">
                         <img src="{{ asset('storage/thumbnails/'.$relatedBook->thumbnails[0]->img)}}" alt="Product image" class="product-image">
                     </a>
+                    @if($relatedBook->quantity > 1)
                     <div class="product-action">
                         <add-to-cart :book="{{ $relatedBook }}"></add-to-cart>
                     </div><!-- End .product-action -->
+                    @endif
                 </figure><!-- End .product-media -->
 
                 <div class="product-body">
@@ -197,10 +136,7 @@
                     </div><!-- End .product-price -->
 
                     <div class="ratings-container">
-                        <div class="ratings">
-                            <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                        </div><!-- End .ratings -->
-                        <span class="ratings-text">( 2 Reviews )</span>
+                        <rating :book="{{ json_encode($relatedBook) }}"  :star_size="{{ json_encode(15)}}"></rating>
                     </div><!-- End .rating-container -->
 
 

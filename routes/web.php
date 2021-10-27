@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\UserController;
@@ -102,7 +103,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
     Route::get('/edit-transporter/{transporter}',[TransportersController::class,'edit'])->name('admin.editTransporter');
     Route::post('/update-transporter/{transporter}',[TransportersController::class,'update'])->name('admin.updateTransporter');
     Route::delete('/destroy-transporter/{transporter}',[TransportersController::class,'destroy'])->name('admin.destroyTransporter');
-  
+
     Route::post('/export_bill', [ExportController::class, 'createExportBill']);
     Route::get('/export_bill/history', [ExportController::class, 'history'])->name('export_bill_history');
     Route::get('/export_bill/history/{bill}', [ExportController::class, 'show'])->name('export_bill_show');
@@ -118,6 +119,7 @@ Route::delete('admin/book/{book}', [BookController::class, 'destroy'])->middlewa
 
 // delete
 Route::delete('/admin/export_bill/{bill}', [ExportController::class, 'deleteBill'])->middleware(['auth', 'role:admin', 'checkBlock'])->name('export_bill_delete');
+Route::delete('/admin/importBill/{bill}', [ImportController::class, 'destroy'])->middleware(['auth', 'role:admin', 'checkBlock'])->name('import_bill_delete');
 Route::delete('/user_delete/{user}', [UserManageController::class, 'deleteUser'])->middleware(['auth', 'role:admin', 'checkBlock'])->name('admin.deleteUser');
 Route::delete('/admin/order/{order}', [OrderController::class, 'destroy'])->middleware(['auth', 'role:admin', 'checkBlock']);
 
@@ -142,6 +144,13 @@ Route::get('/cart', [CartController::class, 'index'])->middleware(['auth', 'chec
 Route::post('/delete_book_in_cart', [CartController::class, 'deleteBookInCart'])->middleware(['auth', 'checkBlock']);
 Route::post('/update_qty_cart', [CartController::class, 'updateQty'])->middleware(['auth', 'checkBlock']);
 Route::post('/clearCart', [CartController::class, 'clearCart'])->middleware(['auth', 'checkBlock']);
+
+// comments
+Route::post('/add-comment', [CommentController::class, 'store'])->middleware(['auth', 'checkBlock']);
+Route::get('/get-comments/{book}', [CommentController::class, 'index']);
+Route::get('/get-average-rating/{book}', [CommentController::class, 'averageRating']);
+Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])->middleware(['auth', 'checkBlock']);
+
 
 //Supplier
 Route::get('/supplier/list-supplier', [SupplierController::class, 'index'])->middleware(['auth', 'role:admin', 'checkBlock'])->name('admin.listSupplier');

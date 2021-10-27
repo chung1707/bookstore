@@ -82,7 +82,7 @@
                                             @foreach($order->books as $book)
                                             <tr>
                                                 <td>
-                                                    <a href="#">{{ $book->name }}</a>
+                                                    <a href="{{ route('books.show',['book' => $book]) }}">{{ $book->name }}</a>
                                                 </td>
                                                 <th>{{ $book->pivot->quantity }}</th>
                                                 <th>{{ $book->price }}</th>

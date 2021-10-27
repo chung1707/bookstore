@@ -103,9 +103,11 @@
                             <td>
                                 <add_to_admin_cart :book="{{ json_encode($book) }}"></add_to_admin_cart>
                             </td>
+                            @if(auth()->user()->role->name == 'admin')
                             <td class="table__content">
-                                <delete :book="{{ json_encode($book) }}" :link="{{json_encode($linkDelete)}}"></delete>
+                                <delete :item="{{ json_encode($book) }}" :link="{{json_encode($linkDelete)}}"></delete>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
