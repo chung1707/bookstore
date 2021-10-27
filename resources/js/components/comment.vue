@@ -98,7 +98,7 @@ import {mapGetters} from 'vuex'
 export default {
     props: {
         bought: {
-            type: String,
+            type: Boolean,
         }
     },
     computed: {

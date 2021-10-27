@@ -40,12 +40,22 @@ class ExportController extends Controller
             return response()->json(['e' => $e,'status' => 401, 'success' => false]);
         }
     }
-    public function history(){
+    public function history(Request $request){
         $linkDelete = '/admin/export_bill/';
-        $saleBills = SaleBill::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
-        return view('warehouse.sell_offline.sale_bill_history')
-        ->with('saleBills',$saleBills)
-        ->with('linkDelete',$linkDelete);
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $saleBills = SaleBill::orderBy('id','desc')->where('transaction_id','like','%'.$search.'%')->get();
+            return view('warehouse.sell_offline.sale_bill_history')
+            ->with('saleBills',$saleBills)
+            ->with('search',$search)
+            ->with('linkDelete',$linkDelete);
+        }else{
+            $saleBills = SaleBill::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
+            return view('warehouse.sell_offline.sale_bill_history')
+            ->with('saleBills',$saleBills)
+            ->with('linkDelete',$linkDelete);
+        }
+        
     }
     public function deleteBill(SaleBill $bill){
         try{

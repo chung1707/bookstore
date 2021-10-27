@@ -22,11 +22,17 @@ class TransportersController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        $transporters = DB::table('transporters')->get();
-        return view('admin.transporters.index')
-                ->with('transporters',$transporters);
+    public function index(Request $request)
+    {   
+        if(isset($request->searchName)){
+            $name=$request->searchName;
+            $transporters =  DB::table('transporters')->where('name','like','%'.$name.'%')->get();
+            return view('admin.transporters.index')->with('transporters',$transporters)->with('oldsearch',$name);
+        }else{
+            $transporters = DB::table('transporters')->get();
+            return view('admin.transporters.index')
+                    ->with('transporters',$transporters);
+        }
     }
 
     public function destroy( $id)

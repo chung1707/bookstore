@@ -14,10 +14,17 @@ class ImportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $importBills = ImportBills::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
-        return view('warehouse.import_history')->with('importBills', $importBills);
+        if(isset($request->tableSearch)){
+            $search = $request->tableSearch;
+            $importBills = ImportBills::orderBy('id','desc')->where('transaction_id','like','%'.$search.'%')->get();
+            return view('warehouse.import_history')->with('importBills', $importBills)->with('search', $search);
+        }else{
+            $importBills = ImportBills::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
+            return view('warehouse.import_history')->with('importBills', $importBills);
+        }
+
     }
 
     /**
