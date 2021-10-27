@@ -16,8 +16,11 @@ class ImportController extends Controller
      */
     public function index()
     {
+        $linkDelete = '/admin/importBill/';
         $importBills = ImportBills::orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_PAGE);
-        return view('warehouse.import_history')->with('importBills', $importBills);
+        return view('warehouse.import_history')
+        ->with('linkDelete', $linkDelete)
+        ->with('importBills', $importBills);
     }
 
     /**
@@ -82,8 +85,13 @@ class ImportController extends Controller
      * @param  \App\Models\ImportBills  $importBills
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ImportBills $importBills)
+    public function destroy( Request  $request)
     {
-        //
+        try{
+            ImportBills::find($request->item_id)->delete();
+            return response()->json(['status' => 201, 'name' => 'hóa đơn nhập']);
+        }catch(\Exception $e){
+            return response()->json(['status' => 401, 'error' =>$e]);
+        }
     }
 }

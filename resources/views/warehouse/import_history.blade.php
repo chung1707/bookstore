@@ -51,11 +51,7 @@
 
                             </td>
                             <td class="table__content">
-                                <form action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button class="btn-flat btn-default btn-sm" type='submit'>Xóa</button>
-                                </form>
+                                <delete :item="{{ json_encode($importBill) }}" :link="{{json_encode($linkDelete)}}"></delete>
                             </td>
                         </tr>
                         @endforeach

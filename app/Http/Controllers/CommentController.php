@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Comment;
+use App\Models\AppConst;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class CommentController extends Controller
 {
@@ -12,19 +16,29 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Book $book)
     {
-        //
+        $comments = Comment::where('book_id', $book->id)->orderBy('id','desc')->paginate(AppConst::DEFAULT_PER_COMMENTS);
+        $total = Comment::where('book_id', $book->id)->count('id');
+        $comments->load('user');
+        return response()->json(
+            [
+                'status' =>201,
+                'comments' =>$comments,
+                'total' =>$total,
+            ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function averageRating(Book $book){
+        $total = Comment::where('book_id', $book->id)->count('id');
+        $sum = Comment::where('book_id', $book->id)->sum('rating');
+        $average  = $sum / $total;
+        return response()->json(
+            [
+                'status' =>201,
+                'average' =>$average,
+                'total' =>$total,
+            ]);
     }
 
     /**
@@ -35,42 +49,20 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $comment = new Comment;
+            $comment->fill($request->all());
+            $comment->user_id = auth()->user()->id;
+            if($comment->content == null){
+                $comment->content = 'Không để lại bình luận!';
+            }
+            $comment->save();
+            return response()->json(['status' => 201]);
+        }catch(\Exception $e){
+            return response()->json(['status' => 401, 'e' =>$e]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Comment $comment)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -80,6 +72,11 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        try{
+            $comment->delete();
+            return response()->json(['status' =>201]);
+        }catch (\Exception $e) {
+            return response()->json(['status' =>401]);
+        }
     }
 }

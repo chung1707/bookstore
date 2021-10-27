@@ -138,8 +138,8 @@
                                     @foreach($suppliers as $supplier)
                                         <div class="filter-item">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="{{$supplier->id}}">
-                                                <label class="custom-control-label" for="{{ $supplier->id }}">{{ $supplier->name }}</label>
+                                                <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}">
+                                                <label class="custom-control-label" for="{{ $supplier->name }}">{{ $supplier->name }}</label>
                                             </div><!-- End .custom-checkbox -->
                                         </div><!-- End .filter-item -->
                                     @endforeach

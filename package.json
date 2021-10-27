@@ -32,6 +32,7 @@
         "@ocrv/vue-tailwind-pagination": "0.0.4",
         "admin-lte": "^3.1.0",
         "icheck-bootstrap": "^3.0.1",
+        "laravel-vue-pagination": "^2.3.1",
         "overlayscrollbars": "^1.13.1",
         "vee-validate": "^3.4.13",
         "vue-star-rating": "^1.7.0",

@@ -63,7 +63,13 @@ Vue.component('delete', require('./components/admin/delete.vue').default);
 Vue.component('print', require('./components/print_invoice.vue').default);
 //comment
 Vue.component('comment', require('./components/comment.vue').default);
+Vue.component('rating', require('./components/rating.vue').default);
 
+Vue.component('admin-comments', require('./components/books/comments.vue').default);
+
+// vue pagination
+import pagination from 'laravel-vue-pagination'
+Vue.component('pagination',pagination);
 
 //rating
 import StarRating from 'vue-star-rating'
