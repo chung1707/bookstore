@@ -97,7 +97,9 @@
                             <td>{{ $book->quantity }}</td>
                             <td>{{ $book->price }}</td>
                             <td>
+                                @if(isset($book->thumbnails[0]->img))
                                 <img src="{{ asset('storage/thumbnails/'.$book->thumbnails[0]->img) }}" alt="Banner" style="width:80px;">
+                                @endif
                             </td>
                             <td><a href="{{route('book.admin_show',['book' => $book])}}" class="btn btn-info">Xem chi tiết</a></td>
                             <td>

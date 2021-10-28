@@ -21,13 +21,6 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="toolbox">
-                    <div class="toolbox-left">
-                        @if(!isset($SupplierChecked[0])&&!isset($CategoryChecked[0]))
-                            <div class="toolbox-info">
-                                Đã xem <span>{{ count($books)*($books->currentPage()) }} trên {{ count($books)*($books->lastPage()) }}</span> sản phẩm
-                            </div><!-- End .toolbox-info -->
-                        @endif
-                    </div><!-- End .toolbox-left -->
                     <form action="">
                     <div class="toolbox-right">
                         <div class="toolbox-sort">
@@ -50,13 +43,20 @@
                         <div class="col-6 col-md-4 col-lg-4">
                             <div class="product product-7 text-center">
                                 <figure class="product-media">
-                                    <span class="product-label label-new">Mới</span>
+                                    @if($book->quantity < 10 && $book->quantity >1)
+                                    <span class="product-label label-new">Còn: {{$book->quantity}} Cuốn</span>
+                                    @endif
+                                    @if($book->quantity < 1)
+                                    <span class="product-label label-new">Còn: {{$book->quantity}} Hết hàng</span>
+                                    @endif
                                     <a href="{{ route('books.show',['book' =>$book]) }}">
                                         <img style="max-height: 277px;" src="{{ asset('storage/thumbnails/'.$book->thumbnails[0]->img)}}" alt="Product image" class="product-image">
                                     </a>
+                                    @if($book->quantity > 1)
                                     <div class="product-action">
                                         <add-to-cart :book="{{ $book }}" ></add-to-cart>
                                     </div>
+                                    @endif
                                 </figure><!-- End .product-media -->
 
                                 <div class="product-body">
@@ -110,12 +110,12 @@
 
                         <div class="collapse show" id="widget-1">
                             <div class="widget-body">
-                                <div class="filter-items filter-items-count"> 
+                                <div class="filter-items filter-items-count">
                                     @foreach($categories as $category)
                                         <div class="filter-item">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="{{$category->name}}" name="CategorySearch[]" 
-                                                value="{{$category->id}}" 
+                                                <input type="checkbox" class="custom-control-input" id="{{$category->name}}" name="CategorySearch[]"
+                                                value="{{$category->id}}"
                                                 @if(isset($CategoryChecked[0])&&in_array($category->id, $CategoryChecked)) {{ $checked }} @endif>
                                                 <label class="custom-control-label" for="{{$category->name}}">{{ $category->name }}</label>
                                             </div><!-- End .custom-checkbox -->
@@ -141,16 +141,12 @@
                                     @foreach($suppliers as $supplier)
                                         <div class="filter-item">
                                             <div class="custom-control custom-checkbox">
-<<<<<<< HEAD
                                                 <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}" name="SupplierSearch[]" value="{{$supplier->id}}" @if(isset($SupplierChecked[0])&&in_array($supplier->id, $SupplierChecked)) {{ $checked }} @endif>
-=======
-                                                <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}">
->>>>>>> df4ed080677125dc671635879ddc727c146b93de
                                                 <label class="custom-control-label" for="{{ $supplier->name }}">{{ $supplier->name }}</label>
                                             </div><!-- End .custom-checkbox -->
                                         </div><!-- End .filter-item -->
                                     @endforeach
-                                    
+
                                 </div><!-- End .filter-items -->
                             </div><!-- End .widget-body -->
                         </div><!-- End .collapse -->

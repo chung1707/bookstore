@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateUserInfosRequest;class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
