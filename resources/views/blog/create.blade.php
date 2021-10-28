@@ -1,5 +1,6 @@
 @extends('layouts.bookstore')
-
 @section('content')
-creates
+<div class="container">
+    <create-article></create-article>
+</div>
 @endsection

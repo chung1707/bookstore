@@ -27,9 +27,9 @@ class UpdateTransporterRequest extends FormRequest
         return [
             //
             'name' => ['required','max:255', Rule::unique('transporters','name')->ignore($this->transporter)],
-            'email' => ['required','max:255', Rule::unique('transporters','email')->ignore($this->transporter)],
+            'email' => ['required','max:255', 'regex:/[0-9]/','min:9', Rule::unique('transporters','email')->ignore($this->transporter)],
             'phone' => ['required', 'max:255','regex:/[0-9]/', Rule::unique('transporters','phone')->ignore($this->transporter)],
-            'postage' => ['required', 'max:255', 'regex:/[0-9]/','min:9'],
+            'postage' => ['required', 'max:255'],
         ];
     }
 }

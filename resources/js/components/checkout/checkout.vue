@@ -20,7 +20,7 @@
                         placeholder="Bạn có mã giảm giá? Nhập mã"
                     />
                 </div>
-                <button class="btn btn-outline-primary-2 ">
+                <button class="btn btn-outline-primary-2 " @click.prevent="console.log('oke')">
                     <span class="">Sử dụng mã</span>
                 </button>
                 <!-- End .checkout-discount -->

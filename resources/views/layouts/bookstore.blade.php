@@ -101,7 +101,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li>
-                                    <a href="category.html" class="sf-with-ul">Thể loại</a>
+                                    <a href="#" class="sf-with-ul">Thể loại</a>
                                     <div class="megamenu megamenu-sm"
                                         style=" max-height: 400px;
                                                  overflow-x: scroll;">
@@ -118,7 +118,7 @@
                                     </div><!-- End .megamenu megamenu-sm -->
                                 </li>
                                 <li>
-                                    <a href="blog.html">Blog</a>
+                                    <a href="/blog">Blog</a>
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->

@@ -123,13 +123,18 @@
                         data-parent="#product-accordion"
                         style=""
                     >
-                        <a
-                            v-if="this.bought == true || this.authUser.role.name == 'admin'"
-                            @click="show = true"
-                            class="btn btn-secondary"
-                            style="margin: 5px 20px;"
-                            >Thêm đánh giá</a
-                        >
+                        <div v-if="authUser">
+                            <a
+                                v-if="
+                                    this.bought == true ||
+                                        this.currentUser.role.name == 'admin'
+                                "
+                                @click="show = true"
+                                class="btn btn-secondary"
+                                style="margin: 5px 20px;"
+                                >Thêm đánh giá</a
+                            >
+                        </div>
                         <div class="card-body">
                             <div class="reviews">
                                 <div
@@ -158,15 +163,35 @@
                                                 </p>
                                             </div>
                                             <div class="review-action">
-                                                <span><i class="fal fa-history"></i>{{
-                                                        comment.created_at}}
+                                                <span
+                                                    ><i
+                                                        class="fal fa-history"
+                                                    ></i
+                                                    >{{ comment.created_at }}
                                                 </span>
-                                                <a
-                                                style="cursor: pointer;"
-                                                @click.prevent="deleteComment(comment)"
-                                                v-if="authUser.role.name=='admin'||authUser.id==comment.user_id"
+                                                <div
+                                                    v-if="authUser"
                                                 >
-                                                    <i class="fas fa-trash"></i></a>
+                                                    <a
+                                                        style="cursor: pointer;"
+                                                        @click.prevent="
+                                                            deleteComment(
+                                                                comment
+                                                            )
+                                                        "
+                                                        v-if="
+                                                            currentUser.role
+                                                                .name ==
+                                                                'admin' ||
+                                                                currentUser.id ==
+                                                                    comment.user_id
+                                                        "
+                                                    >
+                                                        <i
+                                                            class="fas fa-trash"
+                                                        ></i
+                                                    ></a>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- End .col-auto -->
@@ -227,6 +252,11 @@ export default {
             total: 0,
             success: false,
             error: false,
+            currentUser: {
+                role: {
+                    name: null
+                }
+            }
         };
     },
     methods: {
@@ -236,8 +266,9 @@ export default {
             formData.append("content", this.content);
             formData.append("book_id", this.book.id);
             axios.post("/add-comment", formData).then(response => {
+                this.show = false;
                 this.success = true;
-                window.location.reload();
+                this.list();
             });
         },
         async list(page = 1) {
@@ -251,22 +282,24 @@ export default {
                     console.error(response);
                 });
         },
-        deleteComment(comment){
-            axios.delete('/comment/' +comment.id ).then(response => {
-                if(response.data.status == 201){
-                    this.success = true;
-                    this.list();
-                }
-                else{
-                    this.error = true;
-                }
-            })
-            .catch(({ response }) => {
-                console.error(response);
-            });
+        deleteComment(comment) {
+            axios
+                .delete("/comment/" + comment.id)
+                .then(response => {
+                    if (response.data.status == 201) {
+                        this.success = true;
+                        this.list();
+                    } else {
+                        this.error = true;
+                    }
+                })
+                .catch(({ response }) => {
+                    console.error(response);
+                });
         }
     },
     mounted() {
+        this.currentUser = this.authUser;
         this.list();
     },
     watch: {
@@ -276,7 +309,7 @@ export default {
         error() {
             setTimeout(() => (this.error = false), 2000);
         }
-    },
+    }
 };
 </script>
 
@@ -299,7 +332,7 @@ export default {
 .unsuccessful {
     color: rgb(255, 83, 78);
     padding: 20px;
-    background-color:rgba(191, 177, 177, 0.3);
+    background-color: rgba(191, 177, 177, 0.3);
     text-align: center;
     z-index: 99999;
     position: fixed;

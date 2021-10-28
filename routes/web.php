@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Home\HomeController;
@@ -110,6 +111,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,employee
 
 });
 
+Route::get('/admin/transporters',[TransportersController::class, 'index'])->name('transporters_list');
+Route::get('/admin/create-transporter',[TransportersController::class,'create'])->name('admin.createTransporter');
+Route::post('/admin/add-transporter',[TransportersController::class,'store'])->name('admin.storeTransporter');
+Route::get('/admin/edit-transporter/{transporter}',[TransportersController::class,'edit'])->name('admin.editTransporter');
+Route::post('/admin/update-transporter/{transporter}',[TransportersController::class,'update'])->name('admin.updateTransporter');
+Route::delete('/admin/destroy-transporter/{transporter}',[TransportersController::class,'destroy'])->name('admin.destroyTransporter');
+
 //// ADMIN
 Route::put('canceled/{order}', [OrderController::class, 'markCanceled'])->middleware('auth')->name('mark_canceled');
 Route::get('/admin_book/{book}/edit', [BookController::class, 'edit'])->middleware(['auth', 'role:admin', 'checkBlock'])->name('book.edit');
@@ -164,18 +172,15 @@ Route::delete('/supplier/destroy-supplier/{supplier}', [SupplierController::clas
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
 
-// preview
 
-Route::get('/blog', function () {
-    return view('blog.blog');
-});
+//blog
+Route::get('/blog', [BlogController::class, 'index'])->middleware(['checkBlock'])->name('blog.index');
+Route::get('/blog-create', [BlogController::class, 'create'])->middleware(['auth', 'role:admin,employee,author', 'checkBlock']);
+
+// preview
 Route::get('/blog/single', function () {
     return view('blog.single');
 });
-Route::get('/blog/create', function () {
-    return view('blog.create');
-});
-
 Route::get('/about', function () {
     return view('client.about');
 });

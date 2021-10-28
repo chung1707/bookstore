@@ -75,6 +75,8 @@ Vue.component('pagination',pagination);
 import StarRating from 'vue-star-rating'
 Vue.component('star-rating', StarRating);
 
+//article
+Vue.component('create-article', require('./components/create-article.vue').default);
 
 
 import Vue from 'vue';
