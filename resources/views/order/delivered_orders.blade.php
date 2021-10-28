@@ -12,19 +12,23 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Danh sách đơn hàng đã giao -- </h3>
+                @if (!isset($search))
                 <h4 class="card-title">
                     Trang: {{ $orders->currentPage() }} / {{$orders->lastPage()}}
                 </h4>
+                @endif
                 <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
+                    <form action="{{ route('delivered_orders') }}" method="get">
+                        @csrf
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="tableSearch" class="form-control float-right" placeholder="Search" value="@if (isset($search)){{ $search }} @endif"/>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <!-- /.card-header -->
@@ -61,10 +65,12 @@
                     </tbody>
                 </table>
             </div>
+            @if (!isset($search))
             <div style="padding-top: 20px;
                             margin: 0px auto;">
-                {{ $orders->links() }}
+               {{ $orders->links() }}
             </div>
+            @endif
 
             <!-- /.card-body -->
         </div>

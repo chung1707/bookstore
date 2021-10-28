@@ -22,9 +22,11 @@
             <div class="col-lg-9">
                 <div class="toolbox">
                     <div class="toolbox-left">
-                        <div class="toolbox-info">
-                            Đã xem <span>{{ count($books)*($books->currentPage()) }} trên {{ count($books)*($books->lastPage()) }}</span> sản phẩm
-                        </div><!-- End .toolbox-info -->
+                        @if(!isset($SupplierChecked[0])&&!isset($CategoryChecked[0]))
+                            <div class="toolbox-info">
+                                Đã xem <span>{{ count($books)*($books->currentPage()) }} trên {{ count($books)*($books->lastPage()) }}</span> sản phẩm
+                            </div><!-- End .toolbox-info -->
+                        @endif
                     </div><!-- End .toolbox-left -->
                     <form action="">
                     <div class="toolbox-right">
@@ -86,38 +88,40 @@
 
                 <nav aria-label="Page navigation">
                     <div class="pagination justify-content-center">
-                        {{ $books->links()}}
+                        @if(!isset($SupplierChecked[0])&&!isset($CategoryChecked[0]))
+                            {{ $books->links()}}
+                        @endif
                     </div>
                 </nav>
             </div><!-- End .col-lg-9 -->
             <aside class="col-lg-3 order-lg-first">
                 <div class="sidebar sidebar-shop">
                     <div class="widget widget-clean">
-                        <label>Filters:</label>
-                        <a href="#" class="sidebar-filter-clear">Clean All</a>
+                        <label>Bộ lọc:</label>
+                        <a href="{{ route('books.index',['CategorySearch'=>[],'CategorySearch'=>[]]) }}" class="sidebar-filter-clear">Bỏ lọc</a>
                     </div><!-- End .widget widget-clean -->
-
+                    <form action="">
                     <div class="widget widget-collapsible">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-                                Category
+                                Thể loại
                             </a>
                         </h3><!-- End .widget-title -->
 
                         <div class="collapse show" id="widget-1">
                             <div class="widget-body">
-                                <div class="filter-items filter-items-count">
-                                    <form action="">
+                                <div class="filter-items filter-items-count"> 
                                     @foreach($categories as $category)
                                         <div class="filter-item">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="{{$category->id}}">
-                                                <label class="custom-control-label" for="{{$category->id}}">{{ $category->name }}</label>
+                                                <input type="checkbox" class="custom-control-input" id="{{$category->name}}" name="CategorySearch[]" 
+                                                value="{{$category->id}}" 
+                                                @if(isset($CategoryChecked[0])&&in_array($category->id, $CategoryChecked)) {{ $checked }} @endif>
+                                                <label class="custom-control-label" for="{{$category->name}}">{{ $category->name }}</label>
                                             </div><!-- End .custom-checkbox -->
                                             <span class="item-count">{{   count($category->books) }}</span>
                                         </div><!-- End .filter-item -->
                                     @endforeach
-                                    </form>
                                 </div><!-- End .filter-items -->
                             </div><!-- End .widget-body -->
                         </div><!-- End .collapse -->
@@ -127,28 +131,32 @@
                     <div class="widget widget-collapsible">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
-                                Brand
+                                Nhà xuất bản
                             </a>
                         </h3><!-- End .widget-title -->
 
                         <div class="collapse show" id="widget-4">
                             <div class="widget-body">
                                 <div class="filter-items">
-                                    <form action="">
                                     @foreach($suppliers as $supplier)
                                         <div class="filter-item">
                                             <div class="custom-control custom-checkbox">
+<<<<<<< HEAD
+                                                <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}" name="SupplierSearch[]" value="{{$supplier->id}}" @if(isset($SupplierChecked[0])&&in_array($supplier->id, $SupplierChecked)) {{ $checked }} @endif>
+=======
                                                 <input type="checkbox" class="custom-control-input" id="{{$supplier->name}}">
+>>>>>>> df4ed080677125dc671635879ddc727c146b93de
                                                 <label class="custom-control-label" for="{{ $supplier->name }}">{{ $supplier->name }}</label>
                                             </div><!-- End .custom-checkbox -->
                                         </div><!-- End .filter-item -->
                                     @endforeach
-                                    </form>
+                                    
                                 </div><!-- End .filter-items -->
                             </div><!-- End .widget-body -->
                         </div><!-- End .collapse -->
+                        <input type="submit" value="Lọc" class="btn btn-outline-secondary">
                     </div><!-- End .widget -->
-
+                    </form>
                 </div><!-- End .sidebar sidebar-shop -->
             </aside><!-- End .col-lg-3 -->
         </div><!-- End .row -->

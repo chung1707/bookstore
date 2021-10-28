@@ -12,21 +12,25 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Danh sách tài khoản admin --</h3>
-                <h4 class="card-title">
-                    Trang: {{ $users->currentPage() }} / {{$users->lastPage()}}
-                </h4>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                @if (!isset($search))
+                    <h4 class="card-title">
+                        Trang: {{ $users->currentPage() }} / {{$users->lastPage()}}
+                    </h4>
+                @endif
+                    <div class="card-tools">
+                        <form action="{{ route('admin.user_accounts') }}" method="get">
+                            @csrf
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="tableSearch" class="form-control float-right" placeholder="Search" value="@if (isset($search)){{ $search }} @endif"/>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
@@ -57,11 +61,12 @@
                     </tbody>
                 </table>
             </div>
-            <div style="padding-top: 20px;
+            @if (!isset($search))
+                <div style="padding-top: 20px;
                             margin: 0px auto;">
-                {{ $users->links() }}
-            </div>
-
+                    {{ $users->links() }}
+                </div>
+            @endif
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
